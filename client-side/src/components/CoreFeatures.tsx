@@ -24,13 +24,13 @@ export default function CoreFeatures() {
           </div>
         </div>
         <div className="lg:w-1/2 flex justify-center">
-          <div className="w-full max-w-md aspect-square rounded-3xl relative overflow-hidden">
+          <div className="w-full container max-w-md aspect-square rounded-3xl relative overflow-hidden">
             <Image
               src="/shape.svg"
               alt="Shape"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
+              fill
+              style={{ objectFit: "cover", objectPosition: "center" }}
+              priority
             />
           </div>
         </div>
