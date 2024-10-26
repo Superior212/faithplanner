@@ -3,12 +3,14 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import MemoLogo from "@/icons/Logo";
 import Link from "next/link";
+import DonationModal from "./Modals/DonationModal";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <nav className="p-4 sm:px-16  px-6 fixed w-full top-0 z-10 bg-white">
+    <nav className="p-4 sm:px-16 h-20 px-6 fixed w-full top-0 z-10 bg-white">
       <div className="container mx-auto flex justify-between items-center">
         <div className="">
           <MemoLogo className="sm:w-80 w-60 h-10 sm:h-10" />
@@ -25,8 +27,10 @@ export default function Navbar() {
           <Link href="#" className="text-[#1A1E23] hover:text-[#1A1E23]">
             Contact Us
           </Link>
-          <button className="bg-[#CCFF00] text-black px-8 py-2 rounded-full font-semibold">
-            Donate
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-[#CCFF00] text-black px-8 py-2 rounded-full font-semibold">
+            Get Donation
           </button>
         </div>
 
@@ -61,12 +65,19 @@ export default function Navbar() {
               className="text-[#1A1E23] hover:text-[#1A1E23] block px-3 py-2">
               Contact Us
             </Link>
-            <button className="bg-[#CCFF00] text-black px-4 py-2 rounded-full font-semibold w-full mt-2">
-              Donate
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-[#CCFF00] text-black px-4 py-2 rounded-full font-semibold w-full mt-2">
+              Get Donation
             </button>
           </div>
         </div>
       )}
+
+      <DonationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </nav>
   );
 }
