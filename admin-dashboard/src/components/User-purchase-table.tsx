@@ -86,23 +86,21 @@ export default function UserPurchaseTable() {
                 <TableRow key={purchase.id}>
                   <TableCell className="font-medium text-base">
                     {purchase.name}
-                    <div className="md:hidden text-lg ">
-                      {purchase.email}
-                    </div>
-                    <div className="sm:hidden text-lg text-muted-foreground">
+                    <div className="md:hidden ">{purchase.email}</div>
+                    <div className="sm:hidden text-muted-foreground">
                       {purchase.product}
                     </div>
-                    <div className="lg:hidden text-lg text-muted-foreground">
+                    <div className="lg:hidden  text-muted-foreground">
                       {purchase.purchaseDate}
                     </div>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">
+                  <TableCell className="hidden md:table-cell sm:text-base">
                     {purchase.email}
                   </TableCell>
-                  <TableCell className="hidden sm:table-cell">
+                  <TableCell className="hidden sm:table-cell sm:text-base">
                     {purchase.product}
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell">
+                  <TableCell className="hidden lg:table-cell sm:text-base">
                     {purchase.purchaseDate}
                   </TableCell>
                   <TableCell>

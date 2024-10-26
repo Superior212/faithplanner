@@ -8,7 +8,7 @@ export const navItems = [
     href: "/dashboard/users",
   },
   {
-    name: "Account information",
-    href: "/dashboard/account",
+    name: "Donations",
+    href: "/dashboard/donations",
   },
 ];

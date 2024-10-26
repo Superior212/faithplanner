@@ -1,7 +1,7 @@
 import { DashboardLayout } from "@/components/DashboardLayout";
 import UserPurchaseTable from "@/components/User-purchase-table";
 
-const page = () => {
+const Users = () => {
   return (
     <DashboardLayout>
       <UserPurchaseTable />
@@ -9,4 +9,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Users;
