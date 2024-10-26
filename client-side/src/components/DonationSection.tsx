@@ -10,8 +10,9 @@ export default function DonationSection() {
             GET PAID FOR SUPPORTING OUR MISSION
           </h2>
           <p className="text-gray-600 mb-8 max-w-sm">
-            As a gesture of appreciation, we're offering a unique opportunity
-            for you to get rewarded for your involvement and contributions
+            As a gesture of appreciation, we&apos;re offering a unique
+            opportunity for you to get rewarded for your involvement and
+            contributions
           </p>
           <Button className="bg-[#BFF01A] hover:bg-[#BFF01A] text-black font-[700] py-6 px-8 rounded-full text-lg">
             GET DONATION
