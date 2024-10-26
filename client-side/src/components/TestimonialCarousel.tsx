@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 
 const testimonials = [
@@ -70,7 +71,9 @@ export default function TestimonialCarousel() {
                     : ""
                 }`}
                 aria-label={`View testimonial by ${testimonial.name}`}>
-                <img
+                <Image
+                  width={10}
+                  height={10}
                   src={testimonial.image}
                   alt={`Profile of ${testimonial.name}`}
                   className={`rounded-full transition-all duration-300 ${
