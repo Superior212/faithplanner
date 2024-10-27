@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-import { useState, useEffect } from "react";
 import { navItems } from "@/lib/data";
 import MemoLogo from "@/icons/Logo";
 
