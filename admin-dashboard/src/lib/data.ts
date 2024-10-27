@@ -11,4 +11,8 @@ export const navItems = [
     name: "Donations",
     href: "/dashboard/donations",
   },
+  {
+    name: "Admin Management",
+    href: "/dashboard/admins",
+  },
 ];
