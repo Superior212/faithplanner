@@ -25,7 +25,9 @@ app.use('/api', userDetailsRoutes);
 app.use('/api', donationRoutes);
 
 
-
+app.get("/", (req, res) => {
+    res.send("Welcome to faith planner!");
+});
 mongoose.connect(process.env.URI)
     .then(() => {
         app.listen(port, () => {
