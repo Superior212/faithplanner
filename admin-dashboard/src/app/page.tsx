@@ -1,3 +1,9 @@
+import LoginPage from "@/components/Login-page";
+
 export default function Home() {
-  return <section>Admin</section>;
+  return (
+    <section>
+      <LoginPage />
+    </section>
+  );
 }

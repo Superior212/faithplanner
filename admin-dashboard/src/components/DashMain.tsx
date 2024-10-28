@@ -31,7 +31,6 @@ const fetchDonationData = async (): Promise<DonationData> => {
   const response = await axios.get(
     "https://faithplanner-server.vercel.app/api/donations"
   );
-  console.log(response.data);
   return response.data;
 };
 
