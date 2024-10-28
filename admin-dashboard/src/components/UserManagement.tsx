@@ -41,7 +41,7 @@ export default function UserManagement() {
     password: "",
   });
 
-  const apiUrl = "http://localhost:8000/api";
+  const apiUrl ="https://faithplanner-server.vercel.app/api";
   // Fetch users from the API
   const fetchUsers = async (): Promise<void> => {
     try {
