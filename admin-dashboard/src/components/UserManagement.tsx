@@ -45,7 +45,7 @@ export default function UserManagement() {
   // Handle unauthorized responses
   const handleUnauthorized = () => {
     localStorage.removeItem("token");
-    router.push("/login");
+    router.push("/");
   };
 
   // Fetch users from the API
