@@ -38,12 +38,12 @@ function ProductDetailsModal({
   product: Product;
 }) {
   const initialFormData = {
-    firstname: "",
-    lastname: "",
-    organization: "",
+    name: "",
     email: "",
-    address: "",
-    phonenumber: "",
+    heardFrom: "",
+    church: "",
+    socialMedia: "",
+    other: "",
   };
 
   const [formData, setFormData] = useState({
