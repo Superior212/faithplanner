@@ -77,10 +77,11 @@ function DonationsTableContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[150px]">Name</TableHead>
-                <TableHead className="hidden sm:table-cell">Email</TableHead>
-                <TableHead className="hidden md:table-cell">Phone</TableHead>
-                <TableHead className="hidden lg:table-cell">
+                <TableHead className="w-1/3">Name</TableHead>
+                <TableHead className="w-1/3 hidden sm:table-cell">
+                  Email
+                </TableHead>
+                <TableHead className="w-1/3 hidden lg:table-cell">
                   Heard From
                 </TableHead>
               </TableRow>
@@ -103,9 +104,6 @@ function DonationsTableContent() {
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       {purchase.email}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {purchase.phone}
                     </TableCell>
                     <TableCell className="hidden lg:table-cell">
                       {purchase.heardFrom}
