@@ -37,6 +37,15 @@ function ProductDetailsModal({
   onClose: () => void;
   product: Product;
 }) {
+  const initialFormData = {
+    firstname: "",
+    lastname: "",
+    organization: "",
+    email: "",
+    address: "",
+    phonenumber: "",
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -60,6 +69,7 @@ function ProductDetailsModal({
         description: "Your information has been submitted successfully.",
         duration: 5000,
       });
+      setFormData(initialFormData); // Clear the form
       onClose();
     } catch (error) {
       console.error("Error submitting form:", error);
