@@ -20,9 +20,12 @@ function DonationModal({
   onClose: () => void;
 }) {
   const [formData, setFormData] = useState({
-    name: "",
+    firstname: "",
+    lastname: "",
+    organization: "",
     email: "",
     address: "",
+    phonenumber: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -49,11 +52,33 @@ function DonationModal({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="firstname">First Name</Label>
             <Input
-              id="name"
-              name="name"
-              value={formData.name}
+              id="firstname"
+              name="firstname"
+              value={formData.firstname}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="lastname">Last Name</Label>
+            <Input
+              id="lastname"
+              name="lastname"
+              value={formData.lastname}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="organization">
+              Name of ministry of Non profit organization
+            </Label>
+            <Input
+              id="organization"
+              name="organization"
+              value={formData.organization}
               onChange={handleChange}
               required
             />
@@ -75,6 +100,16 @@ function DonationModal({
               id="address"
               name="address"
               value={formData.address}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="phonenumber">Contact Number</Label>
+            <Input
+              id="phonenumber"
+              name="phonenumber"
+              value={formData.phonenumber}
               onChange={handleChange}
               required
             />

@@ -2,9 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const donationSchema = new Schema({
-    name: {
+    firstname: {
         type: String,
-        required: [true, 'Name is required'],
+        required: [true, 'First Name is required'],
+        trim: true
+    },
+    lastname: {
+        type: String,
+        required: [true, 'Last Name is required'],
         trim: true
     },
     email: {
@@ -23,19 +28,15 @@ const donationSchema = new Schema({
         required: [true, 'Organization name is required'],
         trim: true
     },
-    // amount: {
-    //     type: Number,
-    //     required: [true, 'Donation amount is required'],
-    //     min: [1, 'Amount must be at least 1']
-    // },
+    phonenumber: {
+        type: Number,
+        required: [true, 'Phone Number is required'],
+        trim: true
+    },
     donationDate: {
         type: Date,
         default: Date.now
     },
-    notes: {
-        type: String,
-        trim: true
-    }
 }, {
     timestamps: true
 });

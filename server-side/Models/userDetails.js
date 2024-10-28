@@ -4,23 +4,42 @@ const Schema = mongoose.Schema;
 const userDetailsSchema = new Schema({
     name: {
         type: String,
-        required: [true, 'Name is required'],
+        required: true,
+        trim: true
     },
     email: {
         type: String,
-        required: [true, 'Email is required'],
+        required: true,
+        trim: true,
         lowercase: true
     },
-    phone: {
+    heardFrom: {
         type: String,
-        required: [true, 'Phone number is required'],
+        required: true,
+        enum: ['church', 'socialMedia', 'other']
     },
-    referredBy: {
+    churchDetails: {
         type: String,
-        default: ''
+        required: function () { return this.heardFrom === 'church'; },
+        trim: true
+    },
+    socialMediaPlatform: {
+        type: String,
+        required: function () { return this.heardFrom === 'socialMedia'; },
+        enum: ['tiktok', 'instagram', 'facebook']
+    },
+    otherSource: {
+        type: String,
+        required: function () { return this.heardFrom === 'other'; },
+        trim: true
+    },
+    submittedAt: {
+        type: Date,
+        default: Date.now
     }
 }, {
     timestamps: true
 });
+
 
 module.exports = mongoose.model('UserDetails', userDetailsSchema);

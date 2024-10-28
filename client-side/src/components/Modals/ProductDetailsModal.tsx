@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +11,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Product {
   id: number;
@@ -30,19 +39,45 @@ function ProductDetailsModal({
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
-    referredBy: "",
+    heardFrom: "",
+    church: "",
+    socialMedia: "",
+    other: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here (e.g., send data to server)
-    console.log("Form submitted:", formData);
-    onClose();
+    setIsSubmitting(true);
+    try {
+      // Replace '/api/submit-form' with your actual endpoint
+      await axios.post("/api/submit-form", formData);
+      console.log("Form submitted:", formData);
+      onClose();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      // Handle error (e.g., show error message to user)
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleRadioChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      heardFrom: value,
+      church: "",
+      socialMedia: "",
+      other: "",
+    }));
+  };
+
+  const handleSelectChange = (name: string) => (value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -64,7 +99,7 @@ function ProductDetailsModal({
             />
           </div>
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email address</Label>
             <Input
               id="email"
               name="email"
@@ -75,27 +110,74 @@ function ProductDetailsModal({
             />
           </div>
           <div>
-            <Label htmlFor="phone">Phone</Label>
-            <Input
-              id="phone"
-              name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
+            <Label>Where did you hear about faith planner?</Label>
+            <RadioGroup
+              value={formData.heardFrom}
+              onValueChange={handleRadioChange}
+              className="mt-2">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="church" id="church" />
+                <Label htmlFor="church">Church</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="socialMedia" id="socialMedia" />
+                <Label htmlFor="socialMedia">Social media</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="other" id="other" />
+                <Label htmlFor="other">Other</Label>
+              </div>
+            </RadioGroup>
           </div>
-          <div>
-            <Label htmlFor="referredBy">Referred By</Label>
-            <Input
-              id="referredBy"
-              name="referredBy"
-              value={formData.referredBy}
-              onChange={handleChange}
-            />
-          </div>
-          <Button type="submit" className="w-full">
-            Submit
+          {formData.heardFrom === "church" && (
+            <div>
+              <Label htmlFor="church">Select Church or Ministry</Label>
+              <Select
+                name="church"
+                value={formData.church}
+                onValueChange={handleSelectChange("church")}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a church or ministry" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="church1">Church 1</SelectItem>
+                  <SelectItem value="church2">Church 2</SelectItem>
+                  <SelectItem value="ministry1">Ministry 1</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          {formData.heardFrom === "socialMedia" && (
+            <div>
+              <Label htmlFor="socialMedia">Select Social Media Platform</Label>
+              <Select
+                name="socialMedia"
+                value={formData.socialMedia}
+                onValueChange={handleSelectChange("socialMedia")}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a social media platform" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="tiktok">TikTok</SelectItem>
+                  <SelectItem value="instagram">Instagram</SelectItem>
+                  <SelectItem value="facebook">Facebook</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          {formData.heardFrom === "other" && (
+            <div>
+              <Label htmlFor="otherSpecify">Please specify</Label>
+              <Input
+                id="otherSpecify"
+                name="other"
+                value={formData.other}
+                onChange={handleChange}
+              />
+            </div>
+          )}
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </form>
       </DialogContent>

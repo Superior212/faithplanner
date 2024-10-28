@@ -5,23 +5,24 @@ const Donation = require('../Models/donationModel');
  */
 const createDonation = async (req, res) => {
     try {
-        const { name, email, address, organization, amount, notes } = req.body;
+        const { firstname, lastname, email, address, organization, phonenumber, notes } = req.body;
 
         // Validate required fields
-        if (!name || !email || !address || !organization ) {
+        if (!firstname || !lastname || !email || !address || !organization || !phonenumber) {
             return res.status(400).json({
                 success: false,
-                message: "Name, email, address, and organization  are required"
+                message: "Name, email, address, organization, and Phone Number  are required"
             });
         }
 
         // Create new donation record
         const donation = new Donation({
-            name,
+            firstname,
+            lastname,
             email,
             address,
             organization,
-            notes
+            phonenumber,
         });
 
         await donation.save();
@@ -59,7 +60,7 @@ const getAllDonations = async (req, res) => {
         const donations = await Donation.find(filter)
             .sort('-donationDate');
 
-      
+
 
         res.status(200).json({
             success: true,
