@@ -46,7 +46,7 @@ function ProductDetailsModal({
     other: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = "https://faithplanner-server.vercel.app/api";
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
