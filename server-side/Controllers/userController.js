@@ -162,8 +162,59 @@ const protect = async (req, res, next) => {
     }
 };
 
+/**
+ * Get all users
+ */
+const getUsers = async (req, res) => {
+    try {
+        // Get users but exclude password field
+        const users = await User.find().select('-password');
+
+        res.status(200).json({
+            success: true,
+            users
+        });
+    } catch (error) {
+        console.error('Get users error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to get users"
+        });
+    }
+};
+
+/**
+ * Get single user by ID
+ */
+const getUserById = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        const user = await User.findById(userId).select('-password');
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            user
+        });
+    } catch (error) {
+        console.error('Get user error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to get user"
+        });
+    }
+};
+
 module.exports = {
     register,
     login,
-    protect
+    protect,
+    getUsers,
+    getUserById
 };

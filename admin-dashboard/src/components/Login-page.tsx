@@ -65,16 +65,45 @@ export default function LoginPage() {
         password,
         rememberMe,
       });
+
+      // Extract token and user data from response
+      const { token, user } = response.data;
+
+      // Store token in localStorage
+      localStorage.setItem("token", token);
+
+      // If remember me is checked, store user email
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
+
+      // Store user data (optional, but useful for showing user info)
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Show success toast
       toast({
         title: "Login Successful",
-        description: "You have been successfully logged in.",
+        description: `Welcome back, ${user.name || email}!`,
       });
+
+      // Set authorization header for future requests
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      // Redirect to dashboard
       router.push("/dashboard");
     } catch (error) {
+      // Clear any existing tokens on failed login
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
       if (axios.isAxiosError(error) && error.response) {
         toast({
           title: "Login Failed",
-          description: error.response.data.message || "Please try again.",
+          description:
+            error.response.data.message ||
+            "Invalid credentials. Please try again.",
           variant: "destructive",
         });
       } else {
@@ -89,6 +118,15 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  // Load remembered email on component mount
+  useState(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+  });
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
