@@ -21,72 +21,48 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useRouter } from "next/navigation";
 
 interface User {
   _id: string;
   email: string;
   name: string;
+  password: string;
 }
 
 export default function UserManagement() {
-  const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const [addingUser, setAddingUser] = useState(false);
   const [newUser, setNewUser] = useState<Omit<User, "_id">>({
     email: "",
     name: "",
+    password: "",
   });
 
   const apiUrl = "http://localhost:8000/api";
-
-  // Handle unauthorized responses
-  const handleUnauthorized = () => {
-    localStorage.removeItem("token");
-    router.push("/");
-  };
-
   // Fetch users from the API
-  const fetchUsers = async () => {
+  const fetchUsers = async (): Promise<void> => {
     try {
-      const token = localStorage.getItem("token");
-      console.log("Using token:", token); // Debug log
-
-      if (!token) {
-        handleUnauthorized();
-        return;
-      }
-
       const response = await fetch(`${apiUrl}/users`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        credentials: "include", // Include cookies if your server uses them
       });
 
-      console.log("Response status:", response.status); // Debug log
-
-      if (response.status === 401) {
-        handleUnauthorized();
-        return;
-      }
-
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error("API Error:", errorData); // Debug log
+        const errorData = await response.json();
         throw new Error(errorData.message || "Failed to fetch users");
       }
 
       const data = await response.json();
-      console.log("Fetched data:", data); // Debug log
-      setUsers(data.users);
+      // Adjust this based on your API response structure
+      setUsers(data.users || []);
       setError(null);
     } catch (err) {
-      console.error("Fetch error:", err); // Debug log
+      console.error("Fetch error:", err);
       setError(err instanceof Error ? err.message : "Failed to fetch users");
     } finally {
       setLoading(false);
@@ -94,41 +70,45 @@ export default function UserManagement() {
   };
 
   // Add new user
-  const handleAddNewUser = async () => {
+  const handleAddNewUser = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault(); 
+
+    if (!newUser.email || !newUser.name) {
+      setError("Email and name are required");
+      return;
+    }
+
+    setAddingUser(true);
+    setError(null);
+
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        handleUnauthorized();
-        return;
-      }
-
-      const response = await fetch(`${apiUrl}/users`, {
+      const response = await fetch(`${apiUrl}/register`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newUser),
-        credentials: "include", // Include cookies if your server uses them
       });
 
-      if (response.status === 401) {
-        handleUnauthorized();
-        return;
-      }
-
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+        const errorData = await response.json();
         throw new Error(errorData.message || "Failed to add user");
       }
 
+      // Refresh the users list
       await fetchUsers();
-      setNewUser({ email: "", name: "" });
+
+      // Reset form and close modal
+      setNewUser({ email: "", name: "", password: "" });
       setIsAddUserModalOpen(false);
+
+      // Optional: Show success message
+      // setSuccessMessage("User added successfully");
     } catch (err) {
-      console.error("Add user error:", err); // Debug log
+      console.error("Add user error:", err);
       setError(err instanceof Error ? err.message : "Failed to add user");
+    } finally {
+      setAddingUser(false);
     }
   };
 
@@ -148,42 +128,71 @@ export default function UserManagement() {
             <DialogHeader>
               <DialogTitle>Add New User</DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={newUser.email}
-                  onChange={(e) =>
-                    setNewUser({ ...newUser, email: e.target.value })
-                  }
-                  className="col-span-3"
-                />
+            <form onSubmit={handleAddNewUser}>
+              <div className="grid gap-4 py-4">
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="email" className="text-right">
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={newUser.email}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, email: e.target.value })
+                    }
+                    className="col-span-3"
+                    disabled={addingUser}
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Name
+                  </Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    value={newUser.name}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, name: e.target.value })
+                    }
+                    className="col-span-3"
+                    disabled={addingUser}
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Password
+                  </Label>
+                  <Input
+                    id="password"
+                    type="text"
+                    value={newUser.password}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, password: e.target.value })
+                    }
+                    className="col-span-3"
+                    disabled={addingUser}
+                    required
+                  />
+                </div>
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={newUser.name}
-                  onChange={(e) =>
-                    setNewUser({ ...newUser, name: e.target.value })
-                  }
-                  className="col-span-3"
-                />
-              </div>
-            </div>
-            <Button onClick={handleAddNewUser}>Add User</Button>
+              <Button type="submit" disabled={addingUser} className="w-full">
+                {addingUser ? "Adding User..." : "Add User"}
+              </Button>
+            </form>
           </DialogContent>
         </Dialog>
       </CardHeader>
       <CardContent>
-        {error && (
+        {error && !isAddUserModalOpen && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
