@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Table,
   TableBody,
@@ -22,7 +23,7 @@ interface UserPurchase {
   name: string;
   email: string;
   phone: string;
-  referredBy: string;
+  heardFrom: string;
 }
 
 const apiUrl = "https://faithplanner-server.vercel.app/api/details";
@@ -76,47 +77,44 @@ function DonationsTableContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[150px] text-xl">Name</TableHead>
-                <TableHead className="hidden md:table-cell text-xl">
-                  Email
+                <TableHead className="w-[150px]">Name</TableHead>
+                <TableHead className="hidden sm:table-cell">Email</TableHead>
+                <TableHead className="hidden md:table-cell">Phone</TableHead>
+                <TableHead className="hidden lg:table-cell">
+                  Heard From
                 </TableHead>
-                <TableHead className="hidden sm:table-cell text-xl">
-                  Phone
-                </TableHead>
-                <TableHead className="hidden lg:table-cell text-xl">
-                  Referred By
-                </TableHead>
-                {/* <TableHead>Actions</TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.length > 0 ? (
                 data.map((purchase) => (
                   <TableRow key={purchase.id}>
-                    <TableCell className="font-medium text-base">
+                    <TableCell className="font-medium">
                       {purchase.name}
-                      <div className="md:hidden ">{purchase.email}</div>
-                      <div className="sm:hidden text-muted-foreground">
+                      <div className="sm:hidden text-sm text-muted-foreground">
+                        {purchase.email}
+                      </div>
+                      <div className="md:hidden text-sm text-muted-foreground">
                         {purchase.phone}
                       </div>
-                      <div className="lg:hidden  text-muted-foreground">
-                        {purchase.referredBy}
+                      <div className="lg:hidden text-sm text-muted-foreground">
+                        {purchase.heardFrom}
                       </div>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell sm:text-base">
+                    <TableCell className="hidden sm:table-cell">
                       {purchase.email}
                     </TableCell>
-                    <TableCell className="hidden sm:table-cell sm:text-base">
+                    <TableCell className="hidden md:table-cell">
                       {purchase.phone}
                     </TableCell>
-                    <TableCell className="hidden lg:table-cell sm:text-base">
-                      {purchase.referredBy}
+                    <TableCell className="hidden lg:table-cell">
+                      {purchase.heardFrom}
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center">
+                  <TableCell colSpan={4} className="text-center">
                     No user purchases found.
                   </TableCell>
                 </TableRow>

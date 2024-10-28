@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 interface Product {
   id: number;
@@ -45,18 +46,30 @@ function ProductDetailsModal({
     other: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // Replace '/api/submit-form' with your actual endpoint
-      await axios.post("/api/submit-form", formData);
+      await axios.post(`${apiUrl}/details`, formData);
       console.log("Form submitted:", formData);
+      toast({
+        title: "Success",
+        description: "Your information has been submitted successfully.",
+        duration: 5000,
+      });
       onClose();
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Handle error (e.g., show error message to user)
+      toast({
+        title: "Error",
+        description:
+          "There was a problem submitting your information. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
     } finally {
       setIsSubmitting(false);
     }

@@ -11,6 +11,8 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
+import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
 function DonationModal({
   isOpen,
@@ -19,20 +21,45 @@ function DonationModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     firstname: "",
     lastname: "",
     organization: "",
     email: "",
     address: "",
     phonenumber: "",
-  });
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here (e.g., send data to server)
-    console.log("Form submitted:", formData);
-    onClose();
+    setIsSubmitting(true);
+    try {
+      await axios.post(`${apiUrl}/donations`, formData);
+      console.log("Form submitted:", formData);
+      toast({
+        title: "Success",
+        description: "Your information has been submitted successfully.",
+        duration: 5000,
+      });
+      setFormData(initialFormData); // Clear the form
+      onClose();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description:
+          "There was a problem submitting your information. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,8 +141,8 @@ function DonationModal({
               required
             />
           </div>
-          <Button type="submit" className="w-full">
-            Submit
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </form>
       </DialogContent>
