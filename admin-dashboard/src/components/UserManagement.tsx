@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "./ui/skeleton";
 
 interface User {
   _id: string;
@@ -41,7 +42,7 @@ export default function UserManagement() {
     password: "",
   });
 
-  const apiUrl ="https://faithplanner-server.vercel.app/api";
+  const apiUrl = "https://faithplanner-server.vercel.app/api";
   // Fetch users from the API
   const fetchUsers = async (): Promise<void> => {
     try {
@@ -71,7 +72,7 @@ export default function UserManagement() {
 
   // Add new user
   const handleAddNewUser = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     if (!newUser.email || !newUser.name) {
       setError("Email and name are required");
@@ -119,7 +120,7 @@ export default function UserManagement() {
   return (
     <Card className="w-full max-w-[70rem] mx-auto">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-2xl font-bold">User Management</CardTitle>
+        <CardTitle className="sm:text-2xl font-bold">User Management</CardTitle>
         <Dialog open={isAddUserModalOpen} onOpenChange={setIsAddUserModalOpen}>
           <DialogTrigger asChild>
             <Button>Add New User</Button>
@@ -198,7 +199,14 @@ export default function UserManagement() {
           </Alert>
         )}
         {loading ? (
-          <div className="p-4 text-center">Loading users...</div>
+          <Card className="w-full">
+            <CardHeader>
+              <Skeleton className="h-8 w-[200px]" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-[300px] w-full" />
+            </CardContent>
+          </Card>
         ) : (
           <div className="overflow-x-auto">
             <Table>

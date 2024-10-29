@@ -62,7 +62,7 @@ export default function DashMain() {
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl font-bold">Content Statistics</h1>
+      <h1 className="sm:text-2xl font-bold">Content Statistics</h1>
       <main className="max-w-[50rem] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <StatCard
@@ -80,7 +80,7 @@ export default function DashMain() {
         </div>
       </main>
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Website Analytics</h2>
+        <h2 className="sm:text-xl font-semibold">Website Analytics</h2>
         <Select defaultValue="today">
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select period" />
@@ -112,7 +112,7 @@ function StatCard({
   return (
     <Card className={`${color} text-center sm:w-96 border-none`}>
       <CardHeader className="flex space-y-0 pb-2">
-        <CardTitle className="text-xl font-[700]">{title}</CardTitle>
+        <CardTitle className="sm:text-xl font-[700]">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
