@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react"; // Import useEffect
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import axios from "axios";
@@ -66,35 +66,24 @@ export default function LoginPage() {
         rememberMe,
       });
 
-      // Extract token and user data from response
       const { token, user } = response.data;
 
-      // Store token in localStorage
       localStorage.setItem("token", token);
-
-      // If remember me is checked, store user email
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", email);
       } else {
         localStorage.removeItem("rememberedEmail");
       }
-
-      // Store user data (optional, but useful for showing user info)
       localStorage.setItem("user", JSON.stringify(user));
 
-      // Show success toast
       toast({
         title: "Login Successful",
         description: `Welcome back, ${user.name || email}!`,
       });
 
-      // Set authorization header for future requests
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      // Redirect to dashboard
       router.push("/dashboard");
     } catch (error) {
-      // Clear any existing tokens on failed login
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
@@ -119,14 +108,14 @@ export default function LoginPage() {
     }
   };
 
-  // Load remembered email on component mount
-  useState(() => {
+  // Use useEffect to load remembered email
+  useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
     if (rememberedEmail) {
       setEmail(rememberedEmail);
       setRememberMe(true);
     }
-  });
+  }, []); // Only runs on client side after component mounts
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
