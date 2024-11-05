@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+// import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 
 const testimonials = [
@@ -55,35 +55,35 @@ export default function TestimonialCarousel() {
 
   return (
     <div className="max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-      <div className="bg-gradient-to-br from-[#394B5E] to-[#2A313D]  rounded-3xl p-8 relative h-[390px] flex flex-col justify-between">
-        <div className="text-white text-lg mb-8 overflow-y-auto">
+      <div className="bg-gradient-to-br from-[#394B5E] to-[#2A313D]  rounded-3xl p-8 relative h-[320px] flex flex-col justify-between">
+        <div className="text-white text-lg mb-2 overflow-y-auto">
           {testimonials[activeIndex].content}
         </div>
         <div>
           <div className="flex justify-center items-center space-x-4">
-            {testimonials.map((testimonial, index) => (
-              <button
-                key={testimonial.id}
-                onClick={() => setActiveIndex(index)}
-                className={`focus:outline-none transition-all duration-300 ${
-                  index === activeIndex
-                    ? "ring-2 ring-[#394B5E] rounded-[2rem]"
-                    : ""
-                }`}
-                aria-label={`View testimonial by ${testimonial.name}`}>
-                <Image
-                  width={10}
-                  height={10}
-                  src={testimonial.image}
-                  alt={`Profile of ${testimonial.name}`}
-                  className={`rounded-full transition-all duration-300 ${
-                    index === activeIndex ? "w-16 h-16" : "w-12 h-12 opacity-50"
-                  }`}
-                />
-              </button>
-            ))}
+            {/* {testimonials.map((testimonial, index) => (
+              // <button
+              //   key={testimonial.id}
+              //   onClick={() => setActiveIndex(index)}
+              //   className={`focus:outline-none transition-all duration-300 ${
+              //     index === activeIndex
+              //       ? "ring-2 ring-[#394B5E] rounded-[2rem]"
+              //       : ""
+              //   }`}
+              //   aria-label={`View testimonial by ${testimonial.name}`}>
+              //   <Image
+              //     width={10}
+              //     height={10}
+              //     src={testimonial.image}
+              //     alt={`Profile of ${testimonial.name}`}
+              //     className={`rounded-full transition-all duration-300 ${
+              //       index === activeIndex ? "w-16 h-16" : "w-12 h-12 opacity-50"
+              //     }`}
+              //   />
+              // </button>
+            ))} */}
           </div>
-          <div className="text-white text-center mt-4">
+          <div className="text-white text-center">
             {testimonials[activeIndex].name}
           </div>
         </div>
