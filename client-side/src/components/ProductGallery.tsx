@@ -35,13 +35,15 @@ function ProductCard({ product }: { product: Product }) {
         <Image
           src={product.image}
           alt={product.title}
-          height={20}
-          width={20}
+          height={100}
+          width={100}
           className="w-full h-full object-cover"
         />
       </div>
       <div className="p-6">
-        <h3 className="text-lg font-semibold mb-4">{product.title}</h3>
+        <h3 className="text-sm text-center font-semibold mb-4">
+          {product.title}
+        </h3>
         <Button
           className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full"
           onClick={handleShopNowClick}>

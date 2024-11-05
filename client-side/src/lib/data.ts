@@ -1,20 +1,20 @@
 export const products = [
   {
     id: 1,
-    title: "Guided Steps: A Faith-Filled Planner for Your Journey with God",
-    image: "/product.svg",
+    title: "INSPIRING FAITH PLANNER AND JOURNAL (NOVEMBER-DECEMBER 2024)",
+    image: "/product11.png",
     color: "bg-[#D6D8DB]",
   },
   {
     id: 2,
-    title: "4K UHD LED Smart TV with Chromecast Built-in",
-    image: "/product.svg",
+    title: "INSPIRING FAITH PLANNER AND JOURNAL (JANUARY-APRIL 2025)",
+    image: "/product2.png",
     color: "bg-[#BFF01A]",
   },
   {
     id: 3,
-    title: "4K UHD LED Smart TV with Chromecast Built-in",
-    image: "/product.svg",
+    title: "INSPIRING FAITH PLANNER AND JOURNAL (MAY-AUGUST 2025)",
+    image: "/product3.png",
     color: "bg-[#D6D8DB]",
   },
 ];
