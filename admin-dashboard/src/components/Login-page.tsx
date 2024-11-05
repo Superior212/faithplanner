@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; // Import useEffect
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import axios from "axios";
@@ -17,7 +17,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,20 +27,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const { login, isAuthenticated } = useAuth();
   const apiUrl = "https://faithplanner-server.vercel.app/api";
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/dashboard");
-    }
-
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
-    if (rememberedEmail) {
-      setEmail(rememberedEmail);
-      setRememberMe(true);
-    }
-  }, [isAuthenticated, router]);
 
   const validateForm = () => {
     let isValid = true;
@@ -82,21 +68,25 @@ export default function LoginPage() {
 
       const { token, user } = response.data;
 
+      localStorage.setItem("token", token);
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", email);
       } else {
         localStorage.removeItem("rememberedEmail");
       }
-
-      login(token,);
+      localStorage.setItem("user", JSON.stringify(user));
 
       toast({
         title: "Login Successful",
         description: `Welcome back, ${user.name || email}!`,
       });
 
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       router.push("/dashboard");
     } catch (error) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
       if (axios.isAxiosError(error) && error.response) {
         toast({
           title: "Login Failed",
@@ -117,6 +107,7 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
   // Use useEffect to load remembered email
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
