@@ -71,8 +71,9 @@ export default function TermsAndConditions() {
                 <li>
                   You agree to use our website only for lawful purposes and in a
                   way that does not infringe the rights of, restrict, or inhibit
-                  anyone else's use and enjoyment of the website.
+                  anyone else&apos;s use and enjoyment of the website.
                 </li>
+
                 <li>
                   Unauthorized use of this website may give rise to a claim for
                   damages and/or be a criminal offense.
@@ -87,7 +88,7 @@ export default function TermsAndConditions() {
                 images, and software, is the property of faithplanner.org or its
                 content suppliers and is protected by international copyright
                 laws. Unauthorized reproduction or distribution of the
-                website&rsquo;s content is prohibited.
+                website&apos;s content is prohibited.
               </p>
 
               <h2 className="sm:text-2xl text-lg  font-semibold mt-6 mb-4">
@@ -134,8 +135,9 @@ export default function TermsAndConditions() {
               </h2>
               <p>
                 Your use of this website is at your sole risk. The website and
-                all information, products, and services are provided on an "as
-                is" and "as available" basis without any warranties of any kind.
+                all information, products, and services are provided on an
+                &apos;as is&apos; and &apos;as available&apos; basis without any
+                warranties of any kind.
               </p>
 
               <h2 className="sm:text-2xl text-lg  font-semibold mt-6 mb-4">
@@ -152,9 +154,9 @@ export default function TermsAndConditions() {
                 11. Indemnification
               </h2>
               <p>
-                You agree to indemnify, defend, and hold harmless [Website
-                Name], its officers, directors, employees, agents, and
-                affiliates from any claims, liabilities, damages, costs, or
+                You agree to indemnify, defend, and hold harmless
+                faithplanner.org, its officers, directors, employees, agents,
+                and affiliates from any claims, liabilities, damages, costs, or
                 expenses arising from your use of the website.
               </p>
               <h2 className="sm:text-2xl text-lg  font-semibold mt-6 mb-4">

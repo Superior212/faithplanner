@@ -36,8 +36,8 @@ export default function TermsAndConditionsModal({
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-[300px] overflow-y-auto my-4">
-          <h2 className="sm:text-lg   font-semibold mt-4 mb-4">
-            1.Acceptance of Terms
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
+            1. Acceptance of Terms
           </h2>
           <p>
             By using this website, you agree to these terms and conditions, our
@@ -46,7 +46,7 @@ export default function TermsAndConditionsModal({
             through the website.
           </p>
 
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             2. Modification of Terms
           </h2>
           <p className="mt-4">
@@ -54,27 +54,27 @@ export default function TermsAndConditionsModal({
             continued use of the website following any changes constitutes your
             acceptance of the new terms.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             3. Use of the Website
           </h2>
           <p className="mt-4">
             You agree to use our website only for lawful purposes and in a way
             that does not infringe the rights of, restrict, or inhibit anyone
-            else's use and enjoyment of the website. Unauthorized use of this
-            website may give rise to a claim for damages and/or be a criminal
-            offense.
+            else&apos;s use and enjoyment of the website. Unauthorized use of
+            this website may give rise to a claim for damages and/or be a
+            criminal offense.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-64mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             4. Intellectual Property
           </h2>
           <p className="mt-4">
             All content on this website, including text, graphics, logos,
             images, and software, is the property of faithplanner.org or its
             content suppliers and is protected by international copyright laws.
-            Unauthorized reproduction or distribution of the website&rsquo;s
+            Unauthorized reproduction or distribution of the website&apos;s
             content is prohibited.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             5. Product Information
           </h2>
           <p className="mt-4">
@@ -83,7 +83,7 @@ export default function TermsAndConditionsModal({
             product descriptions or other content on this website are entirely
             accurate, complete, reliable, or error-free.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             6. Purchases and Payment
           </h2>
           <p className="mt-4">
@@ -92,7 +92,7 @@ export default function TermsAndConditionsModal({
             availability and confirmation of the order price. We reserve the
             right to refuse or cancel any order.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             7. Refunds and Returns
           </h2>
           <p className="mt-4">
@@ -100,7 +100,7 @@ export default function TermsAndConditionsModal({
             regarding returns, refunds, and exchanges. All requests are subject
             to review and approval at our discretion.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             8. Third-Party Links
           </h2>
           <p className="mt-4">
@@ -109,15 +109,16 @@ export default function TermsAndConditionsModal({
             endorsement of such websites. We have no responsibility for the
             content or policies of these websites.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             9. Disclaimer of Warranties
           </h2>
           <p className="mt-4">
             Your use of this website is at your sole risk. The website and all
-            information, products, and services are provided on an "as is" and
-            "as available" basis without any warranties of any kind.
+            information, products, and services are provided on an &quot;as
+            is&quot; and &quot;as available&quot; basis without any warranties
+            of any kind.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             10. Limitation of Liability
           </h2>
           <p className="mt-4">
@@ -126,7 +127,7 @@ export default function TermsAndConditionsModal({
             arising from your use of our website or from any information,
             products, or services provided through the website.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             11. Indemnification
           </h2>
           <p className="mt-4">
@@ -135,7 +136,7 @@ export default function TermsAndConditionsModal({
             claims, liabilities, damages, costs, or expenses arising from your
             use of the website.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             12. Governing Law
           </h2>
           <p className="mt-4">
@@ -143,7 +144,7 @@ export default function TermsAndConditionsModal({
             laws of [State/Country], without regard to its conflict of law
             provisions.
           </p>
-          <h2 className="sm:text-lg  font-semibold mt-4 mb-4">
+          <h2 className="sm:text-lg font-semibold mt-4 mb-4">
             13. Contact Information
           </h2>
           <p className="mt-4">

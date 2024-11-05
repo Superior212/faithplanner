@@ -87,14 +87,14 @@ export default function Disclaimer() {
             losses.
           </p>
 
-          <h2 className="sm:text-2xl text-lg  font-semibold mt-6 mb-4">
-            5."As Is" and "As Available" Basis
+          <h2 className="sm:text-2xl text-lg font-semibold mt-6 mb-4">
+            5. &quot;As Is&quot; and &quot;As Available&quot; Basis
           </h2>
           <p>
-            All information on this website is provided "as is" and "as
-            available" without any warranties of any kind, either express or
-            implied. We do not warrant that the website will be uninterrupted,
-            secure, or free from errors or viruses.
+            All information on this website is provided &quot;as is&quot; and
+            &quot;as available&quot; without any warranties of any kind, either
+            express or implied. We do not warrant that the website will be
+            uninterrupted, secure, or free from errors or viruses.
           </p>
 
           <h2 className="sm:text-2xl text-lg  font-semibold mt-6 mb-4">
