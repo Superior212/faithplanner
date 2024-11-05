@@ -10,7 +10,7 @@ export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <nav className="p-4 sm:px-16 h-20 px-6 fixed w-full top-0 z-10 bg-white">
+    <nav className="p-4 sm:px-16 h-20  fixed w-full top-0 z-10 bg-white">
       <div className="container mx-auto flex justify-between items-center">
         <div className="">
           <MemoLogo className="sm:w-80 w-60 h-10 sm:h-10" />
@@ -48,7 +48,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden">
+        <div className="md:hidden bg-white w-full h-56">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
               href="#"
@@ -67,7 +67,7 @@ export default function Navbar() {
             </Link>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#CCFF00] text-black px-4 py-2 rounded-full font-semibold w-full mt-2">
+              className="bg-[#CCFF00] text-black px-4 py-3 rounded-full font-semibold w-full mt-2">
               Get Donation
             </button>
           </div>
