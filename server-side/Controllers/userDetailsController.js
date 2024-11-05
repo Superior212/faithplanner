@@ -8,17 +8,23 @@ const createUserDetails = async (req, res) => {
         const {
             name,
             email,
-            heardFrom,
-            church,
-            socialMedia,
-            other,
+            heardFrom
         } = req.body;
 
         // Validate required fields
-        if (!name || !email || !heardFrom) {
+        if (!name || !email || !heardFrom || !heardFrom.source || !heardFrom.details) {
             return res.status(400).json({
                 success: false,
-                message: "Name, email, how you heard about us, and product ID are required"
+                message: "Name, email, and how you heard about us (including source and details) are required"
+            });
+        }
+
+        // Validate heardFrom.source
+        const validSources = ['church', 'socialMedia', 'other'];
+        if (!validSources.includes(heardFrom.source)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid source for how you heard about us"
             });
         }
 
@@ -26,36 +32,8 @@ const createUserDetails = async (req, res) => {
         const userDetails = new UserDetails({
             name,
             email,
-            heardFrom,
-
+            heardFrom
         });
-
-        // Add conditional fields based on heardFrom value
-        if (heardFrom === 'church') {
-            if (!church) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Church details are required when 'Church' is selected"
-                });
-            }
-            userDetails.churchDetails = church;
-        } else if (heardFrom === 'socialMedia') {
-            if (!socialMedia) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Social media platform is required when 'Social media' is selected"
-                });
-            }
-            userDetails.socialMediaPlatform = socialMedia;
-        } else if (heardFrom === 'other') {
-            if (!other) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Other source details are required when 'Other' is selected"
-                });
-            }
-            userDetails.otherSource = other;
-        }
 
         await userDetails.save();
 

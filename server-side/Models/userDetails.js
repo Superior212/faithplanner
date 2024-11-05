@@ -14,9 +14,16 @@ const userDetailsSchema = new Schema({
         lowercase: true
     },
     heardFrom: {
-        type: String,
-        required: true,
-        enum: ['church', 'socialMedia', 'other']
+        source: {
+            type: String,
+            required: true,
+            enum: ['church', 'socialMedia', 'other']
+        },
+        details: {
+            type: String,
+            required: true,
+            trim: true
+        }
     },
     churchDetails: {
         type: String,

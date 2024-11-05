@@ -12,13 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
 interface Product {
@@ -28,7 +21,7 @@ interface Product {
   color: string;
 }
 
-function ProductDetailsModal({
+export default function ProductDetailsModal({
   isOpen,
   onClose,
   product,
@@ -40,20 +33,13 @@ function ProductDetailsModal({
   const initialFormData = {
     name: "",
     email: "",
-    heardFrom: "",
-    church: "",
-    socialMedia: "",
-    other: "",
+    heardFrom: {
+      source: "",
+      details: "",
+    },
   };
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    heardFrom: "",
-    church: "",
-    socialMedia: "",
-    other: "",
-  });
+  const [formData, setFormData] = useState(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const apiUrl = "https://faithplanner-server.vercel.app/api";
   const { toast } = useToast();
@@ -69,7 +55,7 @@ function ProductDetailsModal({
         description: "Your information has been submitted successfully.",
         duration: 5000,
       });
-      setFormData(initialFormData); // Clear the form
+      setFormData(initialFormData);
       onClose();
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -87,21 +73,27 @@ function ProductDetailsModal({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "name" || name === "email") {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        heardFrom: {
+          ...prev.heardFrom,
+          details: value,
+        },
+      }));
+    }
   };
 
   const handleRadioChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
-      heardFrom: value,
-      church: "",
-      socialMedia: "",
-      other: "",
+      heardFrom: {
+        source: value,
+        details: "",
+      },
     }));
-  };
-
-  const handleSelectChange = (name: string) => (value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -135,7 +127,7 @@ function ProductDetailsModal({
           <div>
             <Label>Where did you hear about faith planner?</Label>
             <RadioGroup
-              value={formData.heardFrom}
+              value={formData.heardFrom.source}
               onValueChange={handleRadioChange}
               className="mt-2">
               <div className="flex items-center space-x-2">
@@ -152,50 +144,26 @@ function ProductDetailsModal({
               </div>
             </RadioGroup>
           </div>
-          {formData.heardFrom === "church" && (
+          {formData.heardFrom.source && (
             <div>
-              <Label htmlFor="church">Select Church or Ministry</Label>
-              <Select
-                name="church"
-                value={formData.church}
-                onValueChange={handleSelectChange("church")}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a church or ministry" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="church1">Church 1</SelectItem>
-                  <SelectItem value="church2">Church 2</SelectItem>
-                  <SelectItem value="ministry1">Ministry 1</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-          {formData.heardFrom === "socialMedia" && (
-            <div>
-              <Label htmlFor="socialMedia">Select Social Media Platform</Label>
-              <Select
-                name="socialMedia"
-                value={formData.socialMedia}
-                onValueChange={handleSelectChange("socialMedia")}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a social media platform" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="tiktok">TikTok</SelectItem>
-                  <SelectItem value="instagram">Instagram</SelectItem>
-                  <SelectItem value="facebook">Facebook</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-          {formData.heardFrom === "other" && (
-            <div>
-              <Label htmlFor="otherSpecify">Please specify</Label>
+              <Label htmlFor="heardFromDetails">
+                {formData.heardFrom.source === "church" && "Church Name"}
+                {formData.heardFrom.source === "socialMedia" &&
+                  "Social Media Platform"}
+                {formData.heardFrom.source === "other" && "Please specify"}
+              </Label>
               <Input
-                id="otherSpecify"
-                name="other"
-                value={formData.other}
+                id="heardFromDetails"
+                name="heardFromDetails"
+                value={formData.heardFrom.details}
                 onChange={handleChange}
+                placeholder={`Enter ${
+                  formData.heardFrom.source === "church"
+                    ? "church name"
+                    : formData.heardFrom.source === "socialMedia"
+                    ? "social media platform"
+                    : "where you heard about us"
+                }`}
               />
             </div>
           )}
@@ -207,5 +175,3 @@ function ProductDetailsModal({
     </Dialog>
   );
 }
-
-export default ProductDetailsModal;
