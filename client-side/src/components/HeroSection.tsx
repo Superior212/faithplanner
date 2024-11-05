@@ -2,15 +2,26 @@
 import { useState } from "react";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
 import { products } from "@/lib/data";
+import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
 
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+
+  const handleShopNowClick = () => {
+    setIsTermsModalOpen(true);
+  };
+
+  const handleTermsAccept = () => {
+    setIsTermsModalOpen(false);
+    setIsModalOpen(true);
+  };
   return (
     <div className=" sm:min-h-[60vh] h-[40vh] flex items-center justify-center relative overflow-hidden">
       <div className="text-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-[45rem] ">
           <h1 className="text-[#1A1E23] text-3xl sm:text-4xl md:text-[4.5rem] font-bold sm:leading-tight mb-8">
-            New way to stay in sync with all events
+            Plan with Purpose, Grow in Faith
           </h1>
         </div>
 
@@ -19,7 +30,7 @@ export default function HeroSection() {
             Explore
           </button>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleShopNowClick}
             className="border-2 border-[#1A1E23] text-[#1A1E23] font-semibold py-2 px-8 rounded-full text-lg">
             Shop Now
           </button>
@@ -46,6 +57,12 @@ export default function HeroSection() {
           />
         </svg>
       </div> */}
+
+      <TermsAndConditionsModal
+        isOpen={isTermsModalOpen}
+        onAccept={handleTermsAccept}
+        onClose={() => setIsTermsModalOpen(false)}
+      />
 
       <ProductDetailsModal
         isOpen={isModalOpen}

@@ -10,16 +10,16 @@ export default function CoreFeatures() {
           </h2>
           <div className="space-y-8">
             <Feature
-              title="Interactive Calendar"
-              description="An embedded interactive calendar allowing you to view and subscribe to upcoming events and programs"
+              title="God’s Time"
+              description="Dedicate daily moments to spiritual growth through prayer, meditation, Bible reading, and fasting, nurturing a deeper relationship with God."
             />
             <Feature
-              title="Event Filters"
-              description="Filter events by categories like Services, Group, Outreach, Study, and more"
+              title="Growth Tracker"
+              description="Note areas of personal and spiritual development, allowing you to see progress in your faith journey over time."
             />
             <Feature
-              title="Event Details Pop-up"
-              description="you can view details about the event, including time, location, and a brief description"
+              title="To-Do List"
+              description="Organize daily tasks across categories like health, household, and personal goals, keeping life in balance with purpose and intention."
             />
           </div>
         </div>

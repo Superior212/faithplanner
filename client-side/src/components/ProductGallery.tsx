@@ -4,7 +4,10 @@ import { useState } from "react";
 import MemoArrow from "@/icons/Arrow";
 import Image from "next/image";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
+
 import { products } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
 
 interface Product {
   id: number;
@@ -14,7 +17,17 @@ interface Product {
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+
+  const handleShopNowClick = () => {
+    setIsTermsModalOpen(true);
+  };
+
+  const handleTermsAccept = () => {
+    setIsTermsModalOpen(false);
+    setIsProductModalOpen(true);
+  };
 
   return (
     <div className={`rounded-[3.2rem] overflow-hidden ${product.color}`}>
@@ -29,16 +42,21 @@ function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="p-6">
         <h3 className="text-lg font-semibold mb-4">{product.title}</h3>
-        <button
+        <Button
           className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full"
-          onClick={() => setIsModalOpen(true)}>
+          onClick={handleShopNowClick}>
           SHOP NOW
           <MemoArrow className="ml-2 h-8 w-8" />
-        </button>
+        </Button>
       </div>
+      <TermsAndConditionsModal
+        isOpen={isTermsModalOpen}
+        onAccept={handleTermsAccept}
+        onClose={() => setIsTermsModalOpen(false)}
+      />
       <ProductDetailsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isProductModalOpen}
+        onClose={() => setIsProductModalOpen(false)}
         product={product}
       />
     </div>
