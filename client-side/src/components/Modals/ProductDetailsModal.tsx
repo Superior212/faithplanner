@@ -100,7 +100,7 @@ export default function ProductDetailsModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Shop Now: {product.title}</DialogTitle>
+          <DialogTitle className="text-sm p-2">Shop Now: {product.title}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
