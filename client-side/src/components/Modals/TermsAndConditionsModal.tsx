@@ -57,9 +57,9 @@ export default function TermsAndConditionsModal({
           <p className="mt-4">
             4. Intellectual Property All content on this website, including
             text, graphics, logos, images, and software, is the property of
-            [Website Name] or its content suppliers and is protected by
+            faithplanner.org or its content suppliers and is protected by
             international copyright laws. Unauthorized reproduction or
-            distribution of the website’s content is prohibited.
+            distribution of the website&rsquo;s content is prohibited.
           </p>
           <p className="mt-4">
             5. Product Information We strive to ensure that the product
@@ -100,9 +100,9 @@ export default function TermsAndConditionsModal({
           </p>
           <p className="mt-4">
             11. Indemnification You agree to indemnify, defend, and hold
-            harmless [Website Name], its officers, directors, employees, agents,
-            and affiliates from any claims, liabilities, damages, costs, or
-            expenses arising from your use of the website.
+            harmless faithplanner.org, its officers, directors, employees,
+            agents, and affiliates from any claims, liabilities, damages, costs,
+            or expenses arising from your use of the website.
           </p>
           <p className="mt-4">
             12. Governing Law These terms shall be governed and construed in

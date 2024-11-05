@@ -86,8 +86,8 @@ export default function TermsAndConditions() {
                 All content on this website, including text, graphics, logos,
                 images, and software, is the property of faithplanner.org or its
                 content suppliers and is protected by international copyright
-                laws. Unauthorized reproduction or distribution of the website’s
-                content is prohibited.
+                laws. Unauthorized reproduction or distribution of the
+                website&rsquo;s content is prohibited.
               </p>
 
               <h2 className="sm:text-2xl text-lg  font-semibold mt-6 mb-4">
