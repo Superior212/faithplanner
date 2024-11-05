@@ -88,7 +88,7 @@ export default function LoginPage() {
         localStorage.removeItem("rememberedEmail");
       }
 
-      login(token, user);
+      login(token,);
 
       toast({
         title: "Login Successful",
