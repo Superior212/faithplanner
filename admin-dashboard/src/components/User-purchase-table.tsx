@@ -23,7 +23,7 @@ interface UserPurchase {
   name: string;
   email: string;
   phone: string;
-  heardFrom: string;
+  heardFrom: string | { source: string; details: string };
 }
 
 const apiUrl = "https://faithplanner-server.vercel.app/api/details";
@@ -33,7 +33,7 @@ const fetchUserPurchases = async (): Promise<UserPurchase[]> => {
   return response.data.data;
 };
 
-function DonationsTableContent() {
+function UsersTableContent() {
   const { data, isLoading, isError } = useQuery<UserPurchase[]>({
     queryKey: ["purchase"],
     queryFn: fetchUserPurchases,
@@ -99,14 +99,20 @@ function DonationsTableContent() {
                         {purchase.phone}
                       </div>
                       <div className="lg:hidden text-sm text-muted-foreground">
-                        {purchase.heardFrom}
+                        {/* Add condition if 'heardFrom' is an object */}
+                        {typeof purchase.heardFrom === "string"
+                          ? purchase.heardFrom
+                          : purchase.heardFrom?.source}
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       {purchase.email}
                     </TableCell>
                     <TableCell className="hidden lg:table-cell">
-                      {purchase.heardFrom}
+                      {/* Add condition if 'heardFrom' is an object */}
+                      {typeof purchase.heardFrom === "string"
+                        ? purchase.heardFrom
+                        : purchase.heardFrom?.details}
                     </TableCell>
                   </TableRow>
                 ))
@@ -128,7 +134,7 @@ function DonationsTableContent() {
 export default function UserPurchaseTable() {
   return (
     <QueryClientProvider client={new QueryClient()}>
-      <DonationsTableContent />
+      <UsersTableContent />
     </QueryClientProvider>
   );
 }

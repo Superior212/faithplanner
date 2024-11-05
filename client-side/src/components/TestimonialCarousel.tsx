@@ -7,8 +7,8 @@ const testimonials = [
   {
     id: 1,
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum diam orci pretium a pharetra, feugiat cursus. Dictumst risus, sem egestas odio cras adipiscing vulputate. Nisi, risus in suscipit non. Non commodo volutpat, pharetra, vel.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum diam orci pretium a pharetra, feugiat cursus. Dictumst risus, sem egestas odio.",
-    name: "Rampyal Rigna",
+      "Finally, someone has created the perfect blend of faith and organization! This journal of faith planner is exactly what I’ve been looking for—combining a daily planner with a spiritual journal in one beautifully designed space. I love how it allows me to keep track of my goals, to-do lists, and prayer reflections all in one place. It truly helps me stay focused, grounded in faith, and is intentional about both my spiritual and daily journey. Highly recommend it to anyone looking to enrich their faith while staying organized!",
+    name: "Shallie B",
     image: "/user1.svg",
   },
   {
@@ -49,7 +49,7 @@ export default function TestimonialCarousel() {
   }, []);
 
   useEffect(() => {
-    const intervalId = setInterval(rotateTestimonials, 5000); // Rotate every 5 seconds
+    const intervalId = setInterval(rotateTestimonials, 9000); // Rotate every 5 seconds
     return () => clearInterval(intervalId);
   }, [rotateTestimonials]);
 
