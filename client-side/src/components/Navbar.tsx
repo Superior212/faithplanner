@@ -5,9 +5,19 @@ import MemoLogo from "@/icons/Logo";
 import Link from "next/link";
 import DonationModal from "./Modals/DonationModal";
 
-export default function Navbar() {
+interface NavbarProps {
+  howToUseRef: React.RefObject<HTMLDivElement>;
+  homeRef: React.RefObject<HTMLDivElement>;
+}
+
+export default function Navbar({ howToUseRef, homeRef }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleScroll = (ref: React.RefObject<HTMLDivElement>) => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+    setIsMenuOpen(false); // Close menu on mobile
+  };
 
   return (
     <nav className="p-4 sm:px-16 h-20  fixed w-full top-0 z-10 bg-white">
@@ -18,13 +28,19 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link href="#" className="text-[#1A1E23] hover:text-[#798da6]">
+          <Link
+            onClick={() => handleScroll(homeRef)}
+            href="/"
+            className="text-[#1A1E23] hover:text-[#798da6]">
             Home
           </Link>
-          <Link href="#" className="text-[#1A1E23] hover:text-[#1A1E23]">
+          <Link
+            href="#"
+            onClick={() => handleScroll(howToUseRef)}
+            className="text-[#1A1E23] hover:text-[#1A1E23]">
             How to Use
           </Link>
-          <Link href="#" className="text-[#1A1E23] hover:text-[#1A1E23]">
+          <Link href="/contact" className="text-[#1A1E23] hover:text-[#1A1E23]">
             Contact Us
           </Link>
           <button
@@ -51,17 +67,18 @@ export default function Navbar() {
         <div className="md:hidden bg-white w-full h-56">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
-              href="#"
+              href="/"
               className="text-[#1A1E23] hover:text-[#1A1E23] block px-3 py-2">
               Home
             </Link>
             <Link
+              onClick={() => handleScroll(howToUseRef)}
               href="#"
               className="text-[#1A1E23] hover:text-[#1A1E23] block px-3 py-2">
               How to Use
             </Link>
             <Link
-              href="#"
+              href="/contact"
               className="text-[#1A1E23] hover:text-[#1A1E23] block px-3 py-2">
               Contact Us
             </Link>
