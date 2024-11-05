@@ -9,7 +9,7 @@ export default function DonationSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section className="my-10 bg-white py-16 lg:px-10">
+    <section className="hsection my-10 bg-white py-16 lg:px-10">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between">
         <div className="lg:w-1/2 mb-8 lg:mb-0">
           <h2 className="text-base md:text-4xl font-bold leading-tight mb-4">
