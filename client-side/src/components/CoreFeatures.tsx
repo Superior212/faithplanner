@@ -26,7 +26,7 @@ export default function CoreFeatures() {
         <div className="lg:w-1/2 flex justify-center">
           <div className="w-full container max-w-md aspect-square rounded-3xl relative overflow-hidden">
             <Image
-              src="/shape.svg"
+              src="/hero.jpg"
               alt="Shape"
               fill
               style={{ objectFit: "cover", objectPosition: "center" }}
