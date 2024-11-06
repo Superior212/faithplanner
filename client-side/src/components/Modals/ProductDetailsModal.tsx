@@ -57,6 +57,10 @@ export default function ProductDetailsModal({
       });
       setFormData(initialFormData);
       onClose();
+
+      // Redirect to the external purchase link
+      window.location.href =
+        "https://www.lulu.com/shop/a-remnant-company/inspiring-faith-planner-and-journal/paperback/product-jez8d4v.html";
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
@@ -100,7 +104,9 @@ export default function ProductDetailsModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-sm p-2">Shop Now: {product.title}</DialogTitle>
+          <DialogTitle className="text-sm p-2">
+            Shop Now: {product.title}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
