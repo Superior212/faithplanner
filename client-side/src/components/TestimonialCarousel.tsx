@@ -11,34 +11,34 @@ const testimonials = [
     name: "Shallie B",
     image: "/user1.svg",
   },
-  {
-    id: 2,
-    content:
-      "Etiam sit amet nisl purus in mollis nunc sed id. Massa tempor nec feugiat nisl pretium fusce id velit. Accumsan tortor posuere ac ut consequat semper viverra nam libero. Enim nulla aliquet porttitor lacus luctus accumsan tortor posuere. Tempus egestas sed sed risus pretium quam vulputate dignissim.",
-    name: "Alex Johnson",
-    image: "/user2.svg",
-  },
-  {
-    id: 3,
-    content:
-      "Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Sed risus ultricies tristique nulla aliquet enim tortor at auctor. Viverra adipiscing at in tellus integer feugiat scelerisque varius morbi. Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi tristique.",
-    name: "Emma Davis",
-    image: "/user3.svg",
-  },
-  {
-    id: 4,
-    content:
-      "Egestas dui id ornare arcu odio ut sem nulla. Nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Molestie a iaculis at erat pellentesque adipiscing commodo elit at. Amet consectetur adipiscing elit pellentesque habitant morbi tristique senectus et netus.",
-    name: "Michael Lee",
-    image: "/user4.svg",
-  },
-  {
-    id: 5,
-    content:
-      "Feugiat in fermentum posuere urna nec tincidunt praesent semper. Ultrices eros in cursus turpis massa tincidunt dui ut ornare. Eu sem integer vitae justo eget magna fermentum iaculis. Tristique senectus et netus et malesuada fames ac turpis egestas.",
-    name: "Sophia Chen",
-    image: "/user5.svg",
-  },
+  // {
+  //   id: 2,
+  //   content:
+  //     "Etiam sit amet nisl purus in mollis nunc sed id. Massa tempor nec feugiat nisl pretium fusce id velit. Accumsan tortor posuere ac ut consequat semper viverra nam libero. Enim nulla aliquet porttitor lacus luctus accumsan tortor posuere. Tempus egestas sed sed risus pretium quam vulputate dignissim.",
+  //   name: "Alex Johnson",
+  //   image: "/user2.svg",
+  // },
+  // {
+  //   id: 3,
+  //   content:
+  //     "Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Sed risus ultricies tristique nulla aliquet enim tortor at auctor. Viverra adipiscing at in tellus integer feugiat scelerisque varius morbi. Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi tristique.",
+  //   name: "Emma Davis",
+  //   image: "/user3.svg",
+  // },
+  // {
+  //   id: 4,
+  //   content:
+  //     "Egestas dui id ornare arcu odio ut sem nulla. Nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Molestie a iaculis at erat pellentesque adipiscing commodo elit at. Amet consectetur adipiscing elit pellentesque habitant morbi tristique senectus et netus.",
+  //   name: "Michael Lee",
+  //   image: "/user4.svg",
+  // },
+  // {
+  //   id: 5,
+  //   content:
+  //     "Feugiat in fermentum posuere urna nec tincidunt praesent semper. Ultrices eros in cursus turpis massa tincidunt dui ut ornare. Eu sem integer vitae justo eget magna fermentum iaculis. Tristique senectus et netus et malesuada fames ac turpis egestas.",
+  //   name: "Sophia Chen",
+  //   image: "/user5.svg",
+  // },
 ];
 
 export default function TestimonialCarousel() {

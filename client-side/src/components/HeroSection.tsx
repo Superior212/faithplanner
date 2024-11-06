@@ -26,12 +26,12 @@ export default function HeroSection() {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-8 rounded-full text-lg">
+          {/* <button className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-8 rounded-full text-lg">
             Explore
-          </button>
+          </button> */}
           <button
             onClick={handleShopNowClick}
-            className="border-2 border-[#1A1E23] text-[#1A1E23] font-semibold py-2 px-8 rounded-full text-lg">
+            className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-12 rounded-full text-lg">
             Shop Now
           </button>
         </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -33,30 +33,30 @@ export default function Footer() {
             Disclaimer
           </Link>
         </nav>
-        <div className="flex space-x-4">
+        <div className="flex space-x-6">
           <Link
-            href="#"
+            href="https://www.facebook.com/share/1WmkosvvPh/?mibextid=LQQJ4d"
             aria-label="Facebook"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hover:text-gray-700 transition-colors duration-200">
-            <Facebook size={20} />
+            <Image src="/Facebook.svg" alt="Tiktok" width={20} height={20} />
           </Link>
           <Link
             href="#"
-            aria-label="Twitter"
+            aria-label="Tiktok"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hover:text-gray-700 transition-colors duration-200">
-            <Twitter size={20} />
+            <Image src="/Tiktok.svg" alt="Tiktok" width={20} height={20} />
           </Link>
           <Link
-            href="#"
+            href="https://www.instagram.com/faithplanner_?igsh=N2VjaWx0bDhyb21u&utm_source=qr"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Instagram"
             className="hover:text-gray-700 transition-colors duration-200">
-            <Instagram size={20} />
-          </Link>
-          <Link
-            href="#"
-            aria-label="LinkedIn"
-            className="hover:text-gray-700 transition-colors duration-200">
-            <Linkedin size={20} />
+            <Image src="/Instagram.svg" alt="Tiktok" width={20} height={20} />
           </Link>
         </div>
       </div>
