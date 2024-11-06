@@ -17,4 +17,10 @@ export const products = [
     image: "/product3.png",
     color: "bg-[#D6D8DB]",
   },
+  {
+    id: 4,
+    title: "INSPIRING FAITH PLANNER AND JOURNAL (SEPTEMBER-DECEMBER 2025)",
+    image: "/product4.png",
+    color: "bg-[#BFF01A]",
+  },
 ];

@@ -30,7 +30,8 @@ function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className={`rounded-[3.2rem] overflow-hidden ${product.color}`}>
+    <div
+      className={`rounded-[3.2rem] overflow-hidden ${product.color} flex flex-col h-full`}>
       <div className="aspect-w-16 aspect-h-9">
         <Image
           src={product.image}
@@ -40,12 +41,12 @@ function ProductCard({ product }: { product: Product }) {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-sm text-center font-semibold mb-4">
           {product.title}
         </h3>
         <Button
-          className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full"
+          className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full mt-auto"
           onClick={handleShopNowClick}>
           SHOP NOW
           <MemoArrow className="ml-2 h-8 w-8" />
@@ -75,9 +76,11 @@ export default function ProductGallery() {
         <p className="sm:text-xl text-center text-gray-600 mb-12">
           From discovering new tracks to supporting your favorite artists.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <div className="h-full flex" key={product.id}>
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
       </div>
