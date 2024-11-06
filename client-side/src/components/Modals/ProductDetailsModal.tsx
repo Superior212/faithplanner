@@ -21,6 +21,15 @@ interface Product {
   color: string;
 }
 
+interface FormData {
+  name: string;
+  email: string;
+  heardFrom: {
+    source: string;
+    details: string;
+  };
+}
+
 export default function ProductDetailsModal({
   isOpen,
   onClose,
@@ -30,7 +39,7 @@ export default function ProductDetailsModal({
   onClose: () => void;
   product: Product;
 }) {
-  const initialFormData = {
+  const initialFormData: FormData = {
     name: "",
     email: "",
     heardFrom: {
@@ -39,7 +48,7 @@ export default function ProductDetailsModal({
     },
   };
 
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const apiUrl = "https://faithplanner-server.vercel.app/api";
   const { toast } = useToast();
@@ -100,6 +109,16 @@ export default function ProductDetailsModal({
     }));
   };
 
+  const handleSocialMediaChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      heardFrom: {
+        ...prev.heardFrom,
+        details: value,
+      },
+    }));
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -150,26 +169,49 @@ export default function ProductDetailsModal({
               </div>
             </RadioGroup>
           </div>
-          {formData.heardFrom.source && (
+          {formData.heardFrom.source === "church" && (
             <div>
-              <Label htmlFor="heardFromDetails">
-                {formData.heardFrom.source === "church" && "Church Name"}
-                {formData.heardFrom.source === "socialMedia" &&
-                  "Social Media Platform"}
-                {formData.heardFrom.source === "other" && "Please specify"}
-              </Label>
+              <Label htmlFor="churchName">Church Name</Label>
               <Input
-                id="heardFromDetails"
+                id="churchName"
                 name="heardFromDetails"
                 value={formData.heardFrom.details}
                 onChange={handleChange}
-                placeholder={`Enter ${
-                  formData.heardFrom.source === "church"
-                    ? "church name"
-                    : formData.heardFrom.source === "socialMedia"
-                    ? "social media platform"
-                    : "where you heard about us"
-                }`}
+                placeholder="Enter church name"
+              />
+            </div>
+          )}
+          {formData.heardFrom.source === "socialMedia" && (
+            <div>
+              <Label>Social Media Platform</Label>
+              <RadioGroup
+                value={formData.heardFrom.details}
+                onValueChange={handleSocialMediaChange}
+                className="mt-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="Facebook" id="facebook" />
+                  <Label htmlFor="facebook">Facebook</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="Instagram" id="instagram" />
+                  <Label htmlFor="instagram">Instagram</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="TikTok" id="tiktok" />
+                  <Label htmlFor="tiktok">TikTok</Label>
+                </div>
+              </RadioGroup>
+            </div>
+          )}
+          {formData.heardFrom.source === "other" && (
+            <div>
+              <Label htmlFor="otherSource">Please specify</Label>
+              <Input
+                id="otherSource"
+                name="heardFromDetails"
+                value={formData.heardFrom.details}
+                onChange={handleChange}
+                placeholder="Enter where you heard about us"
               />
             </div>
           )}

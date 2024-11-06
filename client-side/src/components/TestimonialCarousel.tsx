@@ -11,13 +11,13 @@ const testimonials = [
     name: "Shallie B",
     image: "/user1.svg",
   },
-  // {
-  //   id: 2,
-  //   content:
-  //     "Etiam sit amet nisl purus in mollis nunc sed id. Massa tempor nec feugiat nisl pretium fusce id velit. Accumsan tortor posuere ac ut consequat semper viverra nam libero. Enim nulla aliquet porttitor lacus luctus accumsan tortor posuere. Tempus egestas sed sed risus pretium quam vulputate dignissim.",
-  //   name: "Alex Johnson",
-  //   image: "/user2.svg",
-  // },
+  {
+    id: 2,
+    content:
+      "I absolutely adore this faith planner and journal! It’s hands down the best I’ve come across. The weekly Bible scriptures are a huge help in keeping me on track with God’s word. And the prayer request feature is a game-changer! Being able to write down my requests and dates they were answered helps keep my faith alive. Highly recommend it!",
+    name: "Mayala G",
+    //   image: "/user2.svg",
+  },
   // {
   //   id: 3,
   //   content:
