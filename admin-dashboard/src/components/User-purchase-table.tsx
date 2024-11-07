@@ -22,8 +22,17 @@ interface UserPurchase {
   id: string;
   name: string;
   email: string;
-  phone: string;
-  heardFrom: string | { source: string; details: string };
+  heardFrom: {
+    source: string;
+    details: string;
+  };
+  churchSelection?: "listed" | "not-listed";
+  addForDonations?: boolean;
+  churchDetails?: {
+    name: string;
+    address?: string;
+    phoneNumber?: string;
+  };
 }
 
 const apiUrl = "https://faithplanner-server.vercel.app/api/details";
@@ -77,12 +86,18 @@ function UsersTableContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/3">Name</TableHead>
-                <TableHead className="w-1/3 hidden sm:table-cell">
+                <TableHead className="w-1/5">Name</TableHead>
+                <TableHead className="w-1/5 hidden sm:table-cell">
                   Email
                 </TableHead>
-                <TableHead className="w-1/3 hidden lg:table-cell">
+                <TableHead className="w-1/5 hidden md:table-cell">
                   Heard From
+                </TableHead>
+                <TableHead className="w-1/5 hidden lg:table-cell">
+                  Church Details
+                </TableHead>
+                <TableHead className="w-1/5 hidden xl:table-cell">
+                  Donations
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -96,29 +111,50 @@ function UsersTableContent() {
                         {purchase.email}
                       </div>
                       <div className="md:hidden text-sm text-muted-foreground">
-                        {purchase.phone}
-                      </div>
-                      <div className="lg:hidden text-sm text-muted-foreground">
-                        {/* Add condition if 'heardFrom' is an object */}
-                        {typeof purchase.heardFrom === "string"
-                          ? purchase.heardFrom
-                          : purchase.heardFrom?.source}
+                        {purchase.heardFrom.source}:{" "}
+                        {purchase.heardFrom.details}
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       {purchase.email}
                     </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {purchase.heardFrom.source}: {purchase.heardFrom.details}
+                    </TableCell>
                     <TableCell className="hidden lg:table-cell">
-                      {/* Add condition if 'heardFrom' is an object */}
-                      {typeof purchase.heardFrom === "string"
-                        ? purchase.heardFrom
-                        : purchase.heardFrom?.details}
+                      {purchase.churchDetails ? (
+                        <>
+                          {purchase.churchDetails.name}
+                          {purchase.churchSelection && (
+                            <span className="block text-sm text-muted-foreground">
+                              ({purchase.churchSelection})
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        "N/A"
+                      )}
+                    </TableCell>
+                    <TableCell className="hidden xl:table-cell">
+                      {purchase.addForDonations ? (
+                        <>
+                          Yes
+                          {purchase.churchDetails && (
+                            <span className="block text-sm text-muted-foreground">
+                              {purchase.churchDetails.address},{" "}
+                              {purchase.churchDetails.phoneNumber}
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        "No"
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center">
+                  <TableCell colSpan={5} className="text-center">
                     No user purchases found.
                   </TableCell>
                 </TableRow>

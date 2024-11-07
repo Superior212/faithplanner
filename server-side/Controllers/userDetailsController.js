@@ -8,7 +8,10 @@ const createUserDetails = async (req, res) => {
         const {
             name,
             email,
-            heardFrom
+            heardFrom,
+            churchSelection,
+            addForDonations,
+            churchDetails
         } = req.body;
 
         // Validate required fields
@@ -28,11 +31,38 @@ const createUserDetails = async (req, res) => {
             });
         }
 
+        // Validate church-specific fields
+        if (heardFrom.source === 'church') {
+            if (!churchSelection || !['listed', 'not-listed'].includes(churchSelection)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Valid church selection is required when source is church"
+                });
+            }
+            if (!churchDetails || !churchDetails.name) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Church name is required when source is church"
+                });
+            }
+            if (addForDonations) {
+                if (!churchDetails.address || !churchDetails.phoneNumber) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Church address and phone number are required when adding for donations"
+                    });
+                }
+            }
+        }
+
         // Create new user details
         const userDetails = new UserDetails({
             name,
             email,
-            heardFrom
+            heardFrom,
+            churchSelection: heardFrom.source === 'church' ? churchSelection : undefined,
+            addForDonations: heardFrom.source === 'church' ? addForDonations : undefined,
+            churchDetails: heardFrom.source === 'church' ? churchDetails : undefined
         });
 
         await userDetails.save();

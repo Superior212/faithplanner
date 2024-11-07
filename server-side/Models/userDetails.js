@@ -25,20 +25,31 @@ const userDetailsSchema = new Schema({
             trim: true
         }
     },
+    churchSelection: {
+        type: String,
+        enum: ['listed', 'not-listed'],
+        required: function () { return this.heardFrom.source === 'church'; }
+    },
+    addForDonations: {
+        type: Boolean,
+        default: false
+    },
     churchDetails: {
-        type: String,
-        required: function () { return this.heardFrom === 'church'; },
-        trim: true
-    },
-    socialMediaPlatform: {
-        type: String,
-        required: function () { return this.heardFrom === 'socialMedia'; },
-        enum: ['tiktok', 'instagram', 'facebook']
-    },
-    otherSource: {
-        type: String,
-        required: function () { return this.heardFrom === 'other'; },
-        trim: true
+        name: {
+            type: String,
+            required: function () { return this.heardFrom.source === 'church'; },
+            trim: true
+        },
+        address: {
+            type: String,
+            required: function () { return this.addForDonations; },
+            trim: true
+        },
+        phoneNumber: {
+            type: String,
+            required: function () { return this.addForDonations; },
+            trim: true
+        }
     },
     submittedAt: {
         type: Date,
@@ -48,5 +59,5 @@ const userDetailsSchema = new Schema({
     timestamps: true
 });
 
-
 module.exports = mongoose.model('UserDetails', userDetailsSchema);
+
