@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Button } from "./ui/button";
 import DonationModal from "./Modals/DonationModal";
-import Image from "next/image";
+
 
 export default function DonationSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
