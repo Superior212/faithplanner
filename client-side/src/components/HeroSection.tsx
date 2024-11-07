@@ -3,6 +3,7 @@ import { useState } from "react";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
 import { products } from "@/lib/data";
 import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
+import FaithPlanner from "./Faith-planner";
 
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,9 +21,10 @@ export default function HeroSection() {
     <div className=" sm:min-h-[60vh] h-[40vh] flex items-center justify-center relative overflow-hidden">
       <div className="text-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-[45rem] ">
-          <h1 className="text-[#1A1E23] text-3xl sm:text-4xl md:text-[4.5rem] font-bold sm:leading-tight mb-8">
+          {/* <h1 className="text-[#1A1E23] text-3xl sm:text-4xl md:text-[4.5rem] font-bold sm:leading-tight mb-8">
             Plan with Purpose, Grow in Faith
-          </h1>
+          </h1> */}
+          <FaithPlanner />
         </div>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">

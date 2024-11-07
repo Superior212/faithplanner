@@ -4,7 +4,6 @@ import { useState } from "react";
 import MemoArrow from "@/icons/Arrow";
 import Image from "next/image";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
-
 import { products } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
@@ -16,7 +15,13 @@ interface Product {
   color: string;
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  product,
+  isBundleCard = false,
+}: {
+  product: Product;
+  isBundleCard?: boolean;
+}) {
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
@@ -48,7 +53,7 @@ function ProductCard({ product }: { product: Product }) {
         <Button
           className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full mt-auto"
           onClick={handleShopNowClick}>
-          SHOP NOW
+          {isBundleCard ? "BUY ALL" : "SHOP NOW"}
           <MemoArrow className="ml-2 h-8 w-8" />
         </Button>
       </div>
@@ -67,6 +72,13 @@ function ProductCard({ product }: { product: Product }) {
 }
 
 export default function ProductGallery() {
+  const bundleProduct: Product = {
+    id: 4,
+    title: "Buy All Planners",
+    image: "/allPlanner.png",
+    color: "bg-gradient-to-r from-purple-100 to-pink-100",
+  };
+
   return (
     <section className="hsection sm:my-32 my-10 py-16 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -82,6 +94,11 @@ export default function ProductGallery() {
               <ProductCard product={product} />
             </div>
           ))}
+        </div>
+        <div className="mt-12 flex justify-center">
+          <div className="w-full md:w-1/2 lg:w-1/4">
+            <ProductCard product={bundleProduct} isBundleCard={true} />
+          </div>
         </div>
       </div>
     </section>
