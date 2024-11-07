@@ -1,9 +1,6 @@
 import {
-
   CardContent,
-
   CardHeader,
-
 } from "@/components/ui/card";
 
 export default function FaithPlanner() {
