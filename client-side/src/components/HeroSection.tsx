@@ -3,7 +3,6 @@ import { useState } from "react";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
 import { products } from "@/lib/data";
 import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
-import FaithPlanner from "./Faith-planner";
 
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);

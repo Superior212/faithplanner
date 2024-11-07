@@ -266,7 +266,7 @@ export default function ProductDetailsModal({
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="not-listed" id="church-not-listed" />
                     <Label htmlFor="church-not-listed">
-                      No, I don't see my church
+                      No, I don&quot;t see my church
                     </Label>
                   </div>
                 </RadioGroup>
