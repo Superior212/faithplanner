@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
 import { products } from "@/lib/data";
@@ -16,63 +17,36 @@ export default function HeroSection() {
     setIsTermsModalOpen(false);
     setIsModalOpen(true);
   };
+
   return (
-    <div className=" sm:min-h-[60vh] h-[40vh] flex items-center justify-center relative overflow-hidden">
-      <div className="text-center mb-4 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl my-20 mb-6 mx-auto">
-          <div>
-            <h1 className="text-[#1A1E23] text-3xl sm:text-4xl md:text-[3rem] font-bold sm:leading-tight ">
-              What is the Faith Planner?
-            </h1>
-          </div>
-          <div className="space-y-4">
-            <p className="my-4">
+    <div className="min-h-[42vh] sm:min-h-[70vh] md:min-h-[80vh] flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8">
+      <div className="text-center w-full max-w-4xl mx-auto">
+        <div className="my-4 sm:my-12 md:my-16">
+          <h1 className="text-[#1A1E23] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
+            What is the Faith Planner?
+          </h1>
+          <div className="space-y-4 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg">
               The Faith Planner is a schedule planner and journal tool that
               gives you features to assist with a faith-based life that has many
               different obligations. The Faith planner is based on a fundamental
               question. How do I keep God involved in my life with so many
               things that consume my time?
             </p>
-            <div>
-              <p className="font-[700] sm:text-xl">
-                Look no further for this answer!
-              </p>
-            </div>
+            <p className="font-bold text-base sm:text-lg md:text-xl">
+              Look no further for this answer!
+            </p>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row mb-16 justify-center gap-4">
-          {/* <button className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-8 rounded-full text-lg">
-            Explore
-          </button> */}
+        <div className="mt-8 sm:mt-12 mb-8 sm:mb-16">
           <button
             onClick={handleShopNowClick}
-            className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-12 rounded-full text-lg">
+            className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-8 sm:px-12 rounded-full text-base sm:text-lg transition-all duration-300 hover:bg-[#a8d617] hover:shadow-lg">
             Shop Now
           </button>
         </div>
       </div>
-      {/* <div className="absolute bottom-0 right-0 w-full h-full">
-        <svg
-          viewBox="0 0 200 200"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
-          preserveAspectRatio="xMinYMin slice">
-          <path
-            fill="none"
-            stroke="#c5ff00"
-            strokeWidth="0.5"
-            d="M100,0 A100,100 0 0,1 200,100"
-          />
-          <path
-            fill="none"
-            stroke="#c5ff00"
-            strokeWidth="0.5"
-            d="M150,0 A150,150 0 0,1 300,150"
-            transform="translate(-100, -50)"
-          />
-        </svg>
-      </div> */}
 
       <TermsAndConditionsModal
         isOpen={isTermsModalOpen}
