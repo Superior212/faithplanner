@@ -21,7 +21,7 @@ export default function AboutAuthor() {
                 <div className="mx-auto md:mx-0">
                   <div className="relative w-[280px] h-[340px] rounded-lg overflow-hidden shadow-md">
                     <Image
-                      src="/authour.png"
+                      src="/authour.jpeg"
                       alt="Joel Bowden - Author of The Faith Planner Journal"
                       fill
                       className="object-cover"

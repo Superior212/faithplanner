@@ -35,27 +35,35 @@ function ProductCard({
   };
 
   return (
-    <div
-      className={`rounded-[3.2rem] overflow-hidden ${product.color} flex flex-col h-full`}>
-      <div className="aspect-w-16 aspect-h-9">
-        <Image
-          src={product.image}
-          alt={product.title}
-          height={100}
-          width={100}
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-sm text-center font-semibold mb-4">
-          {product.title}
-        </h3>
-        <Button
-          className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full mt-auto"
-          onClick={handleShopNowClick}>
-          {isBundleCard ? "BUY ALL" : "SHOP NOW"}
-          <MemoArrow className="ml-2 h-8 w-8" />
-        </Button>
+    <div className="group perspective">
+      <div
+        className={`
+      rounded-[3.2rem] overflow-hidden ${product.color} flex flex-col h-full
+      shadow-xl transition-all duration-300 ease-in-out
+      group-hover:shadow-2xl group-hover:-translate-y-2 group-hover:rotate-y-10
+      transform-style-preserve-3d
+    `}>
+        <div className="relative pt-[100%] overflow-hidden rounded-t-[3.2rem]">
+          <Image
+            src={product.image}
+            alt={product.title}
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        </div>
+        <div className="p-6 flex flex-col flex-grow bg-white">
+          <h3 className="text-sm text-center font-semibold mb-4">
+            {product.title}
+          </h3>
+          <Button
+            className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full mt-auto
+                     transition-all duration-300 ease-in-out hover:bg-[#333] hover:scale-105"
+            onClick={handleShopNowClick}>
+            {isBundleCard ? "BUY ALL" : "SHOP NOW"}
+            <MemoArrow className="ml-2 h-8 w-8" />
+          </Button>
+        </div>
       </div>
       <TermsAndConditionsModal
         isOpen={isTermsModalOpen}
