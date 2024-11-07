@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,6 +89,7 @@ export default function ProductDetailsModal({
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const apiUrl = "https://faithplanner-server.vercel.app/api";
   const { toast } = useToast();
 
@@ -103,10 +105,12 @@ export default function ProductDetailsModal({
         duration: 5000,
       });
       setFormData(initialFormData);
-      onClose();
 
-      window.location.href =
-        "https://www.lulu.com/shop/a-remnant-company/inspiring-faith-planner-and-journal/paperback/product-jez8d4v.html";
+      if (formData.heardFrom.source === "church" && formData.addForDonations) {
+        setShowConfirmation(true);
+      } else {
+        redirectToPurchase();
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
@@ -119,6 +123,11 @@ export default function ProductDetailsModal({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const redirectToPurchase = () => {
+    window.location.href =
+      "https://www.lulu.com/shop/a-remnant-company/inspiring-faith-planner-and-journal/paperback/product-jez8d4v.html";
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,183 +213,214 @@ export default function ProductDetailsModal({
           "sm:max-w-[425px] max-h-[80vh] overflow-y-auto",
           scrollableContentClass
         )}>
-        <DialogHeader>
-          <DialogTitle className="text-sm p-2">
-            Shop Now: {product.title}
-          </DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="email">Email address</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <Label>Where did you hear about faith planner?</Label>
-            <RadioGroup
-              value={formData.heardFrom.source}
-              onValueChange={handleRadioChange}
-              className="mt-2">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="church" id="church" />
-                <Label htmlFor="church">Church</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="socialMedia" id="socialMedia" />
-                <Label htmlFor="socialMedia">Social media</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="other" id="other" />
-                <Label htmlFor="other">Other</Label>
-              </div>
-            </RadioGroup>
-          </div>
-          {formData.heardFrom.source === "church" && (
-            <div className="space-y-4">
+        {!showConfirmation ? (
+          <>
+            <DialogHeader>
+              <DialogTitle className="text-sm p-2">
+                Shop Now: {product.title}
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label>Do you see your referring church or ministry?</Label>
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email address</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <Label>Where did you hear about faith planner?</Label>
                 <RadioGroup
-                  value={formData.churchSelection}
-                  onValueChange={handleChurchSelectionChange}
+                  value={formData.heardFrom.source}
+                  onValueChange={handleRadioChange}
                   className="mt-2">
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="listed" id="church-listed" />
-                    <Label htmlFor="church-listed">Yes, I see my church</Label>
+                    <RadioGroupItem value="church" id="church" />
+                    <Label htmlFor="church">Church</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="not-listed" id="church-not-listed" />
-                    <Label htmlFor="church-not-listed">
-                      No, I don&quot;t see my church
-                    </Label>
+                    <RadioGroupItem value="socialMedia" id="socialMedia" />
+                    <Label htmlFor="socialMedia">Social media</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="other" id="other" />
+                    <Label htmlFor="other">Other</Label>
                   </div>
                 </RadioGroup>
               </div>
-              {formData.churchSelection === "listed" ? (
-                <div>
-                  <Label htmlFor="churchSelect">Select Church</Label>
-                  <Select
-                    onValueChange={handleChurchChange}
-                    value={formData.heardFrom.details}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a church" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {churchesInUS.map((church) => (
-                        <SelectItem key={church.id} value={church.name}>
-                          {church.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+              {formData.heardFrom.source === "church" && (
+                <div className="space-y-4">
+                  <div>
+                    <Label>Do you see your referring church or ministry?</Label>
+                    <RadioGroup
+                      value={formData.churchSelection}
+                      onValueChange={handleChurchSelectionChange}
+                      className="mt-2">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="listed" id="church-listed" />
+                        <Label htmlFor="church-listed">
+                          Yes, I see my church
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="not-listed"
+                          id="church-not-listed"
+                        />
+                        <Label htmlFor="church-not-listed">
+                          No, I don&apos;t see my church
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                  {formData.churchSelection === "listed" ? (
+                    <div>
+                      <Label htmlFor="churchSelect">Select Church</Label>
+                      <Select
+                        onValueChange={handleChurchChange}
+                        value={formData.heardFrom.details}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a church" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {churchesInUS.map((church) => (
+                            <SelectItem key={church.id} value={church.name}>
+                              {church.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  ) : (
+                    <div>
+                      <Label htmlFor="otherChurch">
+                        Enter your church name
+                      </Label>
+                      <Input
+                        id="otherChurch"
+                        name="churchDetails.name"
+                        value={formData.churchDetails.name}
+                        onChange={handleChange}
+                        placeholder="Enter church name"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <Label>
+                      Would you like to add them to receive donations?
+                    </Label>
+                    <RadioGroup
+                      value={formData.addForDonations ? "yes" : "no"}
+                      onValueChange={handleDonationChange}
+                      className="mt-2">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="yes" id="donations-yes" />
+                        <Label htmlFor="donations-yes">Yes</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="no" id="donations-no" />
+                        <Label htmlFor="donations-no">No</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                  {formData.addForDonations && (
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="churchAddress">Church Address</Label>
+                        <Input
+                          id="churchAddress"
+                          name="churchDetails.address"
+                          value={formData.churchDetails.address}
+                          onChange={handleChange}
+                          placeholder="Enter church address"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="churchPhone">Church Phone Number</Label>
+                        <Input
+                          id="churchPhone"
+                          name="churchDetails.phoneNumber"
+                          value={formData.churchDetails.phoneNumber}
+                          onChange={handleChange}
+                          placeholder="Enter church phone number"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ) : (
+              )}
+              {formData.heardFrom.source === "socialMedia" && (
                 <div>
-                  <Label htmlFor="otherChurch">Enter your church name</Label>
+                  <Label>Social Media Platform</Label>
+                  <RadioGroup
+                    value={formData.heardFrom.details}
+                    onValueChange={handleSocialMediaChange}
+                    className="mt-2">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Facebook" id="facebook" />
+                      <Label htmlFor="facebook">Facebook</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Instagram" id="instagram" />
+                      <Label htmlFor="instagram">Instagram</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="TikTok" id="tiktok" />
+                      <Label htmlFor="tiktok">TikTok</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+              {formData.heardFrom.source === "other" && (
+                <div>
+                  <Label htmlFor="otherSource">Please specify</Label>
                   <Input
-                    id="otherChurch"
-                    name="churchDetails.name"
-                    value={formData.churchDetails.name}
+                    id="otherSource"
+                    name="heardFromDetails"
+                    value={formData.heardFrom.details}
                     onChange={handleChange}
-                    placeholder="Enter church name"
+                    placeholder="Enter where you heard about us"
                   />
                 </div>
               )}
-              <div>
-                <Label>Would you like to add them to receive donations?</Label>
-                <RadioGroup
-                  value={formData.addForDonations ? "yes" : "no"}
-                  onValueChange={handleDonationChange}
-                  className="mt-2">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="yes" id="donations-yes" />
-                    <Label htmlFor="donations-yes">Yes</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="no" id="donations-no" />
-                    <Label htmlFor="donations-no">No</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-              {formData.addForDonations && (
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="churchAddress">Church Address</Label>
-                    <Input
-                      id="churchAddress"
-                      name="churchDetails.address"
-                      value={formData.churchDetails.address}
-                      onChange={handleChange}
-                      placeholder="Enter church address"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="churchPhone">Church Phone Number</Label>
-                    <Input
-                      id="churchPhone"
-                      name="churchDetails.phoneNumber"
-                      value={formData.churchDetails.phoneNumber}
-                      onChange={handleChange}
-                      placeholder="Enter church phone number"
-                    />
-                  </div>
-                </div>
-              )}
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </Button>
+            </form>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Thank you for your submission</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <p>
+                We will contact them and discuss the process of registration but
+                don&apos;t worry you can continue to order and we will track
+                this purchase to apply a donation.
+              </p>
             </div>
-          )}
-          {formData.heardFrom.source === "socialMedia" && (
-            <div>
-              <Label>Social Media Platform</Label>
-              <RadioGroup
-                value={formData.heardFrom.details}
-                onValueChange={handleSocialMediaChange}
-                className="mt-2">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Facebook" id="facebook" />
-                  <Label htmlFor="facebook">Facebook</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Instagram" id="instagram" />
-                  <Label htmlFor="instagram">Instagram</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="TikTok" id="tiktok" />
-                  <Label htmlFor="tiktok">TikTok</Label>
-                </div>
-              </RadioGroup>
-            </div>
-          )}
-          {formData.heardFrom.source === "other" && (
-            <div>
-              <Label htmlFor="otherSource">Please specify</Label>
-              <Input
-                id="otherSource"
-                name="heardFromDetails"
-                value={formData.heardFrom.details}
-                onChange={handleChange}
-                placeholder="Enter where you heard about us"
-              />
-            </div>
-          )}
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </Button>
-        </form>
+            <DialogFooter>
+              <Button onClick={redirectToPurchase} className="w-full">
+                Continue to Purchase
+              </Button>
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
