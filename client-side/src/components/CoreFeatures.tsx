@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function CoreFeatures() {
   return (
-    <section className="hsection py-16  bg-white">
+    <section className="hsection py-16 my-6  bg-white">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between">
         <div className="lg:w-1/2 mb-12 lg:mb-0">
           <h2 className="text-4xl md:text-5xl font-bold mb-12">

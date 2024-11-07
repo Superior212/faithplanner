@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
-      <main className="mt-16 sm:mt-10">
+      <main className="mt-28 sm:mt-10">
         <div ref={homeRef}>
           <HeroSection />
         </div>

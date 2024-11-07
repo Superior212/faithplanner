@@ -19,15 +19,30 @@ export default function HeroSection() {
   };
   return (
     <div className=" sm:min-h-[60vh] h-[40vh] flex items-center justify-center relative overflow-hidden">
-      <div className="text-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[45rem] ">
-          {/* <h1 className="text-[#1A1E23] text-3xl sm:text-4xl md:text-[4.5rem] font-bold sm:leading-tight mb-8">
-            Plan with Purpose, Grow in Faith
-          </h1> */}
-          <FaithPlanner />
+      <div className="text-center mb-4 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl my-20 mb-6 mx-auto">
+          <div>
+            <h1 className="text-[#1A1E23] text-3xl sm:text-4xl md:text-[3rem] font-bold sm:leading-tight ">
+              What is the Faith Planner?
+            </h1>
+          </div>
+          <div className="space-y-4">
+            <p className="my-4">
+              The Faith Planner is a schedule planner and journal tool that
+              gives you features to assist with a faith-based life that has many
+              different obligations. The Faith planner is based on a fundamental
+              question. How do I keep God involved in my life with so many
+              things that consume my time?
+            </p>
+            <div>
+              <p className="font-[700] sm:text-xl">
+                Look no further for this answer!
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
+        <div className="flex flex-col sm:flex-row mb-16 justify-center gap-4">
           {/* <button className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-8 rounded-full text-lg">
             Explore
           </button> */}

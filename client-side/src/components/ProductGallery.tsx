@@ -76,7 +76,7 @@ export default function ProductGallery() {
     id: 4,
     title: "Buy All Planners",
     image: "/allPlanner.png",
-    color: "bg-gradient-to-r from-purple-100 to-pink-100",
+    color: "bg-gradient-to-r from-white to-white",
   };
 
   return (
