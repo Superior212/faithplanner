@@ -17,13 +17,14 @@ import { useToast } from "@/hooks/use-toast";
 export default function Review() {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     const apiUrl = "https://faithplanner-server.vercel.app/api";
 
     e.preventDefault();
-
+    setIsSubmitting(true);
     try {
       const response = await fetch(`${apiUrl}/reviews`, {
         method: "POST",
@@ -43,6 +44,7 @@ export default function Review() {
         });
         setRating(0);
         setReview("");
+        setIsSubmitting(false); // Reset the isSubmitting state
       } else {
         const error = await response.json();
         toast({
@@ -51,6 +53,7 @@ export default function Review() {
           variant: "destructive",
           duration: 5000,
         });
+        setIsSubmitting(false); // Reset the isSubmitting state
       }
     } catch (error) {
       console.error("Error submitting review:", error);
@@ -61,8 +64,10 @@ export default function Review() {
         variant: "destructive",
         duration: 5000,
       });
+      setIsSubmitting(false); // Reset the isSubmitting state
     }
   };
+
   return (
     <Card className="w-full max-w-xl mx-auto">
       <CardHeader>
@@ -95,8 +100,8 @@ export default function Review() {
           />
         </CardContent>
         <CardFooter>
-          <Button type="submit" className="w-full">
-            Submit Review
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit Review"}
           </Button>
         </CardFooter>
       </form>
