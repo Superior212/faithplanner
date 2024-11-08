@@ -35,7 +35,7 @@ export default function Review() {
         }
         const data = await response.json();
         setReviews(data);
-      } catch (err) {
+      } catch {
         setError("An error occurred while fetching reviews");
       } finally {
         setIsLoading(false);
