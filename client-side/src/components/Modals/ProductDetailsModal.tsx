@@ -196,7 +196,15 @@ export default function ProductDetailsModal({
     if (name === "name" || name === "email") {
       setFormData((prev) => ({ ...prev, [name]: value }));
     } else if (name.startsWith("churchDetails.")) {
-      const [_, field, subfield] = name.split(".") as [string, keyof FormData["churchDetails"], keyof FormData["churchDetails"]["address"] | keyof FormData["churchDetails"]["phoneNumber"]];
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, field, subfield] = name.split(".") as [
+        string,
+        keyof FormData["churchDetails"],
+        (
+          | keyof FormData["churchDetails"]["address"]
+          | keyof FormData["churchDetails"]["phoneNumber"]
+        )
+      ];
       setFormData((prev) => ({
         ...prev,
         churchDetails: {
@@ -390,7 +398,7 @@ export default function ProductDetailsModal({
                           id="church-not-listed"
                         />
                         <Label htmlFor="church-not-listed">
-                          No, I don't see my church
+                          No, I don&quot;t see my church
                         </Label>
                       </div>
                     </RadioGroup>
@@ -589,8 +597,8 @@ export default function ProductDetailsModal({
             <div className="py-4">
               <p>
                 We will contact them and discuss the process of registration but
-                don't worry you can continue to order and we will track this
-                purchase to apply a donation.
+                don&quot;t worry you can continue to order and we will track
+                this purchase to apply a donation.
               </p>
             </div>
             <DialogFooter>

@@ -30,8 +30,15 @@ interface UserPurchase {
   addForDonations?: boolean;
   churchDetails?: {
     name: string;
-    address?: string;
-    phoneNumber?: string;
+    address?: {
+      country: string;
+      state?: string;
+      postalCode: string;
+    };
+    phoneNumber?: {
+      type: string;
+      number: string;
+    };
   };
 }
 
@@ -139,12 +146,21 @@ function UsersTableContent() {
                       {purchase.addForDonations ? (
                         <>
                           Yes
-                          {purchase.churchDetails && (
-                            <span className="block text-sm text-muted-foreground">
-                              {purchase.churchDetails.address},{" "}
-                              {purchase.churchDetails.phoneNumber}
-                            </span>
-                          )}
+                          {purchase.churchDetails &&
+                            purchase.churchDetails.address && (
+                              <span className="block text-sm text-muted-foreground">
+                                {purchase.churchDetails.address.country},{" "}
+                                {purchase.churchDetails.address.state},{" "}
+                                {purchase.churchDetails.address.postalCode}
+                              </span>
+                            )}
+                          {purchase.churchDetails &&
+                            purchase.churchDetails.phoneNumber && (
+                              <span className="block text-sm text-muted-foreground">
+                                {purchase.churchDetails.phoneNumber.type}:{" "}
+                                {purchase.churchDetails.phoneNumber.number}
+                              </span>
+                            )}
                         </>
                       ) : (
                         "No"
