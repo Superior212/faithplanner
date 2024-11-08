@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const userRouter = require("./Routes/userRoutes");
 const userDetailsRoutes = require('./Routes/userDetailsRoutes');
 const donationRoutes = require('./Routes/donationRoutes');
+const reviewRoutes = require('./Routes/Reviews');
 
 dotenv.config();
 const port = process.env.PORT;
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/api", userRouter);
 app.use('/api', userDetailsRoutes);
 app.use('/api', donationRoutes);
+app.use('/api', reviewRoutes);
 
 
 app.get("/", (req, res) => {

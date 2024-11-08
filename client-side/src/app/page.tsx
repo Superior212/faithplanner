@@ -6,6 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import HowToUseSection from "@/components/HowToUseSection";
 import Navbar from "@/components/Navbar";
 import ProductGallery from "@/components/ProductGallery";
+import Review from "@/components/Review-form";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { useRef } from "react";
 
@@ -27,6 +28,7 @@ export default function Home() {
           <HowToUseSection />
         </div>
         <TestimonialCarousel />
+        <Review />
         <Footer />
       </main>
     </div>
