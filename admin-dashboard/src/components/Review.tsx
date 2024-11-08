@@ -25,11 +25,11 @@ export default function Review() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const apiUrl = "https://faithplanner-server.vercel.app/api/reviews";
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/reviews");
+        const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error("Failed to fetch reviews");
         }

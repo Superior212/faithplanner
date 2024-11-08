@@ -34,6 +34,20 @@ interface Product {
   color: string;
 }
 
+interface ICountry {
+  isoCode: string;
+  name: string;
+}
+
+interface IState {
+  isoCode: string;
+  name: string;
+}
+
+interface ICity {
+  name: string;
+}
+
 interface FormData {
   name: string;
   email: string;
@@ -107,9 +121,9 @@ export default function ProductDetailsModal({
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [countries, setCountries] = useState<any[]>([]);
-  const [states, setStates] = useState<any[]>([]);
-  const [cities, setCities] = useState<any[]>([]);
+  const [countries, setCountries] = useState<ICountry[]>([]);
+  const [states, setStates] = useState<IState[]>([]);
+  const [cities, setCities] = useState<ICity[]>([]);
   const apiUrl = "https://faithplanner-server.vercel.app/api";
   const { toast } = useToast();
 
@@ -217,6 +231,7 @@ export default function ProductDetailsModal({
     if (name === "name" || name === "email") {
       setFormData((prev) => ({ ...prev, [name]: value }));
     } else if (name.startsWith("churchDetails.")) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, field, subfield] = name.split(".") as [
         string,
         keyof FormData["churchDetails"],
@@ -418,7 +433,7 @@ export default function ProductDetailsModal({
                           id="church-not-listed"
                         />
                         <Label htmlFor="church-not-listed">
-                          No, I don't see my church
+                          No, I don&apos;t see my church
                         </Label>
                       </div>
                     </RadioGroup>
@@ -640,8 +655,8 @@ export default function ProductDetailsModal({
             <div className="py-4">
               <p>
                 We will contact them and discuss the process of registration but
-                don't worry you can continue to order and we will track this
-                purchase to apply a donation.
+                don&apos;t worry you can continue to order and we will track
+                this purchase to apply a donation.
               </p>
             </div>
             <DialogFooter>
