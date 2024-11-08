@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import MemoLogo from "@/icons/Logo";
@@ -8,9 +9,16 @@ import DonationModal from "./Modals/DonationModal";
 interface NavbarProps {
   howToUseRef: React.RefObject<HTMLDivElement>;
   homeRef: React.RefObject<HTMLDivElement>;
+  aboutAuthorRef: React.RefObject<HTMLDivElement>;
 }
 
-export default function Navbar({ howToUseRef, homeRef }: NavbarProps) {
+export default function Component(
+  { howToUseRef, homeRef, aboutAuthorRef }: NavbarProps = {
+    howToUseRef: { current: null },
+    homeRef: { current: null },
+    aboutAuthorRef: { current: null },
+  }
+) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -20,14 +28,14 @@ export default function Navbar({ howToUseRef, homeRef }: NavbarProps) {
   };
 
   return (
-    <nav className="p-4 sm:px-16 h-20  fixed w-full top-0 z-10 bg-white">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="fixed top-0 z-10 h-20 w-full bg-white p-4 sm:px-16">
+      <div className="container mx-auto flex items-center justify-between">
         <div className="">
-          <MemoLogo className="sm:w-80 w-60 h-10 sm:h-10" />
+          <MemoLogo className="h-10 w-60 sm:h-10 sm:w-80" />
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden items-center space-x-6 md:flex">
           <Link
             onClick={() => handleScroll(homeRef)}
             href="/"
@@ -40,12 +48,17 @@ export default function Navbar({ howToUseRef, homeRef }: NavbarProps) {
             className="text-[#1A1E23] hover:text-[#1A1E23]">
             How to Use
           </Link>
+          <Link
+            href="/about-author"
+            className="text-[#1A1E23] hover:text-[#1A1E23]">
+            About the Author
+          </Link>
           <Link href="/contact" className="text-[#1A1E23] hover:text-[#1A1E23]">
             Contact Us
           </Link>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#CCFF00] text-black px-8 py-2 rounded-full font-semibold">
+            className="rounded-full bg-[#CCFF00] px-8 py-2 font-semibold text-black">
             Get Donation
           </button>
         </div>
@@ -54,9 +67,9 @@ export default function Navbar({ howToUseRef, homeRef }: NavbarProps) {
         <div className="md:hidden">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
-              <X className="text-[#1A1E23] w-6 h-6" />
+              <X className="h-6 w-6 text-[#1A1E23]" />
             ) : (
-              <Menu className="text-[#1A1E23] w-6 h-6" />
+              <Menu className="h-6 w-6 text-[#1A1E23]" />
             )}
           </button>
         </div>
@@ -64,27 +77,33 @@ export default function Navbar({ howToUseRef, homeRef }: NavbarProps) {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white w-full h-56">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="h-72 w-full bg-white md:hidden">
+          <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
             <Link
               href="/"
-              className="text-[#1A1E23] hover:text-[#1A1E23] block px-3 py-2">
+              className="block px-3 py-2 text-[#1A1E23] hover:text-[#1A1E23]">
               Home
             </Link>
             <Link
               onClick={() => handleScroll(howToUseRef)}
               href="#"
-              className="text-[#1A1E23] hover:text-[#1A1E23] block px-3 py-2">
+              className="block px-3 py-2 text-[#1A1E23] hover:text-[#1A1E23]">
               How to Use
             </Link>
             <Link
+              onClick={() => handleScroll(aboutAuthorRef)}
+              href="/about-author"
+              className="block px-3 py-2 text-[#1A1E23] hover:text-[#1A1E23]">
+              About the Author
+            </Link>
+            <Link
               href="/contact"
-              className="text-[#1A1E23] hover:text-[#1A1E23] block px-3 py-2">
+              className="block px-3 py-2 text-[#1A1E23] hover:text-[#1A1E23]">
               Contact Us
             </Link>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#CCFF00] text-black px-4 py-3 rounded-full font-semibold w-full mt-2">
+              className="mt-2 w-full rounded-full bg-[#CCFF00] px-4 py-3 font-semibold text-black">
               Get Donation
             </button>
           </div>
