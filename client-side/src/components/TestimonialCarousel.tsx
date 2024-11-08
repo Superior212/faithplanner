@@ -18,13 +18,13 @@ const testimonials = [
     name: "Mayala G",
     //   image: "/user2.svg",
   },
-  // {
-  //   id: 3,
-  //   content:
-  //     "Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Sed risus ultricies tristique nulla aliquet enim tortor at auctor. Viverra adipiscing at in tellus integer feugiat scelerisque varius morbi. Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi tristique.",
-  //   name: "Emma Davis",
-  //   image: "/user3.svg",
-  // },
+  {
+    id: 3,
+    content:
+      "I am so excited about this Planner/Journal. I am a church clerk and this offers so many features I can benefit from, personally and professionally.",
+    name: "Tiffany A",
+    //   image: "/user3.svg",
+  },
   // {
   //   id: 4,
   //   content:
