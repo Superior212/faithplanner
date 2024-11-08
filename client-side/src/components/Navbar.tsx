@@ -9,14 +9,12 @@ import DonationModal from "./Modals/DonationModal";
 interface NavbarProps {
   howToUseRef: React.RefObject<HTMLDivElement>;
   homeRef: React.RefObject<HTMLDivElement>;
-  aboutAuthorRef: React.RefObject<HTMLDivElement>;
 }
 
 export default function Component(
-  { howToUseRef, homeRef, aboutAuthorRef }: NavbarProps = {
+  { howToUseRef, homeRef }: NavbarProps = {
     howToUseRef: { current: null },
     homeRef: { current: null },
-    aboutAuthorRef: { current: null },
   }
 ) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -91,7 +89,6 @@ export default function Component(
               How to Use
             </Link>
             <Link
-              onClick={() => handleScroll(aboutAuthorRef)}
               href="/about-author"
               className="block px-3 py-2 text-[#1A1E23] hover:text-[#1A1E23]">
               About the Author
