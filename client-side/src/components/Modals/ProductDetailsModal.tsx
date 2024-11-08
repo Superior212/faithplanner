@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 import {
@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { Country, State, City } from "country-state-city";
 
 const scrollableContentClass =
   "scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200";
@@ -47,6 +48,7 @@ interface FormData {
     address: {
       country: string;
       state: string;
+      city: string;
       postalCode: string;
     };
     phoneNumber: {
@@ -67,20 +69,6 @@ const churchesInUS = [
   { id: "8", name: "Crossroads Church, Cincinnati, OH" },
   { id: "9", name: "Life.Church, Edmond, OK" },
   { id: "10", name: "Christ's Church of the Valley, Peoria, AZ" },
-];
-
-const countries = [
-  { code: "US", name: "United States" },
-  { code: "CA", name: "Canada" },
-  { code: "GB", name: "United Kingdom" },
-  // Add more countries as needed
-];
-
-const usStates = [
-  { code: "AL", name: "Alabama" },
-  { code: "AK", name: "Alaska" },
-  { code: "AZ", name: "Arizona" },
-  // Add all US states
 ];
 
 export default function ProductDetailsModal({
@@ -106,6 +94,7 @@ export default function ProductDetailsModal({
       address: {
         country: "",
         state: "",
+        city: "",
         postalCode: "",
       },
       phoneNumber: {
@@ -118,8 +107,40 @@ export default function ProductDetailsModal({
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [countries, setCountries] = useState<any[]>([]);
+  const [states, setStates] = useState<any[]>([]);
+  const [cities, setCities] = useState<any[]>([]);
   const apiUrl = "https://faithplanner-server.vercel.app/api";
   const { toast } = useToast();
+
+  useEffect(() => {
+    setCountries(Country.getAllCountries());
+  }, []);
+
+  useEffect(() => {
+    if (formData.churchDetails.address.country) {
+      setStates(
+        State.getStatesOfCountry(formData.churchDetails.address.country)
+      );
+    }
+  }, [formData.churchDetails.address.country]);
+
+  useEffect(() => {
+    if (
+      formData.churchDetails.address.country &&
+      formData.churchDetails.address.state
+    ) {
+      setCities(
+        City.getCitiesOfState(
+          formData.churchDetails.address.country,
+          formData.churchDetails.address.state
+        )
+      );
+    }
+  }, [
+    formData.churchDetails.address.country,
+    formData.churchDetails.address.state,
+  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -196,7 +217,6 @@ export default function ProductDetailsModal({
     if (name === "name" || name === "email") {
       setFormData((prev) => ({ ...prev, [name]: value }));
     } else if (name.startsWith("churchDetails.")) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, field, subfield] = name.split(".") as [
         string,
         keyof FormData["churchDetails"],
@@ -246,7 +266,7 @@ export default function ProductDetailsModal({
         phoneNumber: {
           ...prev.churchDetails.phoneNumber,
           type: value,
-          number: "", // Reset the number when changing type
+          number: "",
         },
       },
     }));
@@ -398,7 +418,7 @@ export default function ProductDetailsModal({
                           id="church-not-listed"
                         />
                         <Label htmlFor="church-not-listed">
-                          No, I don&quot;t see my church
+                          No, I don't see my church
                         </Label>
                       </div>
                     </RadioGroup>
@@ -469,15 +489,15 @@ export default function ProductDetailsModal({
                           <SelectContent>
                             {countries.map((country) => (
                               <SelectItem
-                                key={country.code}
-                                value={country.code}>
+                                key={country.isoCode}
+                                value={country.isoCode}>
                                 {country.name}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-                      {formData.churchDetails.address.country === "US" && (
+                      {formData.churchDetails.address.country && (
                         <div>
                           <Label htmlFor="churchState">State</Label>
                           <Select
@@ -489,9 +509,32 @@ export default function ProductDetailsModal({
                               <SelectValue placeholder="Select a state" />
                             </SelectTrigger>
                             <SelectContent>
-                              {usStates.map((state) => (
-                                <SelectItem key={state.code} value={state.code}>
+                              {states.map((state) => (
+                                <SelectItem
+                                  key={state.isoCode}
+                                  value={state.isoCode}>
                                   {state.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                      {formData.churchDetails.address.state && (
+                        <div>
+                          <Label htmlFor="churchCity">City</Label>
+                          <Select
+                            onValueChange={(value) =>
+                              handleSelectChange("city", value)
+                            }
+                            value={formData.churchDetails.address.city}>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a city" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {cities.map((city) => (
+                                <SelectItem key={city.name} value={city.name}>
+                                  {city.name}
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -597,8 +640,8 @@ export default function ProductDetailsModal({
             <div className="py-4">
               <p>
                 We will contact them and discuss the process of registration but
-                don&quot;t worry you can continue to order and we will track
-                this purchase to apply a donation.
+                don't worry you can continue to order and we will track this
+                purchase to apply a donation.
               </p>
             </div>
             <DialogFooter>

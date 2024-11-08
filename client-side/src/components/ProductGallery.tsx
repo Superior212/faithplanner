@@ -83,7 +83,7 @@ export default function ProductGallery() {
   const bundleProduct: Product = {
     id: 4,
     title: "Buy All Planners",
-    image: "/allPlanner.png",
+    image: "/multiple.jpg",
     color: "bg-gradient-to-r from-white to-white",
   };
 

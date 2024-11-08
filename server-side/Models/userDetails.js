@@ -51,6 +51,11 @@ const userDetailsSchema = new Schema({
                 required: function () { return this.addForDonations && this.churchDetails.address.country === 'US'; },
                 trim: true
             },
+            city: {
+                type: String,
+                required: function () { return this.addForDonations; },
+                trim: true
+            },
             postalCode: {
                 type: String,
                 required: function () { return this.addForDonations; },
