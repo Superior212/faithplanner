@@ -46,10 +46,22 @@ const createUserDetails = async (req, res) => {
                 });
             }
             if (addForDonations) {
-                if (!churchDetails.address || !churchDetails.phoneNumber) {
+                if (!churchDetails.address || !churchDetails.address.country || !churchDetails.phoneNumber || !churchDetails.phoneNumber.type || !churchDetails.phoneNumber.number) {
                     return res.status(400).json({
                         success: false,
-                        message: "Church address and phone number are required when adding for donations"
+                        message: "Church address (country), phone number (type and number) are required when adding for donations"
+                    });
+                }
+                if (churchDetails.address.country === 'US' && !churchDetails.address.state) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "State is required for US addresses when adding for donations"
+                    });
+                }
+                if (!churchDetails.address.postalCode) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Postal code is required when adding for donations"
                     });
                 }
             }

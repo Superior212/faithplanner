@@ -44,8 +44,15 @@ interface FormData {
   addForDonations: boolean;
   churchDetails: {
     name: string;
-    address: string;
-    phoneNumber: string;
+    address: {
+      country: string;
+      state: string;
+      postalCode: string;
+    };
+    phoneNumber: {
+      type: "us" | "international";
+      number: string;
+    };
   };
 }
 
@@ -60,6 +67,20 @@ const churchesInUS = [
   { id: "8", name: "Crossroads Church, Cincinnati, OH" },
   { id: "9", name: "Life.Church, Edmond, OK" },
   { id: "10", name: "Christ's Church of the Valley, Peoria, AZ" },
+];
+
+const countries = [
+  { code: "US", name: "United States" },
+  { code: "CA", name: "Canada" },
+  { code: "GB", name: "United Kingdom" },
+  // Add more countries as needed
+];
+
+const usStates = [
+  { code: "AL", name: "Alabama" },
+  { code: "AK", name: "Alaska" },
+  { code: "AZ", name: "Arizona" },
+  // Add all US states
 ];
 
 export default function ProductDetailsModal({
@@ -82,8 +103,15 @@ export default function ProductDetailsModal({
     addForDonations: false,
     churchDetails: {
       name: "",
-      address: "",
-      phoneNumber: "",
+      address: {
+        country: "",
+        state: "",
+        postalCode: "",
+      },
+      phoneNumber: {
+        type: "us",
+        number: "",
+      },
     },
   };
 
@@ -97,8 +125,39 @@ export default function ProductDetailsModal({
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.post(`${apiUrl}/details`, formData);
-      console.log("Form submitted:", formData);
+      let submissionData = { ...formData };
+
+      if (formData.heardFrom.source === "church") {
+        if (formData.churchSelection === "not-listed") {
+          submissionData = {
+            ...submissionData,
+            heardFrom: {
+              ...submissionData.heardFrom,
+              details: submissionData.churchDetails.name,
+            },
+          };
+        } else {
+          submissionData = {
+            ...submissionData,
+            churchDetails: {
+              ...submissionData.churchDetails,
+              name: submissionData.heardFrom.details,
+            },
+          };
+        }
+      }
+
+      if (
+        !submissionData.name ||
+        !submissionData.email ||
+        !submissionData.heardFrom.source ||
+        !submissionData.heardFrom.details
+      ) {
+        throw new Error("Please fill in all required fields");
+      }
+
+      await axios.post(`${apiUrl}/details`, submissionData);
+      console.log("Form submitted:", submissionData);
       toast({
         title: "Success",
         description: "Your information has been submitted successfully.",
@@ -116,7 +175,9 @@ export default function ProductDetailsModal({
       toast({
         title: "Error",
         description:
-          "There was a problem submitting your information. Please try again.",
+          error instanceof Error
+            ? error.message
+            : "There was a problem submitting your information. Please try again.",
         variant: "destructive",
         duration: 5000,
       });
@@ -135,12 +196,14 @@ export default function ProductDetailsModal({
     if (name === "name" || name === "email") {
       setFormData((prev) => ({ ...prev, [name]: value }));
     } else if (name.startsWith("churchDetails.")) {
-      const field = name.split(".")[1];
+      const [_, field, subfield] = name.split(".") as [string, keyof FormData["churchDetails"], keyof FormData["churchDetails"]["address"] | keyof FormData["churchDetails"]["phoneNumber"]];
       setFormData((prev) => ({
         ...prev,
         churchDetails: {
           ...prev.churchDetails,
-          [field]: value,
+          [field]: subfield
+            ? { ...(prev.churchDetails[field] as object), [subfield]: value }
+            : value,
         },
       }));
     } else {
@@ -152,6 +215,47 @@ export default function ProductDetailsModal({
         },
       }));
     }
+  };
+
+  const handleSelectChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      churchDetails: {
+        ...prev.churchDetails,
+        address: {
+          ...prev.churchDetails.address,
+          [field]: value,
+        },
+      },
+    }));
+  };
+
+  const handlePhoneTypeChange = (value: "us" | "international") => {
+    setFormData((prev) => ({
+      ...prev,
+      churchDetails: {
+        ...prev.churchDetails,
+        phoneNumber: {
+          ...prev.churchDetails.phoneNumber,
+          type: value,
+          number: "", // Reset the number when changing type
+        },
+      },
+    }));
+  };
+
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      churchDetails: {
+        ...prev.churchDetails,
+        phoneNumber: {
+          ...prev.churchDetails.phoneNumber,
+          number: value,
+        },
+      },
+    }));
   };
 
   const handleRadioChange = (value: string) => {
@@ -171,6 +275,10 @@ export default function ProductDetailsModal({
       heardFrom: {
         ...prev.heardFrom,
         details: "",
+      },
+      churchDetails: {
+        ...prev.churchDetails,
+        name: "",
       },
     }));
   };
@@ -282,7 +390,7 @@ export default function ProductDetailsModal({
                           id="church-not-listed"
                         />
                         <Label htmlFor="church-not-listed">
-                          No, I don&apos;t see my church
+                          No, I don't see my church
                         </Label>
                       </div>
                     </RadioGroup>
@@ -316,6 +424,7 @@ export default function ProductDetailsModal({
                         value={formData.churchDetails.name}
                         onChange={handleChange}
                         placeholder="Enter church name"
+                        required
                       />
                     </div>
                   )}
@@ -340,23 +449,92 @@ export default function ProductDetailsModal({
                   {formData.addForDonations && (
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="churchAddress">Church Address</Label>
+                        <Label htmlFor="churchCountry">Country</Label>
+                        <Select
+                          onValueChange={(value) =>
+                            handleSelectChange("country", value)
+                          }
+                          value={formData.churchDetails.address.country}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a country" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {countries.map((country) => (
+                              <SelectItem
+                                key={country.code}
+                                value={country.code}>
+                                {country.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {formData.churchDetails.address.country === "US" && (
+                        <div>
+                          <Label htmlFor="churchState">State</Label>
+                          <Select
+                            onValueChange={(value) =>
+                              handleSelectChange("state", value)
+                            }
+                            value={formData.churchDetails.address.state}>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a state" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {usStates.map((state) => (
+                                <SelectItem key={state.code} value={state.code}>
+                                  {state.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                      <div>
+                        <Label htmlFor="churchPostalCode">Postal Code</Label>
                         <Input
-                          id="churchAddress"
-                          name="churchDetails.address"
-                          value={formData.churchDetails.address}
+                          id="churchPostalCode"
+                          name="churchDetails.address.postalCode"
+                          value={formData.churchDetails.address.postalCode}
                           onChange={handleChange}
-                          placeholder="Enter church address"
+                          placeholder="Enter postal code"
+                          required
                         />
+                      </div>
+                      <div>
+                        <Label>Phone Number Type</Label>
+                        <RadioGroup
+                          value={formData.churchDetails.phoneNumber.type}
+                          onValueChange={handlePhoneTypeChange}
+                          className="mt-2">
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="us" id="phone-us" />
+                            <Label htmlFor="phone-us">US</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value="international"
+                              id="phone-international"
+                            />
+                            <Label htmlFor="phone-international">
+                              International
+                            </Label>
+                          </div>
+                        </RadioGroup>
                       </div>
                       <div>
                         <Label htmlFor="churchPhone">Church Phone Number</Label>
                         <Input
                           id="churchPhone"
-                          name="churchDetails.phoneNumber"
-                          value={formData.churchDetails.phoneNumber}
-                          onChange={handleChange}
-                          placeholder="Enter church phone number"
+                          name="churchDetails.phoneNumber.number"
+                          value={formData.churchDetails.phoneNumber.number}
+                          onChange={handlePhoneNumberChange}
+                          placeholder={
+                            formData.churchDetails.phoneNumber.type === "us"
+                              ? "1-xxx-xxx-xxxx"
+                              : "Enter phone number"
+                          }
+                          required
                         />
                       </div>
                     </div>
@@ -394,6 +572,7 @@ export default function ProductDetailsModal({
                     value={formData.heardFrom.details}
                     onChange={handleChange}
                     placeholder="Enter where you heard about us"
+                    required
                   />
                 </div>
               )}
@@ -410,8 +589,8 @@ export default function ProductDetailsModal({
             <div className="py-4">
               <p>
                 We will contact them and discuss the process of registration but
-                don&apos;t worry you can continue to order and we will track
-                this purchase to apply a donation.
+                don't worry you can continue to order and we will track this
+                purchase to apply a donation.
               </p>
             </div>
             <DialogFooter>

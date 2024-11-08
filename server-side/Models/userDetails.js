@@ -41,14 +41,33 @@ const userDetailsSchema = new Schema({
             trim: true
         },
         address: {
-            type: String,
-            required: function () { return this.addForDonations; },
-            trim: true
+            country: {
+                type: String,
+                required: function () { return this.addForDonations; },
+                trim: true
+            },
+            state: {
+                type: String,
+                required: function () { return this.addForDonations && this.churchDetails.address.country === 'US'; },
+                trim: true
+            },
+            postalCode: {
+                type: String,
+                required: function () { return this.addForDonations; },
+                trim: true
+            }
         },
         phoneNumber: {
-            type: String,
-            required: function () { return this.addForDonations; },
-            trim: true
+            type: {
+                type: String,
+                enum: ['us', 'international'],
+                required: function () { return this.addForDonations; }
+            },
+            number: {
+                type: String,
+                required: function () { return this.addForDonations; },
+                trim: true
+            }
         }
     },
     submittedAt: {
