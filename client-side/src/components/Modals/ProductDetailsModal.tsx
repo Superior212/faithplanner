@@ -394,7 +394,7 @@ export default function ProductDetailsModal({
                 />
               </div>
               <div>
-                <Label>Where did you hear about faith planner?</Label>
+                <Label>Where did you hear about the faith planner?</Label>
                 <RadioGroup
                   value={formData.heardFrom.source}
                   onValueChange={handleRadioChange}

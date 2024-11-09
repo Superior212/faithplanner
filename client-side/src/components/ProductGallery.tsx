@@ -60,7 +60,7 @@ function ProductCard({
             className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full mt-auto
                      transition-all duration-300 ease-in-out hover:bg-[#333] hover:scale-105"
             onClick={handleShopNowClick}>
-            {isBundleCard ? "BUY ALL" : "SHOP NOW"}
+            {isBundleCard ? "BUY ALL" : "Add to cart"}
             <MemoArrow className="ml-2 h-8 w-8" />
           </Button>
         </div>
@@ -82,7 +82,7 @@ function ProductCard({
 export default function ProductGallery() {
   const bundleProduct: Product = {
     id: 4,
-    title: "Buy All Planners",
+    title: "Buy all planners for 2025 and save.",
     image: "/multiple.jpg",
     color: "bg-gradient-to-r from-white to-white",
   };
