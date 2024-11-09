@@ -7,6 +7,14 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ContactPage() {
@@ -14,10 +22,13 @@ export default function ContactPage() {
   const homeRef = React.useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+  const [reason, setReason] = React.useState("");
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Here you would typically handle the form submission,
     // e.g., send the data to your backend API
+    console.log("Form submitted with reason:", reason);
     toast({
       title: "Message Sent",
       description: "We've received your message and will get back to you soon.",
@@ -35,8 +46,8 @@ export default function ContactPage() {
                 Contact Us
               </h1>
               <p className="mt-4 text-xl text-muted-foreground">
-                We&apos;re here to help. Feel free to reach out using the
-                information below or the contact form.
+                We&apos;re here to help. Feel free to reach out using the information
+                below or the contact form.
               </p>
             </div>
 
@@ -55,7 +66,7 @@ export default function ContactPage() {
                   <div className="flex items-center">
                     <Mail className="flex-shrink-0 h-6 w-6 text-primary" />
                     <span className="ml-3 text-base text-muted-foreground">
-                      contactus@faithplanner.org
+                      info@faithplanner.org
                     </span>
                   </div>
                 </dl>
@@ -66,11 +77,7 @@ export default function ContactPage() {
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-muted-foreground">
-                      Name
-                    </label>
+                    <Label htmlFor="name">Name</Label>
                     <Input
                       type="text"
                       id="name"
@@ -80,11 +87,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-muted-foreground">
-                      Email
-                    </label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
                       type="email"
                       id="email"
@@ -94,11 +97,23 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-muted-foreground">
-                      Message
-                    </label>
+                    <Label htmlFor="reason">Reason for Contact</Label>
+                    <Select onValueChange={setReason} required>
+                      <SelectTrigger className="w-full mt-1">
+                        <SelectValue placeholder="Select a reason" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="billing">Billing</SelectItem>
+                        <SelectItem value="speaking">
+                          Speaking engagements
+                        </SelectItem>
+                        <SelectItem value="general">General</SelectItem>
+                        <SelectItem value="compliance">Compliance</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="message">Message</Label>
                     <Textarea
                       id="message"
                       name="message"
