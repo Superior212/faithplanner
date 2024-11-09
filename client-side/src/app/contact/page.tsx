@@ -35,8 +35,8 @@ export default function ContactPage() {
                 Contact Us
               </h1>
               <p className="mt-4 text-xl text-muted-foreground">
-                We're here to help. Feel free to reach out using the information
-                below or the contact form.
+                We&apos;re here to help. Feel free to reach out using the
+                information below or the contact form.
               </p>
             </div>
 
