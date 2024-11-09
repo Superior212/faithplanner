@@ -1,5 +1,3 @@
-
-
 export default function HowToUseSection() {
   return (
     <section className="bg-white py-16 px-4 md:px-8 lg:px-16">
@@ -15,7 +13,7 @@ export default function HowToUseSection() {
         {/* Video Container */}
         <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-800">
           <video
-            src="/planner.mp4"
+            src="/planner.MOV"
             controls
             className="w-full h-full object-cover rounded-2xl">
             Your browser does not support the video tag.
