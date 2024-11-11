@@ -13,6 +13,7 @@ interface Product {
   title: string;
   image: string;
   color: string;
+  subtitle?: string;
 }
 
 function ProductCard({
@@ -53,9 +54,10 @@ function ProductCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
         </div>
         <div className="p-6 flex flex-col flex-grow bg-white">
-          <h3 className="text-sm text-center font-semibold mb-4">
+          <h3 className="text-sm text-center font-semibold mb-2">
             {product.title}
           </h3>
+          <p className="text-sm text-center mb-3">{product.subtitle}</p>
           <Button
             className="bg-[#1c1c1c] text-white py-2 px-4 rounded-full flex items-center justify-center w-full mt-auto
                      transition-all duration-300 ease-in-out hover:bg-[#333] hover:scale-105"
@@ -83,6 +85,7 @@ export default function ProductGallery() {
   const bundleProduct: Product = {
     id: 4,
     title: "Buy all planners for 2025 and save.",
+    subtitle: "Great for a Holiday Gift",
     image: "/multiple.jpg",
     color: "bg-gradient-to-r from-white to-white",
   };
@@ -94,7 +97,9 @@ export default function ProductGallery() {
           PRODUCT GALLERY
         </h2>
         <p className="sm:text-xl text-center text-gray-600 mb-12">
-          From discovering new tracks to supporting your favorite artists.
+          Finish 2024 strong with the Inspiring Faith 2024 Teaser Version!
+          Packed with everything in our 2025 edition, it’s just what you need to
+          stay organized and end the year with purpose.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product) => (
