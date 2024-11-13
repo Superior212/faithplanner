@@ -115,7 +115,7 @@ export default function ProductGallery() {
     title: "Buy all planners for 2025 and save.",
     subtitle: "Great for a Holiday Gift",
     image: "/multiple.jpg",
-    img: "/ribbon.jpeg",
+    img: "/ribbon.png",
     color: "bg-gradient-to-r from-white to-white",
   };
 
@@ -127,8 +127,8 @@ export default function ProductGallery() {
         </h2>
         <p className="sm:text-xl text-center text-gray-600 mb-12">
           Finish 2024 strong with the Inspiring Faith 2024 Teaser Version!
-          Packed with everything in our 2025 edition, it&apos;s just what you need to
-          stay organized and end the year with purpose.
+          Packed with everything in our 2025 edition, it&apos;s just what you
+          need to stay organized and end the year with purpose.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product) => (
