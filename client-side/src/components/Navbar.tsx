@@ -103,6 +103,11 @@ export default function Component(
               className="block px-3 py-2 text-[#1A1E23] hover:text-[#1A1E23]">
               Contact Us
             </Link>
+            <Link
+              href="/cart"
+              className="text-gray-500 hover:text-gray-900 block px-3 py-2  rounded-full hover:bg-gray-100">
+              <ShoppingCart className="h-6 mx-1 w-6" />
+            </Link>
             <button
               onClick={() => setIsModalOpen(true)}
               className="mt-2 w-full rounded-full bg-[#CCFF00] px-4 py-3 font-semibold text-black">
