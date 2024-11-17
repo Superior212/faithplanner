@@ -5,7 +5,8 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import HowToUseSection from "@/components/HowToUseSection";
 import Navbar from "@/components/Navbar";
-import ProductGallery from "@/components/ProductGallery";
+import Product from "@/components/Product";
+// import ProductGallery from "@/components/ProductGallery";
 import Review from "@/components/Review-form";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { useRef } from "react";
@@ -22,7 +23,8 @@ export default function Home() {
         </div>
 
         <CoreFeatures />
-        <ProductGallery />
+        {/* <ProductGallery /> */}
+        <Product />
         <DonationSection />
         <div ref={howToUseRef}>
           <HowToUseSection />

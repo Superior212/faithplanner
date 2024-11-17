@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, ShoppingCart, X } from "lucide-react";
 import MemoLogo from "@/icons/Logo";
 import Link from "next/link";
 import DonationModal from "./Modals/DonationModal";
@@ -53,6 +53,11 @@ export default function Component(
           </Link>
           <Link href="/contact" className="text-[#1A1E23] hover:text-[#1A1E23]">
             Contact Us
+          </Link>
+          <Link
+            href="/cart"
+            className="text-gray-500 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100">
+            <ShoppingCart className="h-6 w-6" />
           </Link>
           <button
             onClick={() => setIsModalOpen(true)}
