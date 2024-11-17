@@ -5,11 +5,10 @@ import Navbar from "@/components/Navbar";
 import ProductInfo from "@/components/ProductInfo";
 import React from "react";
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
+// Correctly type the params as a Promise
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
 
 export async function generateStaticParams() {
   return products.map((product) => ({
@@ -17,10 +16,8 @@ export async function generateStaticParams() {
   }));
 }
 
-const howToUseRef = React.createRef<HTMLDivElement>();
-const homeRef = React.createRef<HTMLDivElement>();
-export default async function ProductDetail({ params }: Props) {
-  // Await the params
+export default async function ProductDetail({ params }: PageProps) {
+  // Await the params to get the id
   const { id } = await params;
   const product = products.find((p) => p.id === id);
 
@@ -30,6 +27,8 @@ export default async function ProductDetail({ params }: Props) {
 
   const relatedProducts = products.filter((p) => p.id !== id).slice(0, 4);
 
+  const howToUseRef = React.createRef<HTMLDivElement>();
+  const homeRef = React.createRef<HTMLDivElement>();
   return (
     <>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
