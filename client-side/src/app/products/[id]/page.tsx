@@ -75,7 +75,7 @@ export default async function ProductDetail({ params }: PageProps) {
               {relatedProducts.map((relatedProduct) => (
                 <a
                   key={relatedProduct.id}
-                  href={`/products/${relatedProduct.id}`}
+                  href={`/products/${encodeURIComponent(relatedProduct.id)}`}
                   className="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
                   <div className="aspect-w-1 aspect-h-1">
                     <Image
