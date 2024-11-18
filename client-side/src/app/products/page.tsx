@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { products } from "@/data/products";
-import Navbar from "@/components/Navbar";
 import React from "react";
+import Navbar from "@/components/Navbar";
 
 export default function Products() {
   const howToUseRef = React.createRef<HTMLDivElement>();
   const homeRef = React.createRef<HTMLDivElement>();
+
   return (
     <>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
@@ -22,31 +23,31 @@ export default function Products() {
             {products.map((product) => (
               <Link
                 key={product.id}
-                href={`/products/${encodeURIComponent(product.id)}`}
-                className="group flex flex-col bg-background rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 h-full">
+                href={`/products/${product.id}`}
+                className="group flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 h-full">
                 <div className="relative aspect-w-1 aspect-h-1 w-full">
                   <Image
                     src={product.image}
                     alt={product.name}
-                    width={500}
-                    height={500}
-                    className="group-hover:scale-105 transition-transform duration-200"
+                    height={300}
+                    width={300}
+                    className="group-hover:scale-105 w-full h-full transition-transform duration-200"
                   />
                 </div>
                 <div className="p-4 flex flex-col flex-grow">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     {product.name}
                   </h3>
-                  <p className="text-muted-foreground text-sm mb-4 flex-grow line-clamp-3">
+                  <p className="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">
                     {product.description}
                   </p>
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-xl font-bold text-primary">
-                      ${product.price?.toFixed(2)}
+                      ${product.price.toFixed(2)}
                     </span>
-                    <span className="text-sm text-muted-foreground">
-                      View Details
-                    </span>
+                    {/* <span className="text-sm text-muted-foreground capitalize">
+                      {product.category}
+                    </span> */}
                   </div>
                 </div>
               </Link>

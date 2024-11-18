@@ -5,6 +5,8 @@ import { Menu, ShoppingCart, X } from "lucide-react";
 import MemoLogo from "@/icons/Logo";
 import Link from "next/link";
 import DonationModal from "./Modals/DonationModal";
+import { useCartStore } from "@/store/useCartStore";
+
 
 interface NavbarProps {
   howToUseRef: React.RefObject<HTMLDivElement>;
@@ -25,6 +27,8 @@ export default function Component(
     setIsMenuOpen(false); // Close menu on mobile
   };
 
+
+  const { items } = useCartStore();
   return (
     <nav className="fixed top-0 z-10 h-20 w-full bg-white p-4 sm:px-16">
       <div className="container mx-auto flex items-center justify-between">
@@ -56,8 +60,13 @@ export default function Component(
           </Link>
           <Link
             href="/cart"
-            className="text-gray-500 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100">
+            className="text-gray-500 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100 relative">
             <ShoppingCart className="h-6 w-6" />
+            {items.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {items.length}
+              </span>
+            )}
           </Link>
           <button
             onClick={() => setIsModalOpen(true)}
@@ -105,8 +114,13 @@ export default function Component(
             </Link>
             <Link
               href="/cart"
-              className="text-gray-500 hover:text-gray-900 block px-3 py-2  rounded-full hover:bg-gray-100">
-              <ShoppingCart className="h-6 mx-1 w-6" />
+              className="text-gray-500 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100 relative mr-2">
+              <ShoppingCart className="h-6 w-6" />
+              {items.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {items.length}
+                </span>
+              )}
             </Link>
             <button
               onClick={() => setIsModalOpen(true)}
