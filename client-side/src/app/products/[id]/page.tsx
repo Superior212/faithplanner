@@ -1,39 +1,34 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Heart, Share2, Star } from "lucide-react";
 import { products } from "@/data/products";
-import React, { useState } from "react";
-import { use } from "react";
 import Navbar from "@/components/Navbar";
-import { useCartStore } from "@/store/useCartStore";
 import NotFoundError from "@/app/not-found";
-import Image from "next/image";
+import React from "react";
+import AddToCartButton from "./AddToCartButton";
 
-export default function ProductDetail({
-  params,
-}: {
+interface PageProps {
   params: Promise<{ id: string }>;
-}) {
-  const { id } = use(params);
-  const howToUseRef = React.createRef<HTMLDivElement>();
-  const homeRef = React.createRef<HTMLDivElement>();
-  const [quantity, setQuantity] = useState(1);
-  const router = useRouter();
-  const { addItem } = useCartStore();
+}
+
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
+
+export default async function ProductDetail({ params }: PageProps) {
+  const { id } = await params;
   const product = products.find((p) => p.id === id);
 
   if (!product) {
-    return <NotFoundError />;
+    notFound();
   }
 
-  const handleAddToCart = () => {
-    addItem(product, quantity);
-    router.push("/cart");
-  };
-
   const relatedProducts = products.filter((p) => p.id !== id).slice(0, 4);
+  const howToUseRef = React.createRef<HTMLDivElement>();
+  const homeRef = React.createRef<HTMLDivElement>();
 
   return (
     <>
@@ -94,39 +89,7 @@ export default function ProductDetail({
 
               <p className="text-gray-600 mb-6">{product.description}</p>
 
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-2">
-                  Quantity
-                </h3>
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md">
-                    -
-                  </button>
-                  <span className="text-gray-900 font-medium">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md">
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex space-x-4 mb-6">
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 bg-[#1c1c1c] text-white px-6 py-3 rounded-md font-medium flex items-center justify-center">
-                  <ShoppingCart className="h-5 w-5 mr-2" />
-                  Add to Cart
-                </button>
-                <button className="p-3 border border-gray-300 rounded-md hover:bg-gray-50">
-                  <Heart className="h-5 w-5 text-gray-600" />
-                </button>
-                <button className="p-3 border border-gray-300 rounded-md hover:bg-gray-50">
-                  <Share2 className="h-5 w-5 text-gray-600" />
-                </button>
-              </div>
+              <AddToCartButton product={product} />
 
               {/* Product Features */}
               <div className="border-t border-gray-200 pt-6">
