@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart, Heart, Share2, Star } from "lucide-react";
+import {  Star } from "lucide-react";
 import { products } from "@/data/products";
 import Navbar from "@/components/Navbar";
-import NotFoundError from "@/app/not-found";
 import React from "react";
 import AddToCartButton from "./AddToCartButton";
 
