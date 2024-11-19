@@ -1,13 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { CreditCard, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
+import PayPalProvider from "./PayPalProvider";
+import { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
+import React from "react";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 
-export default function Checkout() {
+const PayPalButtons = dynamic(
+  () => import("@paypal/react-paypal-js").then((mod) => mod.PayPalButtons),
+  { ssr: false }
+);
+
+export default function Component() {
   const router = useRouter();
   const { items, getTotal, clearCart } = useCartStore();
   const [formData, setFormData] = useState({
@@ -18,9 +29,6 @@ export default function Checkout() {
     city: "",
     state: "",
     zipCode: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
   });
 
   const subtotal = getTotal();
@@ -28,18 +36,89 @@ export default function Checkout() {
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, you would process payment here
-    clearCart();
-    router.push("/");
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  interface PurchaseUnit {
+    amount: {
+      value: string;
+      breakdown: {
+        item_total: {
+          value: string;
+          currency_code: string;
+        };
+        shipping: {
+          value: string;
+          currency_code: string;
+        };
+        tax_total: {
+          value: string;
+          currency_code: string;
+        };
+      };
+    };
+    items: {
+      name: string;
+      quantity: number;
+      unit_amount: {
+        value: string;
+        currency_code: string;
+      };
+    }[];
+  }
+
+  interface CreateOrderData {
+    purchase_units: PurchaseUnit[];
+  }
+
+  const createOrder = (data: any, actions: any): Promise<string> => {
+    const orderData: CreateOrderData = {
+      purchase_units: [
+        {
+          amount: {
+            value: total.toFixed(2),
+            breakdown: {
+              item_total: {
+                value: subtotal.toFixed(2),
+                currency_code: "USD",
+              },
+              shipping: {
+                value: shipping.toFixed(2),
+                currency_code: "USD",
+              },
+              tax_total: {
+                value: tax.toFixed(2),
+                currency_code: "USD",
+              },
+            },
+          },
+          items: items.map((item) => ({
+            name: item.product.name,
+            quantity: item.quantity,
+            unit_amount: {
+              value: item.product.price.toFixed(2),
+              currency_code: "USD",
+            },
+          })),
+        },
+      ],
+    };
+
+    return actions.order.create(orderData);
+  };
+
+  const onApprove = async (data: any, actions: any) => {
+    try {
+      // const details = await actions.order.capture();
+      clearCart();
+      router.push("/");
+    } catch (error) {
+      console.error("PayPal payment failed:", error);
+    }
   };
 
   if (items.length === 0) {
@@ -49,44 +128,41 @@ export default function Checkout() {
 
   const howToUseRef = React.createRef<HTMLDivElement>();
   const homeRef = React.createRef<HTMLDivElement>();
+
   return (
-    <>
+    <PayPalProvider>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
       <main className="mt-[4.6rem] sm:mt-20">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Checkout Form */}
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-8">
                 Checkout
               </h1>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Contact Information */}
+
+              <form className="space-y-6">
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-4">
                     Contact Information
                   </h2>
-                  <div className="space-y-4">
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
+                    />
                   </div>
                 </div>
 
-                {/* Shipping Information */}
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-4">
                     Shipping Information
@@ -191,85 +267,22 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                {/* Payment Information */}
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                    Payment Information
-                  </h2>
-                  <div className="space-y-4">
-                    <div>
-                      <label
-                        htmlFor="cardNumber"
-                        className="block text-sm font-medium text-gray-700">
-                        Card Number
-                      </label>
-                      <div className="mt-1 relative">
-                        <input
-                          type="text"
-                          id="cardNumber"
-                          name="cardNumber"
-                          value={formData.cardNumber}
-                          onChange={handleChange}
-                          required
-                          className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 pl-10 focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                        <CreditCard className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label
-                          htmlFor="expiryDate"
-                          className="block text-sm font-medium text-gray-700">
-                          Expiry Date
-                        </label>
-                        <input
-                          type="text"
-                          id="expiryDate"
-                          name="expiryDate"
-                          placeholder="MM/YY"
-                          value={formData.expiryDate}
-                          onChange={handleChange}
-                          required
-                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="cvv"
-                          className="block text-sm font-medium text-gray-700">
-                          CVV
-                        </label>
-                        <input
-                          type="text"
-                          id="cvv"
-                          name="cvv"
-                          value={formData.cvv}
-                          onChange={handleChange}
-                          required
-                          maxLength={4}
-                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="flex items-center justify-between mt-8">
                   <div className="flex items-center text-sm text-gray-600">
                     <Lock className="h-4 w-4 mr-1" />
                     Secure checkout
                   </div>
-                  <button
-                    type="submit"
-                    className="bg-[#1c1c1c] text-white px-6 py-3 rounded-md font-medium">
-                    Place Order
-                  </button>
+                  <div className="w-full max-w-md">
+                    <PayPalButtons
+                      createOrder={createOrder}
+                      onApprove={onApprove}
+                      style={{ layout: "horizontal" }}
+                    />
+                  </div>
                 </div>
               </form>
             </div>
 
-            {/* Order Summary */}
             <div>
               <div className="bg-gray-50 rounded-lg p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -284,8 +297,8 @@ export default function Checkout() {
                         <Image
                           src={item.product.image}
                           alt={item.product.name}
-                          width={64}
                           height={64}
+                          width={64}
                           className="w-16 h-16 object-cover rounded"
                         />
                         <div className="ml-4">
@@ -332,6 +345,6 @@ export default function Checkout() {
           </div>
         </div>
       </main>
-    </>
+    </PayPalProvider>
   );
 }
