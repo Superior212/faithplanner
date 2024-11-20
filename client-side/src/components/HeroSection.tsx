@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
-  const router = useRouter();
+  // const router = useRouter();
 
   // const handleShopNowClick = () => {
   //   router.push("/products");
