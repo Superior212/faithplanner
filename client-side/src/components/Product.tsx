@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
 
-// Define the Product interface based on the structure of your products
 interface Product {
   id: string;
   name: string;
@@ -19,12 +18,13 @@ interface Product {
   teaser?: number;
 }
 
-export default function Component() {
+export default function ProductComponent() {
   const router = useRouter();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
   const featuredProducts = products.filter(
     (product) => product.featured
   ) as Product[];
@@ -39,23 +39,17 @@ export default function Component() {
     setIsProductModalOpen(true);
   };
 
-  // const handleProductDetailsClose = () => {
-  //   setIsProductModalOpen(false);
-  //   if (selectedProduct) {
-  //     router.push(`/products/${encodeURIComponent(selectedProduct.id)}`);
-  //   }
-  // };
-
   const handleProductDetailsClose = () => {
     setIsProductModalOpen(false);
     if (isFormSubmitted && selectedProduct) {
-      router.push(`/products/${encodeURIComponent(selectedProduct.id)}`);
+      // Explicitly log for debugging
+      console.log("Routing to:", `/products/${selectedProduct.id}`);
+      router.push(`/products/${selectedProduct.id}`);
     } else {
-      router.push("/"); // Redirect to home page if form not submitted
+      router.push("/");
     }
-    setIsFormSubmitted(false); // Reset the form submission state
+    setIsFormSubmitted(false);
   };
-
   return (
     <main className="bg-background">
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
@@ -119,6 +113,7 @@ export default function Component() {
         onAccept={handleTermsAccept}
         onClose={() => setIsTermsModalOpen(false)}
       />
+
       {selectedProduct && (
         <ProductDetailsModal
           isOpen={isProductModalOpen}
