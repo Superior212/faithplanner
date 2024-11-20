@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 export default function HeroSection() {
   const router = useRouter();
 
-  const handleShopNowClick = () => {
-    router.push("/products");
-  };
+  // const handleShopNowClick = () => {
+  //   router.push("/products");
+  // };
 
   return (
     <div className="min-h-[42vh] sm:min-h-[70vh] md:min-h-[80vh] flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8">
