@@ -46,8 +46,10 @@ export const products: Product[] = [
     name: "Buy all planners for 2025 and save.",
     price: 79.99,
     description: "Great for a Holiday Gift",
-    image: "/all.jpg",
+    image: "/Giftbox.png",
     category: "weekly",
     featured: true,
   },
 ];
+
+export const gallery = [{ image: "/Mockup1.png" }, { image: "/Mockup2.png" }, { image: "/Mockup1.png" }, { image: "/Mockup2.png" }];

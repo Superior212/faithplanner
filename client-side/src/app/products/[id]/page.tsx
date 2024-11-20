@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import {  Star } from "lucide-react";
-import { products } from "@/data/products";
+import { Star } from "lucide-react";
+import { gallery, products } from "@/data/products";
 import Navbar from "@/components/Navbar";
 import React from "react";
 import AddToCartButton from "./AddToCartButton";
@@ -47,12 +47,12 @@ export default async function ProductDetail({ params }: PageProps) {
                 />
               </div>
               <div className="grid grid-cols-4 gap-4">
-                {[...Array(4)].map((_, i) => (
+                {gallery.map((image, i) => (
                   <div
                     key={i}
                     className="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden">
                     <Image
-                      src={product.image}
+                      src={image.image}
                       alt={`${product.name} view ${i + 1}`}
                       width={100}
                       height={100}
@@ -96,11 +96,11 @@ export default async function ProductDetail({ params }: PageProps) {
                   Features
                 </h3>
                 <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                  <li>Premium quality paper</li>
-                  <li>Durable hardcover binding</li>
-                  <li>Monthly and weekly spreads</li>
-                  <li>Goal tracking sections</li>
-                  <li>Note-taking pages</li>
+                  <li>Daily Prompts</li>
+                  <li>Weekly Bible Verses</li>
+                  <li>God’s Time Section</li>
+                  <li>Comprehensive Planning</li>
+                  <li>Stewardship Tracker</li>
                 </ul>
               </div>
             </div>
