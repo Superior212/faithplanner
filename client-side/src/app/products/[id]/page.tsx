@@ -1,33 +1,36 @@
+"use client";
+
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import { gallery, products } from "@/data/products";
 import Navbar from "@/components/Navbar";
-import React from "react";
+import React, { useState, use } from "react";
 import AddToCartButton from "./AddToCartButton";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateStaticParams() {
-  return products.map((product) => ({
-    id: product.id,
-  }));
-}
-
-export default async function ProductDetail({ params }: PageProps) {
-  const { id } = await params;
+export default function ProductDetail({ params }: PageProps) {
+  const { id } = use(params);
+  const [currentImage, setCurrentImage] = useState("");
   const product = products.find((p) => p.id === id);
 
   if (!product) {
     notFound();
   }
 
+  React.useEffect(() => {
+    if (!currentImage && product) {
+      setCurrentImage(product.image);
+    }
+  }, [product, currentImage]);
+
   const relatedProducts = products.filter((p) => p.id !== id).slice(0, 4);
-  const howToUseRef = React.createRef<HTMLDivElement>();
-  const homeRef = React.createRef<HTMLDivElement>();
+  const howToUseRef = React.useRef<HTMLDivElement>(null);
+  const homeRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <>
@@ -39,27 +42,32 @@ export default async function ProductDetail({ params }: PageProps) {
             <div className="space-y-4">
               <div className="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden">
                 <Image
-                  src={product.image}
+                  src={currentImage || product.image}
                   alt={product.name}
                   width={500}
                   height={500}
-                  className="w-full h-full object-cover"
+                  className="w-full h-[450px] object-cover"
                 />
               </div>
               <div className="grid grid-cols-4 gap-4">
-                {gallery.map((image, i) => (
-                  <div
-                    key={i}
-                    className="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden">
-                    <Image
-                      src={image.image}
-                      alt={`${product.name} view ${i + 1}`}
-                      width={100}
-                      height={100}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
+                {[product.image, ...gallery.map((g) => g.image)].map(
+                  (image, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentImage(image)}
+                      className={`aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden ${
+                        currentImage === image ? "ring-2 ring-indigo-500" : ""
+                      }`}>
+                      <Image
+                        src={image}
+                        alt={`${product.name} view ${i + 1}`}
+                        width={100}
+                        height={100}
+                        className="w-full h-[100px] object-cover"
+                      />
+                    </button>
+                  )
+                )}
               </div>
             </div>
 
@@ -91,14 +99,14 @@ export default async function ProductDetail({ params }: PageProps) {
               <AddToCartButton product={product} />
 
               {/* Product Features */}
-              <div className="border-t border-gray-200 pt-6">
+              <div className="border-t border-gray-200 pt-6 mt-6">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Features
                 </h3>
                 <ul className="list-disc pl-5 space-y-2 text-gray-600">
                   <li>Daily Prompts</li>
                   <li>Weekly Bible Verses</li>
-                  <li>God’s Time Section</li>
+                  <li>God&apos;s Time Section</li>
                   <li>Comprehensive Planning</li>
                   <li>Stewardship Tracker</li>
                 </ul>
@@ -111,7 +119,7 @@ export default async function ProductDetail({ params }: PageProps) {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               You may also like
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
                 <Link
                   key={relatedProduct.id}
@@ -121,9 +129,9 @@ export default async function ProductDetail({ params }: PageProps) {
                     <Image
                       src={relatedProduct.image}
                       alt={relatedProduct.name}
-                      width={100}
-                      height={100}
-                      className="w-full h-48 object-cover"
+                      width={300}
+                      height={300}
+                      className="w-full h-[300px] object-cover"
                     />
                   </div>
                   <div className="p-4">

@@ -16,6 +16,7 @@ interface Product {
   price: number;
   image: string;
   featured: boolean;
+  teaser?: number;
 }
 
 export default function Component() {
@@ -89,9 +90,22 @@ export default function Component() {
                   {product.description}
                 </p>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-2xl font-bold text-primary">
-                    ${product.price.toFixed(2)}
-                  </span>
+                  <div className="flex flex-col">
+                    {product.teaser ? (
+                      <>
+                        <span className="text-sm text-muted-foreground line-through">
+                          ${product.price.toFixed(2)}
+                        </span>
+                        <span className="text-2xl font-bold text-primary">
+                          ${product.teaser}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-2xl font-bold text-primary">
+                        ${product.price}
+                      </span>
+                    )}
+                  </div>
                   <Button>View Details</Button>
                 </div>
               </div>
