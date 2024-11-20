@@ -226,6 +226,7 @@ export default function ProductDetailsModal({
     if (name === "name" || name === "email") {
       setFormData((prev) => ({ ...prev, [name]: value }));
     } else if (name.startsWith("churchDetails.")) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, field, subfield] = name.split(".") as [
         string,
         keyof FormData["churchDetails"],
@@ -432,7 +433,7 @@ export default function ProductDetailsModal({
                           id="church-not-listed"
                         />
                         <Label htmlFor="church-not-listed">
-                          No, I don't see my church
+                          No, I don&apos;t see my church
                         </Label>
                       </div>
                     </RadioGroup>
