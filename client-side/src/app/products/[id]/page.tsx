@@ -90,8 +90,21 @@ export default function ProductDetail({ params }: PageProps) {
                 <span className="ml-2 text-sm text-gray-600">(5 reviews)</span>
               </div>
 
-              <div className="text-3xl font-bold text-indigo-600 mb-6">
-                ${product.price}
+              <div className="flex flex-col mb-6">
+                {product.teaser ? (
+                  <>
+                    <span className="text-xl text-muted-foreground line-through">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <span className="text-3xl font-bold text-indigo-600">
+                      ${product.teaser}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-3xl font-bold text-indigo-600">
+                    ${product.price}
+                  </span>
+                )}
               </div>
 
               <p className="text-gray-600 mb-6">{product.description}</p>

@@ -17,6 +17,7 @@ export default function Cart() {
 
   const howToUseRef = React.createRef<HTMLDivElement>();
   const homeRef = React.createRef<HTMLDivElement>();
+
   return (
     <>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
@@ -46,9 +47,22 @@ export default function Cart() {
                         <h3 className="text-lg font-semibold text-gray-900">
                           {item.product.name}
                         </h3>
-                        <p className="text-gray-600 mt-1">
-                          ${item.product.price}
-                        </p>
+                        <div className="mt-1">
+                          {item.product.teaser ? (
+                            <>
+                              <p className="text-sm text-gray-500 line-through">
+                                ${item.product.price.toFixed(2)}
+                              </p>
+                              <p className="text-lg text-indigo-600 font-semibold">
+                                ${item.product.teaser}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="text-gray-600">
+                              ${item.product.price.toFixed(2)}
+                            </p>
+                          )}
+                        </div>
                         <div className="flex items-center mt-2">
                           <select
                             value={item.quantity}
@@ -74,7 +88,11 @@ export default function Cart() {
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-semibold text-gray-900">
-                          ${(item.product.price * item.quantity).toFixed(2)}
+                          $
+                          {(
+                            (item.product.teaser || item.product.price) *
+                            item.quantity
+                          ).toFixed(2)}
                         </p>
                       </div>
                     </div>
