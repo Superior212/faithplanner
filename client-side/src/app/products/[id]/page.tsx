@@ -1,7 +1,4 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -25,7 +22,6 @@ export default function ProductDetail({ params }: PageProps) {
     notFound();
   }
 
-  // Initialize currentImage with product image if it hasn't been set
   React.useEffect(() => {
     if (!currentImage && product) {
       setCurrentImage(product.image);
@@ -50,10 +46,10 @@ export default function ProductDetail({ params }: PageProps) {
                   alt={product.name}
                   width={500}
                   height={500}
-                  className="w-full h-full object-cover"
+                  className="w-full h-[450px] object-cover"
                 />
               </div>
-              <div className="grid grid-cols-4 gap-10">
+              <div className="grid grid-cols-4 gap-4">
                 {[product.image, ...gallery.map((g) => g.image)].map(
                   (image, i) => (
                     <button
@@ -67,7 +63,7 @@ export default function ProductDetail({ params }: PageProps) {
                         alt={`${product.name} view ${i + 1}`}
                         width={100}
                         height={100}
-                        className="w-full h-full object-cover"
+                        className="w-full h-[100px] object-cover"
                       />
                     </button>
                   )
@@ -103,7 +99,7 @@ export default function ProductDetail({ params }: PageProps) {
               <AddToCartButton product={product} />
 
               {/* Product Features */}
-              <div className="border-t border-gray-200 pt-6">
+              <div className="border-t border-gray-200 pt-6 mt-6">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Features
                 </h3>
@@ -123,7 +119,7 @@ export default function ProductDetail({ params }: PageProps) {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               You may also like
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
                 <Link
                   key={relatedProduct.id}
@@ -133,9 +129,9 @@ export default function ProductDetail({ params }: PageProps) {
                     <Image
                       src={relatedProduct.image}
                       alt={relatedProduct.name}
-                      width={100}
-                      height={100}
-                      className="w-full h-48 object-cover"
+                      width={300}
+                      height={300}
+                      className="w-full h-[300px] object-cover"
                     />
                   </div>
                   <div className="p-4">

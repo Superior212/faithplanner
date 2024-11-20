@@ -1,21 +1,14 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { products } from "@/data/products";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
 
+// Define the Product interface based on the structure of your products
 interface Product {
   id: string;
   name: string;
@@ -28,7 +21,7 @@ interface Product {
 
 export default function Component() {
   const router = useRouter();
-  const [isDonationDialogOpen, setIsDonationDialogOpen] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -38,18 +31,7 @@ export default function Component() {
 
   const handleOpenDialog = (product: Product) => {
     setSelectedProduct(product);
-    setIsDonationDialogOpen(true);
-  };
-
-  const handleDonationChoice = (wantsDonation: boolean) => {
-    setIsDonationDialogOpen(false);
-    if (wantsDonation) {
-      setIsTermsModalOpen(true);
-    } else {
-      console.log('Selected Product:', selectedProduct);
-      console.log('Routing Path:', `/products/${selectedProduct?.id}`);
-      router.push(`/products/${encodeURIComponent(selectedProduct!.id)}`);
-    }
+    setIsTermsModalOpen(true);
   };
 
   const handleTermsAccept = () => {
@@ -57,23 +39,22 @@ export default function Component() {
     setIsProductModalOpen(true);
   };
 
-  const handleProductDetailsClose = useCallback(() => {
-    console.log("handleProductDetailsClose called");
-    setIsProductModalOpen(false);
-  }, []);
+  // const handleProductDetailsClose = () => {
+  //   setIsProductModalOpen(false);
+  //   if (selectedProduct) {
+  //     router.push(`/products/${encodeURIComponent(selectedProduct.id)}`);
+  //   }
+  // };
 
-  const handleFormSubmit = useCallback(() => {
-    console.log("Form submitted successfully");
-    if (selectedProduct) {
-      console.log(
-        "Routing to:",
-        `/products/${encodeURIComponent(selectedProduct.id)}`
-      );
+  const handleProductDetailsClose = () => {
+    setIsProductModalOpen(false);
+    if (isFormSubmitted && selectedProduct) {
       router.push(`/products/${encodeURIComponent(selectedProduct.id)}`);
     } else {
-      console.log("No selected product, cannot route");
+      router.push("/"); // Redirect to home page if form not submitted
     }
-  }, [selectedProduct, router]);
+    setIsFormSubmitted(false); // Reset the form submission state
+  };
 
   return (
     <main className="bg-background">
@@ -83,8 +64,8 @@ export default function Component() {
         </h2>
         <p className="sm:text-xl text-center text-muted-foreground mb-12">
           Finish 2024 strong with the Inspiring Faith 2024 Teaser Version!
-          Packed with everything in our 2025 edition, it&apos;s just what you need to
-          stay organized and end the year with purpose.
+          Packed with everything in our 2025 edition, it&apos;s just what you
+          need to stay organized and end the year with purpose.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredProducts.map((product) => (
@@ -133,27 +114,6 @@ export default function Component() {
         </div>
       </div>
 
-      <Dialog
-        open={isDonationDialogOpen}
-        onOpenChange={setIsDonationDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]  overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Receive Donations</DialogTitle>
-            <DialogDescription>
-              Would you like to receive donations for your organization?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => handleDonationChoice(true)}>Yes</Button>
-            <Button
-              variant="outline"
-              onClick={() => handleDonationChoice(false)}>
-              No
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       <TermsAndConditionsModal
         isOpen={isTermsModalOpen}
         onAccept={handleTermsAccept}
@@ -163,7 +123,7 @@ export default function Component() {
         <ProductDetailsModal
           isOpen={isProductModalOpen}
           onClose={handleProductDetailsClose}
-          onFormSubmit={handleFormSubmit}
+          onFormSubmit={() => setIsFormSubmitted(true)}
           product={selectedProduct}
         />
       )}
