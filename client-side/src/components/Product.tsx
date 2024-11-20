@@ -46,6 +46,8 @@ export default function Component() {
     if (wantsDonation) {
       setIsTermsModalOpen(true);
     } else {
+      console.log('Selected Product:', selectedProduct);
+      console.log('Routing Path:', `/products/${selectedProduct?.id}`);
       router.push(`/products/${encodeURIComponent(selectedProduct!.id)}`);
     }
   };
@@ -81,8 +83,8 @@ export default function Component() {
         </h2>
         <p className="sm:text-xl text-center text-muted-foreground mb-12">
           Finish 2024 strong with the Inspiring Faith 2024 Teaser Version!
-          Packed with everything in our 2025 edition, it&apos;s just what you
-          need to stay organized and end the year with purpose.
+          Packed with everything in our 2025 edition, it&apos;s just what you need to
+          stay organized and end the year with purpose.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredProducts.map((product) => (
