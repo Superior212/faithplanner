@@ -15,6 +15,7 @@ interface PageProps {
 
 export default function ProductDetail({ params }: PageProps) {
   const { id } = use(params);
+  
   const [currentImage, setCurrentImage] = useState("");
   const product = products.find((p) => p.id === id);
 

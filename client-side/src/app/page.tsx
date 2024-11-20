@@ -14,6 +14,8 @@ import { useRef } from "react";
 export default function Home() {
   const homeRef = useRef(null);
   const howToUseRef = useRef(null);
+
+  
   return (
     <div>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
