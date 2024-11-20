@@ -1,21 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import ProductDetailsModal from "./Modals/ProductDetailsModal";
-import { products } from "@/lib/data";
-import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
+import { useRouter } from "next/navigation";
+
 
 export default function HeroSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const router = useRouter();
 
   const handleShopNowClick = () => {
-    setIsTermsModalOpen(true);
-  };
-
-  const handleTermsAccept = () => {
-    setIsTermsModalOpen(false);
-    setIsModalOpen(true);
+    router.push("/products");
   };
 
   return (
@@ -47,18 +39,6 @@ export default function HeroSection() {
           </button>
         </div>
       </div>
-
-      <TermsAndConditionsModal
-        isOpen={isTermsModalOpen}
-        onAccept={handleTermsAccept}
-        onClose={() => setIsTermsModalOpen(false)}
-      />
-
-      <ProductDetailsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        product={products[0]}
-      />
     </div>
   );
 }

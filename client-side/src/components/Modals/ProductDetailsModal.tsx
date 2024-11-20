@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+// import { useRouter } from "next/navigation";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 import {
@@ -28,10 +29,12 @@ const scrollableContentClass =
   "scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200";
 
 interface Product {
-  id: number;
-  title: string;
+  id: string;
+  name: string;
+  description: string;
+  price: number;
   image: string;
-  color: string;
+  featured: boolean;
 }
 
 interface ICountry {
@@ -88,13 +91,17 @@ const churchesInUS = [
 export default function ProductDetailsModal({
   isOpen,
   onClose,
+  onFormSubmit,
   product,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  onFormSubmit: () => void;
   product: Product;
 }) {
-  const initialFormData: FormData = {
+  // const router = useRouter();
+  const { toast } = useToast();
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     heardFrom: {
@@ -116,16 +123,12 @@ export default function ProductDetailsModal({
         number: "",
       },
     },
-  };
-
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [countries, setCountries] = useState<ICountry[]>([]);
   const [states, setStates] = useState<IState[]>([]);
   const [cities, setCities] = useState<ICity[]>([]);
-  const apiUrl = "https://faithplanner-server.vercel.app/api";
-  const { toast } = useToast();
 
   useEffect(() => {
     setCountries(Country.getAllCountries());
@@ -191,19 +194,23 @@ export default function ProductDetailsModal({
         throw new Error("Please fill in all required fields");
       }
 
-      await axios.post(`${apiUrl}/details`, submissionData);
+      await axios.post(
+        "https://faithplanner-server.vercel.app/api/details",
+        submissionData
+      );
       console.log("Form submitted:", submissionData);
       toast({
         title: "Success",
         description: "Your information has been submitted successfully.",
         duration: 5000,
       });
-      setFormData(initialFormData);
+
+      onFormSubmit(); // Call this function when form is successfully submitted
 
       if (formData.heardFrom.source === "church" && formData.addForDonations) {
         setShowConfirmation(true);
       } else {
-        redirectToPurchase();
+        onClose(); // Close the modal after successful submission
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -221,10 +228,10 @@ export default function ProductDetailsModal({
     }
   };
 
-  const redirectToPurchase = () => {
-    window.location.href =
-      "https://www.lulu.com/shop/a-remnant-company/inspiring-faith-planner-and-journal/paperback/product-jez8d4v.html";
-  };
+  // const redirectToProductPage = () => {
+  //   router.push(`/products/${encodeURIComponent(product.id)}`);
+  //   onClose();
+  // };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -368,7 +375,7 @@ export default function ProductDetailsModal({
           <>
             <DialogHeader>
               <DialogTitle className="text-sm p-2">
-                Shop Now: {product.title}
+                Shop Now: {product.name}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -660,8 +667,10 @@ export default function ProductDetailsModal({
               </p>
             </div>
             <DialogFooter>
-              <Button onClick={redirectToPurchase} className="w-full">
-                Continue to Purchase
+              <Button onClick={onClose} className="w-full">
+                {" "}
+                {/* Updated onClick handler */}
+                Continue to Product Page
               </Button>
             </DialogFooter>
           </>
