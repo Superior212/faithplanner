@@ -1,4 +1,7 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -107,7 +110,7 @@ export default function ProductDetail({ params }: PageProps) {
                 <ul className="list-disc pl-5 space-y-2 text-gray-600">
                   <li>Daily Prompts</li>
                   <li>Weekly Bible Verses</li>
-                  <li>God's Time Section</li>
+                  <li>God&apos;s Time Section</li>
                   <li>Comprehensive Planning</li>
                   <li>Stewardship Tracker</li>
                 </ul>

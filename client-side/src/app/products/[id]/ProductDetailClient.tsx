@@ -10,14 +10,14 @@ import Navbar from "@/components/Navbar";
 import React, { useState, useEffect, useRef } from "react";
 import AddToCartButton from "./AddToCartButton";
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  teaser?: number;
-}
+// interface Product {
+//   id: string;
+//   name: string;
+//   description: string;
+//   price: number;
+//   image: string;
+//   teaser?: number;
+// }
 
 interface PageProps {
   params: { id: string };
