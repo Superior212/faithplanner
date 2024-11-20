@@ -7,6 +7,8 @@ import { products } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
+import DonationPreferenceModal from "./Modals/Modals/DonationPreferenceModal";
+
 
 interface Product {
   id: string;
@@ -21,6 +23,7 @@ interface Product {
 export default function ProductComponent() {
   const router = useRouter();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -31,7 +34,19 @@ export default function ProductComponent() {
 
   const handleOpenDialog = (product: Product) => {
     setSelectedProduct(product);
+    setIsDonationModalOpen(true);
+  };
+
+  const handleDonationAccept = () => {
+    setIsDonationModalOpen(false);
     setIsTermsModalOpen(true);
+  };
+
+  const handleDonationDecline = () => {
+    setIsDonationModalOpen(false);
+    if (selectedProduct) {
+      router.push(`/products/${selectedProduct.id}`);
+    }
   };
 
   const handleTermsAccept = () => {
@@ -42,7 +57,6 @@ export default function ProductComponent() {
   const handleProductDetailsClose = () => {
     setIsProductModalOpen(false);
     if (isFormSubmitted && selectedProduct) {
-      // Explicitly log for debugging
       console.log("Routing to:", `/products/${selectedProduct.id}`);
       router.push(`/products/${selectedProduct.id}`);
     } else {
@@ -50,6 +64,7 @@ export default function ProductComponent() {
     }
     setIsFormSubmitted(false);
   };
+
   return (
     <main className="bg-background">
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
@@ -107,6 +122,12 @@ export default function ProductComponent() {
           ))}
         </div>
       </div>
+
+      <DonationPreferenceModal
+        isOpen={isDonationModalOpen}
+        onAccept={handleDonationAccept}
+        onDecline={handleDonationDecline}
+      />
 
       <TermsAndConditionsModal
         isOpen={isTermsModalOpen}
