@@ -73,8 +73,8 @@ function DonationModal({
         <DialogHeader>
           <DialogTitle>Get Your Donation</DialogTitle>
           <DialogDescription>
-            Fill out the form below to receive your donation for supporting our
-            mission.
+            Fill out this form to have a donation given to a church or ministry
+            of your choice.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">

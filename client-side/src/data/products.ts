@@ -57,7 +57,7 @@ export const products: Product[] = [
 ];
 
 export const gallery = [
-  { image: "/Mockup1.png" },
-  { image: "/Mockup2.png" },
+  { image: "/mockup1.jpeg" },
+  { image: "/mockup2.jpeg" },
   { image: "/Mockup1.png" },
 ];
