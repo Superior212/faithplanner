@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import { useRouter } from "next/navigation";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 import {
@@ -99,7 +98,6 @@ export default function ProductDetailsModal({
   onFormSubmit: () => void;
   product: Product;
 }) {
-  // const router = useRouter();
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -198,20 +196,15 @@ export default function ProductDetailsModal({
         "https://faithplanner-server.vercel.app/api/details",
         submissionData
       );
-      console.log("Form submitted:", submissionData);
+      // console.log("Form submitted:", submissionData);
       toast({
         title: "Success",
         description: "Your information has been submitted successfully.",
         duration: 5000,
       });
 
-      onFormSubmit(); // Call this function when form is successfully submitted
-
-      if (formData.heardFrom.source === "church" && formData.addForDonations) {
-        setShowConfirmation(true);
-      } else {
-        onClose(); // Close the modal after successful submission
-      }
+      onFormSubmit();
+      setShowConfirmation(true);
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
@@ -228,17 +221,11 @@ export default function ProductDetailsModal({
     }
   };
 
-  // const redirectToProductPage = () => {
-  //   router.push(`/products/${encodeURIComponent(product.id)}`);
-  //   onClose();
-  // };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "name" || name === "email") {
       setFormData((prev) => ({ ...prev, [name]: value }));
     } else if (name.startsWith("churchDetails.")) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, field, subfield] = name.split(".") as [
         string,
         keyof FormData["churchDetails"],
@@ -364,6 +351,11 @@ export default function ProductDetailsModal({
     }));
   };
 
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    onClose();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -440,7 +432,7 @@ export default function ProductDetailsModal({
                           id="church-not-listed"
                         />
                         <Label htmlFor="church-not-listed">
-                          No, I don&apos;t see my church
+                          No, I don't see my church
                         </Label>
                       </div>
                     </RadioGroup>
@@ -661,15 +653,11 @@ export default function ProductDetailsModal({
             </DialogHeader>
             <div className="py-4">
               <p>
-                We will contact them and discuss the process of registration but
-                don&apos;t worry you can continue to order and we will track
-                this purchase to apply a donation.
+                Thank you for your information. Your order is being processed.
               </p>
             </div>
             <DialogFooter>
-              <Button onClick={onClose} className="w-full">
-                {" "}
-                {/* Updated onClick handler */}
+              <Button onClick={handleCloseConfirmation} className="w-full">
                 Continue to Product Page
               </Button>
             </DialogFooter>
