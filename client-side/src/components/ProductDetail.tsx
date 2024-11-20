@@ -9,12 +9,9 @@ import Navbar from "@/components/Navbar";
 import React, { useState } from "react";
 import AddToCartButton from "@/app/products/[id]/AddToCartButton";
 
-// import AddToCartButton from "./AddToCartButton";
-
 interface PageProps {
   params: { id: string };
 }
-
 
 const ProductDetail: React.FC<PageProps> = ({ params }) => {
   const { id } = params;
@@ -92,9 +89,21 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
                 </div>
                 <span className="ml-2 text-sm text-gray-600">(5 reviews)</span>
               </div>
-
-              <div className="text-3xl font-bold text-indigo-600 mb-6">
-                ${product.price}
+              <div className="flex flex-col mb-6">
+                {product.teaser ? (
+                  <>
+                    <span className="text-xl text-muted-foreground line-through">
+                      ${product.price}
+                    </span>
+                    <span className="text-3xl font-bold text-indigo-600">
+                      ${product.teaser}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-3xl font-bold text-indigo-600">
+                    ${product.price}
+                  </span>
+                )}
               </div>
 
               <p className="text-gray-600 mb-6">{product.description}</p>

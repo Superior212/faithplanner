@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
@@ -31,11 +32,11 @@ export default function HeroSection() {
         </div>
 
         <div className="mt-8 sm:mt-12 mb-8 sm:mb-16">
-          <button
-            onClick={handleShopNowClick}
-            className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-8 sm:px-12 rounded-full text-base sm:text-lg transition-all duration-300 hover:bg-[#a8d617] hover:shadow-lg">
-            Shop Now
-          </button>
+          <Link href="/products">
+            <button className="bg-[#BFF01A] text-[#1c1c1c] font-semibold py-2 px-8 sm:px-12 rounded-full text-base sm:text-lg transition-all duration-300 hover:bg-[#a8d617] hover:shadow-lg">
+              Shop Now
+            </button>
+          </Link>
         </div>
       </div>
     </div>
