@@ -115,13 +115,13 @@ const createUserDetails = async (req, res) => {
         }
 
         // Check for duplicate email
-        const existingUser = await UserDetails.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({
-                success: false,
-                message: "This email is already registered"
-            });
-        }
+        // const existingUser = await UserDetails.findOne({ email });
+        // if (existingUser) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: "This email is already registered"
+        //     });
+        // }
 
         // Create new user details
         const userDetails = new UserDetails({
