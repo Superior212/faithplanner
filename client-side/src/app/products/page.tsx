@@ -42,12 +42,18 @@ export default function Products() {
                     {product.description}
                   </p>
                   <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xl font-bold text-primary">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    {/* <span className="text-sm text-muted-foreground capitalize">
-                      {product.category}
-                    </span> */}
+                    {product.teaser ? (
+                      <>
+                        <p className="text-sm text-gray-500 line-through">
+                          ${product.price}
+                        </p>
+                        <p className="text-lg text-indigo-600 font-semibold">
+                          ${product.teaser}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-gray-600">${product.price}</p>
+                    )}
                   </div>
                 </div>
               </Link>
