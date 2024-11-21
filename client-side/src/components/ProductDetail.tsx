@@ -46,7 +46,7 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
                   alt={product.name}
                   width={500}
                   height={500}
-                  className="w-full h-[450px] object-cover"
+                  className="w-full sm:h-[450px] object-cover"
                 />
               </div>
               <div className="grid grid-cols-4 gap-4">
