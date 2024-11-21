@@ -74,7 +74,7 @@ function DonationModal({
           <DialogTitle>Get Your Donation</DialogTitle>
           <DialogDescription>
             Fill out this form to have a donation given to a church or ministry
-            of your choice.
+            of your choice from this purchase.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
