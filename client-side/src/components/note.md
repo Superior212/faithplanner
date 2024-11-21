@@ -1,90 +1,62 @@
-"use client";
+<!-- "use client";
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star } from "lucide-react";
 import { gallery, products } from "@/data/products";
 import Navbar from "@/components/Navbar";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import AddToCartButton from "@/app/products/[id]/AddToCartButton";
 import Slider from "react-slick";
-// import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from "react-responsive";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Button } from "@/components/ui/button";
 
 interface PageProps {
   params: { id: string };
 }
 
-interface ArrowProps {
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: () => void;
-}
-function SampleNextArrow({ className, style, onClick }: ArrowProps) {
-  return (
-    <Button
-      className={`${className} !absolute right-2 top-1/2 -translate-y-1/2 z-10`}
-      style={{ ...style }}
-      onClick={onClick}
-      variant="outline"
-      size="icon">
-      <ChevronRight className="h-4 w-4" />
-    </Button>
-  );
-}
-
-function SamplePrevArrow({ className, style, onClick }: ArrowProps) {
-  return (
-    <Button
-      className={`${className} !absolute left-2 top-1/2 -translate-y-1/2 z-10`}
-      style={{ ...style }}
-      onClick={onClick}
-      variant="outline"
-      size="icon">
-      <ChevronLeft className="h-4 w-4" />
-    </Button>
-  );
+interface ProductImageGalleryProps {
+  product: {
+    name: string;
+    image: string;
+  };
+  gallery: Array<{ image: string }>;
 }
 
 const ProductDetail: React.FC<PageProps> = ({ params }) => {
   const { id } = params;
+  const [currentImage, setCurrentImage] = useState<string>("");
   const product = products.find((p) => p.id === id);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const sliderRef = useRef<Slider>(null);
 
   if (!product) {
     notFound();
   }
 
+  React.useEffect(() => {
+    if (!currentImage && product) {
+      setCurrentImage(product.image);
+    }
+  }, [product, currentImage]);
+
   const relatedProducts = products.filter((p) => p.id !== id).slice(0, 4);
   const howToUseRef = React.useRef<HTMLDivElement>(null);
   const homeRef = React.useRef<HTMLDivElement>(null);
 
-  // const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  const [currentImage, setCurrentImage] = useState(product.image);
+  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
 
   const allImages = [product.image, ...gallery.map((g) => g.image)];
 
-  const mainSettings = {
-    dots: false,
+  const settings = {
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
-    beforeChange: (_current: number, next: number) => setCurrentSlide(next),
-  };
-
-  const thumbnailSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    focusOnSelect: true,
   };
 
   return (
@@ -96,41 +68,48 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
             {/* Product Image */}
             <div className="space-y-4">
               <div className="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden">
-                <Slider {...mainSettings} ref={sliderRef}>
+                <Image
+                  src={currentImage || product.image}
+                  alt={product.name}
+                  width={500}
+                  height={500}
+                  className="w-full sm:h-[450px] object-cover"
+                />
+              </div>
+              {isMobile ? (
+                <Slider {...settings}>
                   {allImages.map((image, i) => (
-                    <div key={i} className="aspect-w-1 aspect-h-1">
+                    <div key={i} className="px-1">
                       <Image
                         src={image}
                         alt={`${product.name} view ${i + 1}`}
-                        width={500}
-                        height={500}
-                        className="w-full sm:h-[450px] object-cover"
+                        width={100}
+                        height={100}
+                        className="w-full h-[100px] object-cover rounded-lg"
                       />
                     </div>
                   ))}
                 </Slider>
-              </div>
-              <div className="hidden sm:block">
-                <Slider {...thumbnailSettings}>
+              ) : (
+                <div className="grid grid-cols-4 gap-4">
                   {allImages.map((image, i) => (
-                    <div key={i} className="px-1">
-                      <button
-                        onClick={() => sliderRef.current?.slickGoTo(i)}
-                        className={`aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden ${
-                          currentSlide === i ? "ring-2 ring-primary" : ""
-                        }`}>
-                        <Image
-                          src={image}
-                          alt={`${product.name} thumbnail ${i + 1}`}
-                          width={100}
-                          height={100}
-                          className="w-full h-[100px] object-cover rounded-lg"
-                        />
-                      </button>
-                    </div>
+                    <button
+                      key={i}
+                      onClick={() => setCurrentImage(image)}
+                      className={`aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden ${
+                        currentImage === image ? "ring-2 ring-primary" : ""
+                      }`}>
+                      <Image
+                        src={image}
+                        alt={`${product.name} view ${i + 1}`}
+                        width={100}
+                        height={100}
+                        className="w-full h-[100px] object-cover"
+                      />
+                    </button>
                   ))}
-                </Slider>
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Product Info */}
@@ -227,3 +206,31 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
 };
 
 export default ProductDetail;
+
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <Button
+      className={`${className} !absolute right-0 top-1/2 -translate-y-1/2 z-10`}
+      style={{ ...style }}
+      onClick={onClick}
+      variant="outline"
+      size="icon">
+      <ChevronRight className="h-4 w-4" />
+    </Button>
+  );
+}
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <Button
+      className={`${className} !absolute left-0 top-1/2 -translate-y-1/2 z-10`}
+      style={{ ...style }}
+      onClick={onClick}
+      variant="outline"
+      size="icon">
+      <ChevronLeft className="h-4 w-4" />
+    </Button>
+  );
+} -->
