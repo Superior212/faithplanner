@@ -9,7 +9,6 @@ import Navbar from "@/components/Navbar";
 import React, { useState, useRef } from "react";
 import AddToCartButton from "@/app/products/[id]/AddToCartButton";
 import Slider from "react-slick";
-// import { useMediaQuery } from "react-responsive";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ interface ArrowProps {
   style?: React.CSSProperties;
   onClick?: () => void;
 }
+
 function SampleNextArrow({ className, style, onClick }: ArrowProps) {
   return (
     <Button
@@ -63,8 +63,6 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
   const howToUseRef = React.useRef<HTMLDivElement>(null);
   const homeRef = React.useRef<HTMLDivElement>(null);
 
-  // const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
-
   const allImages = [product.image, ...gallery.map((g) => g.image)];
 
   const mainSettings = {
@@ -76,6 +74,14 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     beforeChange: (_current: number, next: number) => setCurrentSlide(next),
+    responsive: [
+      {
+        breakpoint: 640,
+        settings: {
+          arrows: false,
+        },
+      },
+    ],
   };
 
   const thumbnailSettings = {
@@ -85,6 +91,14 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
     slidesToShow: 4,
     slidesToScroll: 1,
     focusOnSelect: true,
+    responsive: [
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+    ],
   };
 
   return (
@@ -99,13 +113,15 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
                 <Slider {...mainSettings} ref={sliderRef}>
                   {allImages.map((image, i) => (
                     <div key={i} className="aspect-w-1 aspect-h-1">
-                      <Image
-                        src={image}
-                        alt={`${product.name} view ${i + 1}`}
-                        width={500}
-                        height={500}
-                        className="w-full sm:h-[450px] object-cover"
-                      />
+                      <div className="image-wrapper">
+                        <Image
+                          src={image}
+                          alt={`${product.name} view ${i + 1}`}
+                          width={500}
+                          height={500}
+                          className="w-full sm:h-[450px] object-cover"
+                        />
+                      </div>
                     </div>
                   ))}
                 </Slider>

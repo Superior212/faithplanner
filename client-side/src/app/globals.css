@@ -10,6 +10,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+@media (max-width: 640px) {
+  .image-wrapper {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .image-wrapper img {
+    width: 200%;
+    height: 200%;
+    object-fit: cover;
+    transform-origin: left top;
+    transition: transform 0.3s ease-out;
+  }
+
+  .image-wrapper:active img {
+    transform: scale(1);
+  }
+}
+
+
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
