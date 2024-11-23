@@ -6,6 +6,7 @@ const userRouter = require("./Routes/userRoutes");
 const userDetailsRoutes = require('./Routes/userDetailsRoutes');
 const donationRoutes = require('./Routes/donationRoutes');
 const reviewRoutes = require('./Routes/Reviews');
+const paymentRoutes = require('./Routes/paymentRoutes');
 
 dotenv.config();
 const port = process.env.PORT;
@@ -25,6 +26,8 @@ app.use("/api", userRouter);
 app.use('/api', userDetailsRoutes);
 app.use('/api', donationRoutes);
 app.use('/api', reviewRoutes);
+app.use('/api', paymentRoutes);
+
 
 
 app.get("/", (req, res) => {

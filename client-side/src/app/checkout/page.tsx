@@ -1,27 +1,29 @@
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { Lock } from "lucide-react";
-import PayPalProvider from "./PayPalProvider";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
-import React from "react";
-import Navbar from "@/components/Navbar";
-import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
+import PayPalProvider from "./PayPalProvider";
+import CheckoutForm from "@/components/CheckoutForm";
+import OrderSummary from "@/components/OrderSummary";
+import { FormData } from "@/lib/type";
+import { CartItem } from "@/lib/checkout";
 
-const PayPalButtons = dynamic(
-  () => import("@paypal/react-paypal-js").then((mod) => mod.PayPalButtons),
-  { ssr: false }
-);
-
-export default function Component() {
+export default function CheckoutPage() {
   const router = useRouter();
-  const { items, getTotal, clearCart } = useCartStore();
-  const [formData, setFormData] = useState({
+  const { toast } = useToast();
+  const { items: cartItems, getTotal, clearCart } = useCartStore();
+  const items: CartItem[] = cartItems.map((item) => ({
+    id: item.product.id,
+    product: item.product,
+    name: item.product.name,
+    price: item.product.price,
+    description: item.product.description,
+    quantity: item.quantity,
+    image: item.product.image,
+  }));
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     firstName: "",
     lastName: "",
@@ -32,9 +34,9 @@ export default function Component() {
   });
 
   const subtotal = getTotal();
-  const shipping = items.length > 0 ? 5.99 : 0;
-  const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
+  const shipping = calculateShipping(items);
+  const tax = parseFloat((subtotal * 0.08).toFixed(2));
+  const total = parseFloat((subtotal + shipping + tax).toFixed(2));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -42,60 +44,20 @@ export default function Component() {
       [e.target.name]: e.target.value,
     });
   };
+  // const port = "http://localhost:8000";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-  interface PurchaseUnit {
-    amount: {
-      value: string;
-      breakdown: {
-        item_total: {
-          value: string;
-          currency_code: string;
-        };
-        shipping: {
-          value: string;
-          currency_code: string;
-        };
-        tax_total: {
-          value: string;
-          currency_code: string;
-        };
-      };
-    };
-    items: {
-      name: string;
-      quantity: number;
-      unit_amount: {
-        value: string;
-        currency_code: string;
-      };
-    }[];
-  }
+  
 
-  interface CreateOrderData {
-    purchase_units: PurchaseUnit[];
-  }
-
-  const createOrder = (data: any, actions: any): Promise<string> => {
-    const orderData: CreateOrderData = {
-      purchase_units: [
-        {
-          amount: {
-            value: total.toFixed(2),
-            breakdown: {
-              item_total: {
-                value: subtotal.toFixed(2),
-                currency_code: "USD",
-              },
-              shipping: {
-                value: shipping.toFixed(2),
-                currency_code: "USD",
-              },
-              tax_total: {
-                value: tax.toFixed(2),
-                currency_code: "USD",
-              },
-            },
-          },
+  const createOrder = async (): Promise<string> => {
+    try {
+      console.log("Creating order with total:", total);
+      const response = await fetch(`${apiUrl}/api/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           items: items.map((item) => ({
             name: item.product.name,
             quantity: item.quantity,
@@ -104,21 +66,121 @@ export default function Component() {
               currency_code: "USD",
             },
           })),
-        },
-      ],
-    };
+          amount: {
+            currency_code: "USD",
+            value: total.toFixed(2),
+            breakdown: {
+              item_total: {
+                currency_code: "USD",
+                value: subtotal.toFixed(2),
+              },
+              shipping: {
+                currency_code: "USD",
+                value: shipping.toFixed(2),
+              },
+              tax_total: {
+                currency_code: "USD",
+                value: tax.toFixed(2),
+              },
+            },
+          },
+        }),
+      });
 
-    return actions.order.create(orderData);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+        throw new Error(
+          `Failed to create order: ${errorData.error || response.statusText}`
+        );
+      }
+
+      const orderData = await response.json();
+      console.log("Order created successfully:", orderData);
+      return orderData.orderId;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      handlePaymentError(error);
+      throw error;
+    }
   };
 
-  const onApprove = async (data: any, actions: any) => {
+  const onApprove = async (data: { orderID: string }) => {
     try {
-      // const details = await actions.order.capture();
-      clearCart();
-      router.push("/");
+      console.log("Payment approved. Capturing payment...");
+      console.log("Order ID:", data.orderID);
+      const response = await fetch(`${apiUrl}/api/capture-payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderID: data.orderID,
+        }),
+      });
+
+      const responseData = await response.json();
+      console.log("Payment capture response:", responseData);
+
+      if (!response.ok) {
+        throw new Error(
+          `Payment capture failed: ${responseData.error || response.statusText}`
+        );
+      }
+
+      if (responseData.status === "COMPLETED") {
+        console.log("Payment successful. Clearing cart and redirecting...");
+        // Store order details in localStorage
+        localStorage.setItem(
+          "orderDetails",
+          JSON.stringify({
+            items,
+            subtotal,
+            shipping,
+            tax,
+            total,
+          })
+        );
+        clearCart();
+        toast({
+          title: "Success",
+          description: "Your order has been placed successfully!",
+        });
+        router.push("/order-confirmation");
+      } else {
+        throw new Error(
+          "Payment failed: " + (responseData.error || "Unknown error")
+        );
+      }
     } catch (error) {
       console.error("PayPal payment failed:", error);
+      toast({
+        title: "Payment Failed",
+        description:
+          error instanceof Error
+            ? error.message
+            : "There was an error processing your payment. Please try again.",
+        variant: "destructive",
+      });
     }
+  };
+
+  const handlePaymentError = (error: unknown) => {
+    console.error("Payment error:", error);
+    let errorMessage =
+      "There was an error processing your payment. Please try again.";
+
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (typeof error === "string") {
+      errorMessage = error;
+    }
+
+    toast({
+      title: "Payment Failed",
+      description: errorMessage,
+      variant: "destructive",
+    });
   };
 
   if (items.length === 0) {
@@ -126,12 +188,8 @@ export default function Component() {
     return null;
   }
 
-  const howToUseRef = React.createRef<HTMLDivElement>();
-  const homeRef = React.createRef<HTMLDivElement>();
-
   return (
     <PayPalProvider>
-      <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
       <main className="mt-[4.6rem] sm:mt-20">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -139,212 +197,36 @@ export default function Component() {
               <h1 className="text-3xl font-bold text-gray-900 mb-8">
                 Checkout
               </h1>
-
-              <form className="space-y-6">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                    Contact Information
-                  </h2>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                    Shipping Information
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        htmlFor="firstName"
-                        className="block text-sm font-medium text-gray-700">
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="lastName"
-                        className="block text-sm font-medium text-gray-700">
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label
-                        htmlFor="address"
-                        className="block text-sm font-medium text-gray-700">
-                        Address
-                      </label>
-                      <input
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="city"
-                        className="block text-sm font-medium text-gray-700">
-                        City
-                      </label>
-                      <input
-                        type="text"
-                        id="city"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="state"
-                        className="block text-sm font-medium text-gray-700">
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="zipCode"
-                        className="block text-sm font-medium text-gray-700">
-                        ZIP Code
-                      </label>
-                      <input
-                        type="text"
-                        id="zipCode"
-                        name="zipCode"
-                        value={formData.zipCode}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between mt-8">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Lock className="h-4 w-4 mr-1" />
-                    Secure checkout
-                  </div>
-                  <div className="w-full max-w-md">
-                    <PayPalButtons
-                      createOrder={createOrder}
-                      onApprove={onApprove}
-                      style={{ layout: "horizontal" }}
-                    />
-                  </div>
-                </div>
-              </form>
+              <CheckoutForm
+                formData={formData}
+                handleChange={handleChange}
+                createOrder={createOrder}
+                onApprove={onApprove}
+              />
             </div>
-
             <div>
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  Order Summary
-                </h2>
-                <div className="space-y-4">
-                  {items.map((item) => (
-                    <div
-                      key={item.product.id}
-                      className="flex justify-between py-2">
-                      <div className="flex items-center">
-                        <Image
-                          src={item.product.image}
-                          alt={item.product.name}
-                          height={64}
-                          width={64}
-                          className="w-16 h-16 object-cover rounded"
-                        />
-                        <div className="ml-4">
-                          <p className="text-gray-900">{item.product.name}</p>
-                          <p className="text-gray-600">Qty: {item.quantity}</p>
-                        </div>
-                      </div>
-                      <p className="text-gray-900">
-                        ${(item.product.price * item.quantity).toFixed(2)}
-                      </p>
-                    </div>
-                  ))}
-                  <div className="border-t border-gray-200 pt-4">
-                    <div className="flex justify-between mb-2">
-                      <span className="text-gray-600">Subtotal</span>
-                      <span className="text-gray-900">
-                        ${subtotal.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-gray-600">Shipping</span>
-                      <span className="text-gray-900">
-                        ${shipping.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Tax</span>
-                      <span className="text-gray-900">${tax.toFixed(2)}</span>
-                    </div>
-                  </div>
-                  <div className="border-t border-gray-200 pt-4">
-                    <div className="flex justify-between">
-                      <span className="text-lg font-semibold text-gray-900">
-                        Total
-                      </span>
-                      <span className="text-lg font-semibold text-gray-900">
-                        ${total.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <OrderSummary
+                items={items}
+                subtotal={subtotal}
+                shipping={shipping}
+                tax={tax}
+                total={total}
+              />
             </div>
           </div>
         </div>
       </main>
     </PayPalProvider>
+  );
+}
+
+function calculateShipping(items: CartItem[]): number {
+  const baseShipping = 5.99;
+  const additionalItemCost = 1.5;
+  return parseFloat(
+    (items.length > 0
+      ? baseShipping + (items.length - 1) * additionalItemCost
+      : 0
+    ).toFixed(2)
   );
 }
