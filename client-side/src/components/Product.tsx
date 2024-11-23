@@ -7,7 +7,7 @@ import { products } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import TermsAndConditionsModal from "./Modals/TermsAndConditionsModal";
 import ProductDetailsModal from "./Modals/ProductDetailsModal";
-import DonationPreferenceModal from "./Modals/Modals/DonationPreferenceModal";
+import DonationPreferenceModal from "./Modals/DonationPreferenceModal";
 
 
 interface Product {

@@ -18,33 +18,27 @@ interface PageProps {
 }
 
 interface ArrowProps {
-  className?: string;
-  style?: React.CSSProperties;
   onClick?: () => void;
 }
 
-function SampleNextArrow({ className, style, onClick }: ArrowProps) {
+function CustomNextArrow({ onClick }: ArrowProps) {
   return (
     <Button
-      className={`${className} !absolute right-2 top-1/2 -translate-y-1/2 z-10`}
-      style={{ ...style }}
+      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary hover:bg-primary rounded-full p-2"
       onClick={onClick}
-      variant="outline"
       size="icon">
-      <ChevronRight className="h-4 w-4" />
+      <ChevronRight className="h-6 w-6" />
     </Button>
   );
 }
 
-function SamplePrevArrow({ className, style, onClick }: ArrowProps) {
+function CustomPrevArrow({ onClick }: ArrowProps) {
   return (
     <Button
-      className={`${className} !absolute left-2 top-1/2 -translate-y-1/2 z-10`}
-      style={{ ...style }}
+      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary hover:bg-primarye rounded-full p-2"
       onClick={onClick}
-      variant="outline"
       size="icon">
-      <ChevronLeft className="h-4 w-4" />
+      <ChevronLeft className="h-6 w-6" />
     </Button>
   );
 }
@@ -71,17 +65,9 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
     beforeChange: (_current: number, next: number) => setCurrentSlide(next),
-    responsive: [
-      {
-        breakpoint: 640,
-        settings: {
-          arrows: false,
-        },
-      },
-    ],
   };
 
   const thumbnailSettings = {
@@ -109,7 +95,7 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Product Image */}
             <div className="space-y-4">
-              <div className="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden">
+              <div className="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden relative">
                 <Slider {...mainSettings} ref={sliderRef}>
                   {allImages.map((image, i) => (
                     <div key={i} className="aspect-w-1 aspect-h-1">
@@ -146,6 +132,9 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
                     </div>
                   ))}
                 </Slider>
+              </div>
+              <div className="flex items-center justify-center">
+                <h1>Swipe to see details</h1>
               </div>
             </div>
 

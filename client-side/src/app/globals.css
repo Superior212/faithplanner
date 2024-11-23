@@ -10,6 +10,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Add this at the end of your globals.css file */
+.slick-arrow {
+  display: block !important;
+}
+
+.slick-prev {
+  left: 10px !important;
+  z-index: 1;
+}
+
+.slick-next {
+  right: 10px !important;
+  z-index: 1;
+}
+
 @media (max-width: 640px) {
   .image-wrapper {
     overflow: scroll;
@@ -28,9 +43,6 @@ body {
     transform: scale(1);
   }
 }
-
-
-
 
 @layer base {
   :root {
