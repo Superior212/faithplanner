@@ -1,5 +1,5 @@
 const Payment = require('../Models/Payment');
-const PayPalService = require('../services/paypalService');
+const PayPalService = require('../Services/paypalService');
 
 const createOrder = async (req, res) => {
     try {
