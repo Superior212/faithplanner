@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const PaymentController = require('../controllers/paymentController');
+const { createOrder, capturePayment, getPaymentHistory } = require('../Controllers/paymentController');
 
-router.post('/create-order', PaymentController.createOrder);
-router.post('/capture-payment', PaymentController.capturePayment);
-router.get('/history', PaymentController.getPaymentHistory);
+
+
+router.post('/create-order', createOrder);
+router.post('/capture-payment', capturePayment);
+router.get('/history', getPaymentHistory);
 
 module.exports = router;

@@ -44,10 +44,8 @@ export default function CheckoutPage() {
       [e.target.name]: e.target.value,
     });
   };
-  // const port = "http://localhost:8000";
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
   
+  const apiUrl = "https://faithplanner-server.vercel.app";
 
   const createOrder = async (): Promise<string> => {
     try {
