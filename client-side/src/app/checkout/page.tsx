@@ -13,16 +13,29 @@ import { CartItem } from "@/lib/checkout";
 export default function CheckoutPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const { items: cartItems, getTotal, clearCart } = useCartStore();
+  const {
+    items: cartItems,
+    getTotal,
+    getTeaserTotal,
+    clearCart,
+  } = useCartStore();
   const items: CartItem[] = cartItems.map((item) => ({
-    id: item.product.id,
-    product: item.product,
-    name: item.product.name,
-    price: item.product.price,
-    description: item.product.description,
-    quantity: item.quantity,
-    image: item.product.image,
-  }));
+      id: item.product.id,
+      product: {
+        id: item.product.id,
+        name: item.product.name,
+        price: item.product.price,
+        description: item.product.description,
+        image: item.product.image,
+        category: item.product.category,
+        teaser: item.product.teaser,
+      },
+      name: item.product.name,
+      price: item.product.price,
+      description: item.product.description,
+      quantity: item.quantity,
+      image: item.product.image,
+    }));
   const [formData, setFormData] = useState<FormData>({
     email: "",
     firstName: "",
@@ -33,10 +46,18 @@ export default function CheckoutPage() {
     zipCode: "",
   });
 
-  const subtotal = getTotal();
+  const regularSubtotal = getTotal();
+  const teaserSubtotal = getTeaserTotal();
   const shipping = calculateShipping(items);
-  const tax = parseFloat((subtotal * 0.08).toFixed(2));
-  const total = parseFloat((subtotal + shipping + tax).toFixed(2));
+  const tax = parseFloat((teaserSubtotal * 0.08).toFixed(2));
+  const total = parseFloat((teaserSubtotal + shipping + tax).toFixed(2));
+  const regularTotal = parseFloat(
+    (
+      regularSubtotal +
+      shipping +
+      parseFloat((regularSubtotal * 0.08).toFixed(2))
+    ).toFixed(2)
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -44,7 +65,7 @@ export default function CheckoutPage() {
       [e.target.name]: e.target.value,
     });
   };
-  // const apiUrl = "http://localhost:8000";
+
   const apiUrl = "https://faithplanner-server.vercel.app";
 
   const createOrder = async (): Promise<string> => {
@@ -60,7 +81,9 @@ export default function CheckoutPage() {
             name: item.product.name,
             quantity: item.quantity,
             unit_amount: {
-              value: item.product.price.toFixed(2),
+              value: (item.product.teaser || item.product.price).toFixed(
+                2
+              ),
               currency_code: "USD",
             },
           })),
@@ -70,7 +93,7 @@ export default function CheckoutPage() {
             breakdown: {
               item_total: {
                 currency_code: "USD",
-                value: subtotal.toFixed(2),
+                value: teaserSubtotal.toFixed(2),
               },
               shipping: {
                 currency_code: "USD",
@@ -128,12 +151,11 @@ export default function CheckoutPage() {
 
       if (responseData.status === "COMPLETED") {
         console.log("Payment successful. Clearing cart and redirecting...");
-        // Store order details in localStorage
         localStorage.setItem(
           "orderDetails",
           JSON.stringify({
             items,
-            subtotal,
+            subtotal: teaserSubtotal,
             shipping,
             tax,
             total,
@@ -204,11 +226,20 @@ export default function CheckoutPage() {
             </div>
             <div>
               <OrderSummary
-                items={items}
-                subtotal={subtotal}
+                items={items.map((item) => ({
+                  id: item.id,
+                  product: item.product,
+                  name: item.product.name,
+                  price: item.product.price,
+                  quantity: item.quantity,
+                  image: item.product.image,
+                }))}
+                regularSubtotal={regularSubtotal}
+                teaserSubtotal={teaserSubtotal}
                 shipping={shipping}
                 tax={tax}
                 total={total}
+                regularTotal={regularTotal}
               />
             </div>
           </div>

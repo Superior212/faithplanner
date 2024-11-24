@@ -4,6 +4,7 @@ import { Product } from "@/lib/type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+
 interface CartItem {
   product: Product;
   quantity: number;
@@ -16,7 +17,6 @@ interface CartStore {
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   getTotal: () => number;
-  getTeaserTotal: () => number;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -61,14 +61,6 @@ export const useCartStore = create<CartStore>()(
         const items = get().items;
         return items.reduce(
           (total, item) => total + item.product.price * item.quantity,
-          0
-        );
-      },
-      getTeaserTotal: () => {
-        const items = get().items;
-        return items.reduce(
-          (total, item) =>
-            total + (item.product.teaser || item.product.price) * item.quantity,
           0
         );
       },

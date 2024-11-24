@@ -217,9 +217,20 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       {relatedProduct.name}
                     </h3>
-                    <p className="text-indigo-600 font-bold">
-                      ${relatedProduct.price}
-                    </p>
+                    {relatedProduct.teaser ? (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground line-through">
+                          ${relatedProduct.price}
+                        </span>
+                        <span className="text-lg font-bold text-indigo-600">
+                          ${relatedProduct.teaser}
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-lg font-bold text-indigo-600">
+                        ${relatedProduct.price}
+                      </span>
+                    )}
                   </div>
                 </Link>
               ))}

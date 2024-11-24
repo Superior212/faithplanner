@@ -8,9 +8,10 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 
 export default function Cart() {
-  const { items, removeItem, updateQuantity, getTotal } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotal, getTeaserTotal } =
+    useCartStore();
 
-  const subtotal = getTotal();
+  const subtotal = getTeaserTotal();
   const shipping = items.length > 0 ? 5.99 : 0;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
@@ -54,7 +55,7 @@ export default function Cart() {
                                 ${item.product.price.toFixed(2)}
                               </p>
                               <p className="text-lg text-indigo-600 font-semibold">
-                                ${item.product.teaser}
+                                ${item.product.teaser.toFixed(2)}
                               </p>
                             </>
                           ) : (
@@ -110,6 +111,11 @@ export default function Cart() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal</span>
                       <span className="text-gray-900">
+                        {subtotal !== getTotal() && (
+                          <span className="line-through text-gray-500 mr-2">
+                            ${getTotal().toFixed(2)}
+                          </span>
+                        )}
                         ${subtotal.toFixed(2)}
                       </span>
                     </div>

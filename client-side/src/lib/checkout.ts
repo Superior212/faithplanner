@@ -21,9 +21,21 @@ export interface CartItem {
     image: string;
 
     category: string;
+
+    teaser?: number;
   };
 
   quantity: number;
+}
+
+export interface LocalCartItem {
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+  product: {
+    teaser?: number;
+  };
 }
 
 export interface CustomFormData {
