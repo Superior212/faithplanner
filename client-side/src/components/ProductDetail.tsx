@@ -60,18 +60,18 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
   const howToUseRef = useRef<HTMLDivElement>(null);
   const homeRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetchReviews();
-  }, [id]);
-
   const fetchReviews = async () => {
     try {
-      const fetchedReviews = await getApprovedReviews(id);
+      const fetchedReviews = await getApprovedReviews();
       setReviews(fetchedReviews);
     } catch (error) {
       console.error("Failed to fetch reviews:", error);
     }
   };
+
+  useEffect(() => {
+    fetchReviews();
+  }, [id]);
 
   if (!product) {
     notFound();
