@@ -9,20 +9,17 @@ const reviewSchema = new mongoose.Schema({
     },
     review: {
         type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 500
+        required: true
+    },
+    approved: {
+        type: Boolean,
+        default: false
     },
     createdAt: {
         type: Date,
         default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
     }
-});
+}, { timestamps: true });
 
-const Review = mongoose.model('Review', reviewSchema);
+module.exports = mongoose.model('Review', reviewSchema);
 
-module.exports = Review;

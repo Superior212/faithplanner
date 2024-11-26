@@ -6,12 +6,13 @@ import Link from "next/link";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { gallery, products } from "@/data/products";
 import Navbar from "@/components/Navbar";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AddToCartButton from "@/app/products/[id]/AddToCartButton";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Button } from "@/components/ui/button";
+import { getApprovedReviews } from "@/lib/api";
 
 interface PageProps {
   params: { id: string };
@@ -19,6 +20,13 @@ interface PageProps {
 
 interface ArrowProps {
   onClick?: () => void;
+}
+
+interface Review {
+  _id: string;
+  rating: number;
+  review: string;
+  createdAt: string;
 }
 
 function CustomNextArrow({ onClick }: ArrowProps) {
@@ -35,7 +43,7 @@ function CustomNextArrow({ onClick }: ArrowProps) {
 function CustomPrevArrow({ onClick }: ArrowProps) {
   return (
     <Button
-      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary hover:bg-primarye rounded-full p-2"
+      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary hover:bg-primary rounded-full p-2"
       onClick={onClick}
       size="icon">
       <ChevronLeft className="h-6 w-6" />
@@ -48,15 +56,28 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
   const product = products.find((p) => p.id === id);
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef<Slider>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const howToUseRef = useRef<HTMLDivElement>(null);
+  const homeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [id]);
+
+  const fetchReviews = async () => {
+    try {
+      const fetchedReviews = await getApprovedReviews(id);
+      setReviews(fetchedReviews);
+    } catch (error) {
+      console.error("Failed to fetch reviews:", error);
+    }
+  };
 
   if (!product) {
     notFound();
   }
 
   const relatedProducts = products.filter((p) => p.id !== id).slice(0, 4);
-  const howToUseRef = React.useRef<HTMLDivElement>(null);
-  const homeRef = React.useRef<HTMLDivElement>(null);
-
   const allImages = [product.image, ...gallery.map((g) => g.image)];
 
   const mainSettings = {
@@ -134,7 +155,7 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
                 </Slider>
               </div>
               <div className="flex items-center justify-center">
-                <h1>Swipe to see details</h1>
+                <p>Swipe to see details</p>
               </div>
             </div>
 
@@ -143,19 +164,24 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
                 {product.name}
               </h1>
-
-              <div className="flex items-center mb-4">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-5 w-5 text-yellow-400"
-                      fill="currentColor"
-                    />
-                  ))}
+              <Link href={`/products/${id}/reviews`}>
+                <div className="flex items-center mb-4">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-5 w-5 text-yellow-400"
+                        fill="currentColor"
+                      />
+                    ))}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 hover:text-indigo-600">
+                    <span className="ml-2 text-sm text-gray-600">
+                      ({reviews.length} reviews)
+                    </span>
+                  </h3>
                 </div>
-                <span className="ml-2 text-sm text-gray-600">(5 reviews)</span>
-              </div>
+              </Link>
               <div className="flex flex-col mb-6">
                 {product.teaser ? (
                   <>
