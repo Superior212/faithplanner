@@ -1,9 +1,10 @@
-// const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
-const API_URL = "http://localhost:8000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://faithplanner-server.vercel.app" || "http://localhost:8000/";
+// const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/";
+// const API_URL = "http://localhost:8000/api";
 // http://localhost:8000/api/reviews/approved
 
 export async function getApprovedReviews() {
-  const response = await fetch(`${API_URL}/reviews/approved`);
+  const response = await fetch(`${API_URL}/api/reviews/approved`);
   if (!response.ok) {
     throw new Error("Failed to fetch approved reviews");
   }
@@ -19,7 +20,7 @@ export async function submitReview(reviewData: {
   }
 
   try {
-    const response = await fetch(`${API_URL}/reviews`, {
+    const response = await fetch(`${API_URL}/api/reviews`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
