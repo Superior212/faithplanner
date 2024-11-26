@@ -28,21 +28,22 @@ interface Product {
 }
 
 interface ProductReviewsClientProps {
-  product: Product;
   initialReviews: Review[];
+  product: Product;
+  howToUseRef: React.RefObject<HTMLDivElement>;
+  homeRef: React.RefObject<HTMLDivElement>;
 }
 
 export default function ProductReviewsClient({
-  product,
   initialReviews,
+  product,
+  howToUseRef,
+  homeRef,
 }: ProductReviewsClientProps) {
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const { addItem } = useCartStore();
   const [quantity] = useState(1);
   const router = useRouter();
-
-  const howToUseRef = React.createRef<HTMLDivElement>();
-  const homeRef = React.createRef<HTMLDivElement>();
 
   const averageRating = reviews.length
     ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
@@ -55,7 +56,7 @@ export default function ProductReviewsClient({
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch("/api/reviews");
+      const response = await fetch(`/api/reviews/${product.id}`);
       const fetchedReviews = await response.json();
       setReviews(fetchedReviews);
     } catch (error) {
