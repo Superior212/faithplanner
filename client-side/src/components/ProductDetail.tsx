@@ -164,8 +164,8 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
                 {product.name}
               </h1>
-              <Link href={`/products/${id}/reviews`}>
-                <div className="flex items-center mb-4">
+              <Link href={`/products/${product.id}/reviews`}>
+                <div className="flex items-center mb-4 cursor-pointer">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -182,6 +182,7 @@ const ProductDetail: React.FC<PageProps> = ({ params }) => {
                   </h3>
                 </div>
               </Link>
+
               <div className="flex flex-col mb-6">
                 {product.teaser ? (
                   <>

@@ -3,6 +3,7 @@ import { products } from "@/data/products";
 import { getApprovedReviews } from "@/lib/api";
 import { notFound } from "next/navigation";
 
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
