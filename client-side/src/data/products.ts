@@ -7,7 +7,7 @@ export const products: Product[] = [
     price: 29.99,
     teaser: 19.99,
     description:
-      "Faith-focused planner for reflection, goals, and inspiration.",
+      "Get a sneak peek of what the the full yearly planner has to offer. With just over a month to go, it’s the perfect way to finish the year strong!",
     image: "/3.png",
     category: "daily",
     featured: true,
