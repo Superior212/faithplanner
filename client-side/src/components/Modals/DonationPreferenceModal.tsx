@@ -25,7 +25,8 @@ export default function DonationPreferenceModal({
         <DialogHeader>
           <DialogTitle>Donation Preference</DialogTitle>
           <DialogDescription>
-            Would you like to receive donations for your organization?
+            Fill out this form to have a donation given to a church or ministry
+            of your choice from this purchase.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
