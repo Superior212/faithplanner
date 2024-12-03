@@ -3,11 +3,11 @@ import Image from "next/image";
 export default function CoreFeatures() {
   return (
     <section className="hsection py-16 my-6 bg-white">
-      <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center ">
+      <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
         CORE FEATURES
       </h2>
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between">
-        <div className="lg:w-1/2 mb-12 lg:mb-0">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center justify-between">
+        <div className="w-full lg:w-1/2 order-1 lg:order-1 mb-12 lg:mb-0">
           <div className="space-y-8">
             <Feature
               title="God's Time"
@@ -31,13 +31,14 @@ export default function CoreFeatures() {
             />
           </div>
         </div>
-        <div className="lg:w-1/2 flex justify-center items-center">
-          <div className="w-full max-w-md aspect-square rounded-3xl relative overflow-hidden">
+        <div className="w-full lg:w-1/2 order-0 lg:order-2 flex justify-center items-center mb-12 lg:mb-0">
+          <div className="w-full max-w-lg aspect-square rounded-3xl relative overflow-hidden">
             <Image
-              src="/hero.jpg"
-              alt="Shape"
+              src="/multiple.jpg"
+              alt="Core Features Illustration"
               fill
-              style={{ objectFit: "cover", objectPosition: "center" }}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              style={{ objectFit: "contain", objectPosition: "center" }}
               priority
             />
           </div>

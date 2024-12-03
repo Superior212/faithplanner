@@ -17,7 +17,7 @@ export default function Home() {
 
   
   return (
-    <div>
+    <div >
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
       <main className="mt-28 sm:mt-10">
         <div ref={homeRef}>
