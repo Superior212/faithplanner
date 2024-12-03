@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import HowToUseSection from "@/components/HowToUseSection";
 import Navbar from "@/components/Navbar";
+import NewsletterSignup from "@/components/newsletter-signup";
+import { PreOrderBanner } from "@/components/PreOrderBanner";
 import Product from "@/components/Product";
 // import ProductGallery from "@/components/ProductGallery";
 import Review from "@/components/Review-form";
@@ -15,9 +17,9 @@ export default function Home() {
   const homeRef = useRef(null);
   const howToUseRef = useRef(null);
 
-  
   return (
-    <div >
+    <div>
+      <PreOrderBanner />
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
       <main className="mt-28 sm:mt-10">
         <div ref={homeRef}>
@@ -27,6 +29,7 @@ export default function Home() {
         <CoreFeatures />
         {/* <ProductGallery /> */}
         <Product />
+        <NewsletterSignup />
         <DonationSection />
         <div ref={howToUseRef}>
           <HowToUseSection />

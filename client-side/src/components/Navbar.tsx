@@ -6,7 +6,7 @@ import MemoLogo from "@/icons/Logo";
 import Link from "next/link";
 import DonationModal from "./Modals/DonationModal";
 import { useCartStore } from "@/store/useCartStore";
-
+import { usePreOrderBanner } from "@/hooks/usePreOrderBanner";
 
 interface NavbarProps {
   howToUseRef: React.RefObject<HTMLDivElement>;
@@ -27,10 +27,13 @@ export default function Component(
     setIsMenuOpen(false); // Close menu on mobile
   };
 
-
   const { items } = useCartStore();
+  const { isVisible } = usePreOrderBanner();
   return (
-    <nav className="fixed top-0 z-10 h-20 w-full bg-white p-4 sm:px-16">
+    <nav
+      className={`sticky z-10 h-20 w-full bg-white p-4 sm:px-16 transition-all duration-300 ${
+        isVisible ? "top-0" : "top-0"
+      }`}>
       <div className="container mx-auto flex items-center justify-between">
         <div className="">
           <MemoLogo className="h-10 w-60 sm:h-10 sm:w-80" />
