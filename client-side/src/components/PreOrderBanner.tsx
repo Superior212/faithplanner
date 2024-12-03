@@ -1,12 +1,10 @@
-import { X } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { usePreOrderBanner } from "@/hooks/usePreOrderBanner";
+
+// import { usePreOrderBanner } from "@/hooks/usePreOrderBanner";
 
 export function PreOrderBanner() {
-  const { isVisible, setIsVisible } = usePreOrderBanner();
+//   const { isVisible, setIsVisible } = usePreOrderBanner();
 
-  if (!isVisible) return null;
+//   if (!isVisible) return null;
 
   return (
     <div className="bg-[#CCFF00] text-black font-[700] py-6 px-4">
