@@ -12,6 +12,8 @@ import { CartItem } from "@/lib/checkout";
 import Navbar from "@/components/Navbar";
 
 export default function CheckoutPage() {
+  const howToUseRef = React.useRef<HTMLDivElement>(null);
+  const homeRef = React.useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -206,9 +208,6 @@ export default function CheckoutPage() {
     router.push("/cart");
     return null;
   }
-
-  const howToUseRef = React.useRef<HTMLDivElement>(null);
-  const homeRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <>
