@@ -9,6 +9,7 @@ import CheckoutForm from "@/components/CheckoutForm";
 import OrderSummary from "@/components/OrderSummary";
 import { FormData } from "@/lib/type";
 import { CartItem } from "@/lib/checkout";
+import Navbar from "@/components/Navbar";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -20,22 +21,22 @@ export default function CheckoutPage() {
     clearCart,
   } = useCartStore();
   const items: CartItem[] = cartItems.map((item) => ({
+    id: item.product.id,
+    product: {
       id: item.product.id,
-      product: {
-        id: item.product.id,
-        name: item.product.name,
-        price: item.product.price,
-        description: item.product.description,
-        image: item.product.image,
-        category: item.product.category,
-        teaser: item.product.teaser,
-      },
       name: item.product.name,
       price: item.product.price,
       description: item.product.description,
-      quantity: item.quantity,
       image: item.product.image,
-    }));
+      category: item.product.category,
+      teaser: item.product.teaser,
+    },
+    name: item.product.name,
+    price: item.product.price,
+    description: item.product.description,
+    quantity: item.quantity,
+    image: item.product.image,
+  }));
   const [formData, setFormData] = useState<FormData>({
     email: "",
     firstName: "",
@@ -81,9 +82,7 @@ export default function CheckoutPage() {
             name: item.product.name,
             quantity: item.quantity,
             unit_amount: {
-              value: (item.product.teaser || item.product.price).toFixed(
-                2
-              ),
+              value: (item.product.teaser || item.product.price).toFixed(2),
               currency_code: "USD",
             },
           })),
@@ -208,44 +207,50 @@ export default function CheckoutPage() {
     return null;
   }
 
+  const howToUseRef = React.useRef<HTMLDivElement>(null);
+  const homeRef = React.useRef<HTMLDivElement>(null);
+
   return (
-    <PayPalProvider>
-      <main className="mt-[4.6rem] sm:mt-20">
-        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-8">
-                Checkout
-              </h1>
-              <CheckoutForm
-                formData={formData}
-                handleChange={handleChange}
-                createOrder={createOrder}
-                onApprove={onApprove}
-              />
-            </div>
-            <div>
-              <OrderSummary
-                items={items.map((item) => ({
-                  id: item.id,
-                  product: item.product,
-                  name: item.product.name,
-                  price: item.product.price,
-                  quantity: item.quantity,
-                  image: item.product.image,
-                }))}
-                regularSubtotal={regularSubtotal}
-                teaserSubtotal={teaserSubtotal}
-                shipping={shipping}
-                tax={tax}
-                total={total}
-                regularTotal={regularTotal}
-              />
+    <>
+      <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
+      <PayPalProvider>
+        <main className="mt-[4.6rem] sm:mt-20">
+          <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-8">
+                  Checkout
+                </h1>
+                <CheckoutForm
+                  formData={formData}
+                  handleChange={handleChange}
+                  createOrder={createOrder}
+                  onApprove={onApprove}
+                />
+              </div>
+              <div>
+                <OrderSummary
+                  items={items.map((item) => ({
+                    id: item.id,
+                    product: item.product,
+                    name: item.product.name,
+                    price: item.product.price,
+                    quantity: item.quantity,
+                    image: item.product.image,
+                  }))}
+                  regularSubtotal={regularSubtotal}
+                  teaserSubtotal={teaserSubtotal}
+                  shipping={shipping}
+                  tax={tax}
+                  total={total}
+                  regularTotal={regularTotal}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-    </PayPalProvider>
+        </main>
+      </PayPalProvider>
+    </>
   );
 }
 
