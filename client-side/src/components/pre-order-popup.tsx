@@ -10,9 +10,11 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export function PreOrderPopup() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const hasSeenPopup = sessionStorage.getItem("hasSeenPreOrderPopup");
@@ -51,8 +53,7 @@ export function PreOrderPopup() {
           </Button>
           <Button
             onClick={() => {
-              // Add your pre-order logic here
-              console.log("Pre-order button clicked");
+              router.push("/products");
               handleClose();
             }}>
             Pre-order Now
