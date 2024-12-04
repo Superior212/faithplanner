@@ -4,6 +4,7 @@ import DonationSection from "@/components/DonationSection";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import HowToUseSection from "@/components/HowToUseSection";
+import ImageGallery from "@/components/image-gallery";
 import Navbar from "@/components/Navbar";
 import NewsletterSignup from "@/components/newsletter-signup";
 import { PreOrderBanner } from "@/components/PreOrderBanner";
@@ -30,6 +31,7 @@ export default function Home() {
         {/* <ProductGallery /> */}
         <Product />
         <NewsletterSignup />
+        <ImageGallery />
         <DonationSection />
         <div ref={howToUseRef}>
           <HowToUseSection />
