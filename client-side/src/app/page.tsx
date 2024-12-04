@@ -7,6 +7,7 @@ import HowToUseSection from "@/components/HowToUseSection";
 import ImageGallery from "@/components/image-gallery";
 import Navbar from "@/components/Navbar";
 import NewsletterSignup from "@/components/newsletter-signup";
+// import { PreOrderPopup } from "@/components/pre-order-popup";
 import { PreOrderBanner } from "@/components/PreOrderBanner";
 import Product from "@/components/Product";
 // import ProductGallery from "@/components/ProductGallery";
@@ -23,6 +24,7 @@ export default function Home() {
       <PreOrderBanner />
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
       <main className="mt-28 sm:mt-10">
+        {/* <PreOrderPopup /> */}
         <div ref={homeRef}>
           <HeroSection />
         </div>

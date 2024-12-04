@@ -77,7 +77,7 @@ export default function ImageGallery() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-center  text-3xl font-[700] py-8">
+      <h2 className="text-center sm:text-3xl font-[700] py-8">
         How to use the faith planner
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
