@@ -1,10 +1,10 @@
 import { DashboardLayout } from "@/components/DashboardLayout";
-import Review from "@/components/Review";
+import { ReviewTable } from "@/components/Reviews-Table";
 
 const Admin = () => {
   return (
     <DashboardLayout>
-      <Review />
+      <ReviewTable />
     </DashboardLayout>
   );
 };

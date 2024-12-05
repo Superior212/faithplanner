@@ -19,7 +19,7 @@ import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface UserPurchase {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   heardFrom: {
@@ -46,6 +46,7 @@ const apiUrl = "https://faithplanner-server.vercel.app/api/details";
 
 const fetchUserPurchases = async (): Promise<UserPurchase[]> => {
   const response = await axios.get(apiUrl);
+  console.log(response.data.data);
   return response.data.data;
 };
 
@@ -108,10 +109,11 @@ function UsersTableContent() {
                 </TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
               {data.length > 0 ? (
                 data.map((purchase) => (
-                  <TableRow key={purchase.id}>
+                  <TableRow key={purchase._id}>
                     <TableCell className="font-medium">
                       {purchase.name}
                       <div className="sm:hidden text-sm text-muted-foreground">
@@ -169,7 +171,7 @@ function UsersTableContent() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
+                <TableRow key="no-purchases">
                   <TableCell colSpan={5} className="text-center">
                     No user purchases found.
                   </TableCell>
