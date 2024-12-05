@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import Navbar from "@/components/Navbar";
 import { Phone, Mail } from "lucide-react";
 import Footer from "@/components/Footer";
@@ -22,17 +23,73 @@ export default function ContactPage() {
   const homeRef = React.useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  const [reason, setReason] = React.useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    reason: "",
+    message: "",
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleReasonChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      reason: value,
+    }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here you would typically handle the form submission,
-    // e.g., send the data to your backend API
-    console.log("Form submitted with reason:", reason);
-    toast({
-      title: "Message Sent",
-      description: "We've received your message and will get back to you soon.",
-    });
+
+    // Reset previous errors
+    setIsSubmitting(true);
+
+    try {
+      const response = await axios.post(
+        `https://faithplanner-server.vercel.app/api/contact`,
+        formData
+      );
+
+      // Success toast
+      toast({
+        title: "Message Sent",
+        description:
+          response.data.message ||
+          "We've received your message and will get back to you soon.",
+        variant: "default",
+      });
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        reason: "",
+        message: "",
+      });
+    } catch (error: any) {
+      // Error handling
+      const errorMessage =
+        error.response?.data?.message || "An error occurred. Please try again.";
+
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -82,6 +139,8 @@ export default function ContactPage() {
                       type="text"
                       id="name"
                       name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
                       required
                       className="mt-1"
                     />
@@ -92,13 +151,18 @@ export default function ContactPage() {
                       type="email"
                       id="email"
                       name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                       required
                       className="mt-1"
                     />
                   </div>
                   <div>
                     <Label htmlFor="reason">Reason for Contact</Label>
-                    <Select onValueChange={setReason} required>
+                    <Select
+                      onValueChange={handleReasonChange}
+                      value={formData.reason}
+                      required>
                       <SelectTrigger className="w-full mt-1">
                         <SelectValue placeholder="Select a reason" />
                       </SelectTrigger>
@@ -117,13 +181,18 @@ export default function ContactPage() {
                     <Textarea
                       id="message"
                       name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
                       rows={4}
                       required
                       className="mt-1"
                     />
                   </div>
-                  <Button type="submit" className="w-full">
-                    Send Message
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </div>

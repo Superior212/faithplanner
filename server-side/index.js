@@ -7,6 +7,7 @@ const userDetailsRoutes = require('./Routes/userDetailsRoutes');
 const donationRoutes = require('./Routes/donationRoutes');
 const reviewRoutes = require('./Routes/Reviews');
 const paymentRoutes = require('./Routes/paymentRoutes');
+const contactRoutes = require('./Routes/contactRoutes');
 
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use('/api', userDetailsRoutes);
 app.use('/api', donationRoutes);
 app.use('/api', reviewRoutes);
 app.use('/api', paymentRoutes);
+app.use('/api', contactRoutes);
 
 
 
