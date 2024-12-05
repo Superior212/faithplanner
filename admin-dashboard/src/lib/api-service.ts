@@ -11,14 +11,19 @@ export async function getAllReviews() {
 }
 
 export async function approveReview(reviewId: string) {
-  const response = await fetch(
-    `${API_BASE_URL}/reviews/${reviewId}/approve`,
-    {
-      method: "PATCH",
-    }
-  );
+  const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}/approve`, {
+    method: "PATCH",
+  });
   if (!response.ok) {
     throw new Error("Failed to approve review");
+  }
+  return response.json();
+}
+
+export async function getContactMessages() {
+  const response = await fetch(`${API_BASE_URL}/contact`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch contact messages");
   }
   return response.json();
 }

@@ -16,6 +16,10 @@ export const navItems = [
     href: "/dashboard/reviews",
   },
   {
+    name: "Contacts",
+    href: "/dashboard/contact",
+  },
+  {
     name: "Admin Management",
     href: "/dashboard/admins",
   },
