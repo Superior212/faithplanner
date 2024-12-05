@@ -22,7 +22,7 @@ export default function Cart() {
   return (
     <>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
-      <main className="mt-[4.6rem] sm:mt-20">
+      <main className="mt-[0.6rem] sm:mt-10">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">
             Shopping Cart
@@ -45,7 +45,7 @@ export default function Cart() {
                         className="w-24 h-24 object-cover rounded-md"
                       />
                       <div className="flex-1 ml-6">
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="sm:text-lg text-sm font-semibold text-gray-900">
                           {item.product.name}
                         </h3>
                         <div className="mt-1">

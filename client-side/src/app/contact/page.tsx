@@ -38,7 +38,7 @@ export default function ContactPage() {
   return (
     <>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
-      <main className="mt-[4.6rem] sm:mt-20">
+      <main className="mt-[0.5rem] sm:mt-10">
         <div className="hsection min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl mx-auto">
             <div className="text-center">
@@ -46,8 +46,8 @@ export default function ContactPage() {
                 Contact Us
               </h1>
               <p className="mt-4 text-xl text-muted-foreground">
-                We&apos;re here to help. Feel free to reach out using the information
-                below or the contact form.
+                We&apos;re here to help. Feel free to reach out using the
+                information below or the contact form.
               </p>
             </div>
 

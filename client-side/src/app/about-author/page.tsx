@@ -10,8 +10,8 @@ export default function AboutAuthor() {
   return (
     <>
       <Navbar howToUseRef={howToUseRef} homeRef={homeRef} />
-      <main className="mt-[4.6rem] sm:mt-20">
-        <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <main className="mt-[0.1rem] sm:mt-4">
+        <div className="min-h-screen bg-white py-4 px-4 sm:px-6 lg:px-8">
           <Card className="max-w-4xl mx-auto border border-gray-200 bg-white text-gray-800 shadow-lg">
             <CardContent className="p-6 sm:p-8 md:p-12">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center text-[#1A1E23]">
