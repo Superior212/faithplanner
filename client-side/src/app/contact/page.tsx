@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Navbar from "@/components/Navbar";
 import { Phone, Mail } from "lucide-react";
 import Footer from "@/components/Footer";
@@ -55,8 +55,12 @@ export default function ContactPage() {
     // Reset previous errors
     setIsSubmitting(true);
 
+    interface ResponseData {
+      message: string;
+    }
+
     try {
-      const response = await axios.post(
+      const response = await axios.post<ResponseData>(
         `https://faithplanner-server.vercel.app/api/contact`,
         formData
       );
@@ -77,10 +81,11 @@ export default function ContactPage() {
         reason: "",
         message: "",
       });
-    } catch (error: any) {
+    } catch (error) {
       // Error handling
       const errorMessage =
-        error.response?.data?.message || "An error occurred. Please try again.";
+        (error as AxiosError<ResponseData>).response?.data?.message ||
+        "An error occurred. Please try again.";
 
       toast({
         title: "Error",
