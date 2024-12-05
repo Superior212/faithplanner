@@ -19,6 +19,14 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Faith Planner Admin",
   description: "Faith Planner Admin Dashboard",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.png",
+        href: "/favicon.png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

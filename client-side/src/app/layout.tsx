@@ -18,6 +18,14 @@ export const metadata: Metadata = {
   title: "Faith Planner",
   description:
     "Faith Planner is a web application that helps you plan your faith journey.",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.png",
+        href: "/favicon.png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
