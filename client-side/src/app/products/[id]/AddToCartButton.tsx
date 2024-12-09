@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { CustomizationOptions } from "@/components/CustomizationOptions";
+// import { CustomizationOptions } from "@/components/CustomizationOptions";
 
 interface Product {
   id: string;
