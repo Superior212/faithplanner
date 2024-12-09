@@ -40,14 +40,14 @@ export default function AddToCartButton({ product }: { product: Product }) {
     setShowCustomizeModal(true);
   };
 
-  const handleCustomizationChoice = (customize: boolean) => {
-    setShowCustomizeModal(false);
-    if (customize) {
-      setShowCustomizationOptions(true);
-    } else {
-      addToCartAndCheckout();
-    }
-  };
+  // const handleCustomizationChoice = (customize: boolean) => {
+  //   setShowCustomizeModal(false);
+  //   if (customize) {
+  //     setShowCustomizationOptions(true);
+  //   } else {
+  //     addToCartAndCheckout();
+  //   }
+  // };
 
   const addToCartAndCheckout = () => {
     addItem(product, quantity);
