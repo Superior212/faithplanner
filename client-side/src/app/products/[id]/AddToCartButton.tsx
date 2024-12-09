@@ -33,8 +33,8 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const { addFavorite, removeFavorite, isFavorite } = useFavoriteStore();
   const [isFav, setIsFav] = useState(isFavorite(product.id));
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
-  const [showCustomizationOptions, setShowCustomizationOptions] =
-    useState(false);
+  // const [showCustomizationOptions, setShowCustomizationOptions] =
+  //   useState(false);
 
   const handleAddToCart = () => {
     setShowCustomizeModal(true);
