@@ -158,7 +158,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         </DialogContent>
       </Dialog>
 
-      <Dialog
+      {/* <Dialog
         open={showCustomizationOptions}
         onOpenChange={setShowCustomizationOptions}>
         <DialogContent>
@@ -170,7 +170,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
           </DialogHeader>
           <CustomizationOptions onComplete={addToCartAndCheckout} />
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }
