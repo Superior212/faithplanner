@@ -143,17 +143,19 @@ export default function AddToCartButton({ product }: { product: Product }) {
           <DialogHeader>
             <DialogTitle>Do you want to customize your planner?</DialogTitle>
             <DialogDescription>
-              Choose whether you&apos;d like to personalize your planner or proceed
-              with the standard version.
+              Choose whether you&apos;d like to personalize your planner or
+              proceed with the standard version.
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end space-x-4 mt-4">
-            <Button onClick={() => handleCustomizationChoice(true)}>
+            <Button>Yes, I want to customize it</Button>
+            <Button>No, I want the standard version</Button>
+            {/* <Button onClick={() => handleCustomizationChoice(true)}>
               Yes, I want to customize it
             </Button>
             <Button onClick={() => handleCustomizationChoice(false)}>
               No, I want the standard version
-            </Button>
+            </Button> */}
           </div>
         </DialogContent>
       </Dialog>
