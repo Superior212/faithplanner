@@ -12,6 +12,7 @@ import { PreOrderBanner } from "@/components/PreOrderBanner";
 import Product from "@/components/Product";
 // import ProductGallery from "@/components/ProductGallery";
 import Review from "@/components/Review-form";
+import { Reviews } from "@/components/Reviews";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { useRef } from "react";
 
@@ -39,6 +40,7 @@ export default function Home() {
           <HowToUseSection />
         </div>
         <TestimonialCarousel />
+        <Reviews />
         <Review />
         <Footer />
       </main>

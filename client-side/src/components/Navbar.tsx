@@ -53,6 +53,9 @@ export default function Component(
             className="text-[#1A1E23] hover:text-[#1A1E23]">
             How to Use
           </Link>
+          <Link href="/reviews" className="text-[#1A1E23] hover:text-[#1A1E23]">
+            Reviews
+          </Link>
           <Link
             href="/about-author"
             className="text-[#1A1E23] hover:text-[#1A1E23]">
