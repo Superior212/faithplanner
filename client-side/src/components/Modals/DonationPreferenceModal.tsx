@@ -21,7 +21,7 @@ export default function DonationPreferenceModal({
 }: DonationPreferenceModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onDecline()}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-w-[370px]">
         <DialogHeader>
           <DialogTitle>Donation Preference</DialogTitle>
           <DialogDescription>
@@ -30,10 +30,12 @@ export default function DonationPreferenceModal({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={onDecline}>
-            No, thanks
-          </Button>
-          <Button onClick={onAccept}>Yes, I&apos;d like to</Button>
+          <div className="flex items-center justify-between sm:space-x-40">
+            <Button variant="outline" onClick={onDecline}>
+              No, thanks
+            </Button>
+            <Button onClick={onAccept}>Yes, I&apos;d like to</Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
