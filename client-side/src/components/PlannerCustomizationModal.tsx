@@ -83,7 +83,7 @@ export function PlannerCustomizationModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[370px] sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>Customize Your Planner</DialogTitle>
+          <DialogTitle>Customize your gift</DialogTitle>
           <DialogDescription>
             Is this planner for you or a gift for a loved one?
           </DialogDescription>
@@ -124,7 +124,7 @@ export function PlannerCustomizationModal({
 
               <div>
                 <Label htmlFor="recipient-address">
-                  Recipient&apos;s Address
+                  Recipient&apos;s mailing address (please verify for accuracy)
                 </Label>
                 <Textarea
                   id="recipient-address"
