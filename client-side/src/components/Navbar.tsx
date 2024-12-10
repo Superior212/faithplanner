@@ -109,6 +109,11 @@ export default function Component(
               How to Use
             </Link>
             <Link
+              href="/reviews"
+              className="text-[#1A1E23] hover:text-[#1A1E23]">
+              Reviews
+            </Link>
+            <Link
               href="/about-author"
               className="block px-3 py-2 text-[#1A1E23] hover:text-[#1A1E23]">
               About the Author
