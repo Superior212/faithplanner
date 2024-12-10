@@ -9,6 +9,14 @@ export interface Product {
   subtitle?: string;
   img?: string;
   teaser?: number;
+  customization?: {
+    isGift: boolean;
+    coverColor?: string;
+    paperType?: string;
+    customMessage?: string;
+    recipientName?: string;
+    recipientAddress?: string;
+  };
 }
 
 export interface CartItem extends Product {
@@ -59,4 +67,3 @@ export interface PayPalOrderData {
     }[];
   }[];
 }
-

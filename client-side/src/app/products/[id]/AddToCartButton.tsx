@@ -7,23 +7,9 @@ import { useCartStore } from "@/store/useCartStore";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { useFavoriteStore } from "@/store/useFavoriteStore";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-// import { CustomizationOptions } from "@/components/CustomizationOptions";
+import { PlannerCustomizationModal } from "@/components/PlannerCustomizationModal";
+import { Product } from "@/lib/type";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-  category: string;
-}
 
 export default function AddToCartButton({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
@@ -32,26 +18,25 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const { addItem } = useCartStore();
   const { addFavorite, removeFavorite, isFavorite } = useFavoriteStore();
   const [isFav, setIsFav] = useState(isFavorite(product.id));
-  const [showCustomizeModal, setShowCustomizeModal] = useState(false);
-  // const [showCustomizationOptions, setShowCustomizationOptions] =
-  //   useState(false);
+  const [showCustomizationModal, setShowCustomizationModal] = useState(false);
 
   const handleAddToCart = () => {
-    setShowCustomizeModal(true);
+    setShowCustomizationModal(true);
   };
 
-  // const handleCustomizationChoice = (customize: boolean) => {
-  //   setShowCustomizeModal(false);
-  //   if (customize) {
-  //     setShowCustomizationOptions(true);
-  //   } else {
-  //     addToCartAndCheckout();
-  //   }
-  // };
-
-  const addToCartAndCheckout = () => {
-    addItem(product, quantity);
-    router.push("/checkout");
+  const handleCustomizationComplete = (
+    customizationData: Product["customization"]
+  ) => {
+    addItem({ ...product, customization: customizationData }, quantity);
+    router.push("/cart");
+    if (customizationData) {
+      toast({
+        title: "Added to cart",
+        description: customizationData.isGift
+          ? "Your customized gift planner has been added to the cart."
+          : "The standard planner has been added to the cart.",
+      });
+    }
   };
 
   const handleFavoriteToggle = () => {
@@ -138,41 +123,11 @@ export default function AddToCartButton({ product }: { product: Product }) {
         </Button>
       </div>
 
-      <Dialog open={showCustomizeModal} onOpenChange={setShowCustomizeModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Do you want to customize your planner?</DialogTitle>
-            <DialogDescription>
-              Choose whether you&apos;d like to personalize your planner or
-              proceed with the standard version.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end space-x-4 mt-4">
-            <Button>Yes, I want to customize it</Button>
-            <Button>No, I want the standard version</Button>
-            {/* <Button onClick={() => handleCustomizationChoice(true)}>
-              Yes, I want to customize it
-            </Button>
-            <Button onClick={() => handleCustomizationChoice(false)}>
-              No, I want the standard version
-            </Button> */}
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* <Dialog
-        open={showCustomizationOptions}
-        onOpenChange={setShowCustomizationOptions}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Customize Your Planner</DialogTitle>
-            <DialogDescription>
-              Personalize your planner with the options below.
-            </DialogDescription>
-          </DialogHeader>
-          <CustomizationOptions onComplete={addToCartAndCheckout} />
-        </DialogContent>
-      </Dialog> */}
+      <PlannerCustomizationModal
+        open={showCustomizationModal}
+        onOpenChange={setShowCustomizationModal}
+        onComplete={handleCustomizationComplete}
+      />
     </div>
   );
 }
