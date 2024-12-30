@@ -6,9 +6,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { FormData } from "@/lib/type";
 import { useToast } from "@/hooks/use-toast";
 
-import {
-  OnApproveData,
-} from "@paypal/paypal-js";
+import { OnApproveData } from "@paypal/paypal-js";
 import { CartItem } from "@/lib/checkout";
 
 interface CheckoutFormProps {
@@ -38,17 +36,20 @@ export default function CheckoutForm({
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contactInfo: formData,
-          items: cartItems,
-          total: total,
-        }),
-      });
+      const response = await fetch(
+        "https://faithplanner-server.vercel.app/api",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contactInfo: formData,
+            items: cartItems,
+            total: total,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to submit contact information");
@@ -80,9 +81,7 @@ export default function CheckoutForm({
     return createdOrderId;
   };
 
-  const handleApprove = async (
-    data: OnApproveData
-  ) => {
+  const handleApprove = async (data: OnApproveData) => {
     await onApprove({ orderID: data.orderID });
     // Update the payment status to 'completed'
     await updatePaymentStatus(orderId!, "completed", data.orderID);
@@ -95,7 +94,7 @@ export default function CheckoutForm({
   ) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/orders/${orderId}/payment-status`,
+        `https://faithplanner-server.vercel.app/api/orders/${orderId}/payment-status`,
         {
           method: "PUT",
           headers: {
