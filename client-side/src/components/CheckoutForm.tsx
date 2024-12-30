@@ -37,7 +37,7 @@ export default function CheckoutForm({
 
     try {
       const response = await fetch(
-        "https://faithplanner-server.vercel.app/api",
+        "https://faithplanner-server.vercel.app/api/orders",
         {
           method: "POST",
           headers: {
@@ -63,7 +63,7 @@ export default function CheckoutForm({
         description: "Contact information submitted successfully",
       });
     } catch (error) {
-      console.error(error);
+      console.error("Detailed error:", error);
       toast({
         title: "Error",
         description: "Failed to submit contact information. Please try again.",
@@ -94,7 +94,7 @@ export default function CheckoutForm({
   ) => {
     try {
       const response = await fetch(
-        `https://faithplanner-server.vercel.app/api/orders/${orderId}/payment-status`,
+        `http://localhost:8000/api/orders/${orderId}/payment-status`,
         {
           method: "PUT",
           headers: {
