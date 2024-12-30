@@ -8,6 +8,10 @@ export const navItems = [
     href: "/dashboard/users",
   },
   {
+    name: "Orders",
+    href: "/dashboard/orders",
+  },
+  {
     name: "Donations",
     href: "/dashboard/donations",
   },

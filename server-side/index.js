@@ -8,7 +8,7 @@ const donationRoutes = require('./Routes/donationRoutes');
 const reviewRoutes = require('./Routes/Reviews');
 const paymentRoutes = require('./Routes/paymentRoutes');
 const contactRoutes = require('./Routes/contactRoutes');
-
+const orderRoutes = require('./Routes/orderRoutes');
 
 dotenv.config();
 const port = process.env.PORT;
@@ -30,6 +30,7 @@ app.use('/api', donationRoutes);
 app.use('/api', reviewRoutes);
 app.use('/api', paymentRoutes);
 app.use('/api', contactRoutes);
+app.use('/api', orderRoutes);
 
 
 

@@ -225,6 +225,8 @@ export default function CheckoutPage() {
                   handleChange={handleChange}
                   createOrder={createOrder}
                   onApprove={onApprove}
+                  cartItems={items}
+                  total={total}
                 />
               </div>
               <div>

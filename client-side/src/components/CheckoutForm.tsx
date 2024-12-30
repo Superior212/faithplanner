@@ -1,14 +1,23 @@
+"use client";
+
+import { useState } from "react";
 import { Lock } from "lucide-react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { FormData } from "@/lib/type";
+import { useToast } from "@/hooks/use-toast";
 
-import { CreateOrderActions, OnApproveData, OnApproveActions } from "@paypal/paypal-js";
+import {
+  OnApproveData,
+} from "@paypal/paypal-js";
+import { CartItem } from "@/lib/checkout";
 
 interface CheckoutFormProps {
   formData: FormData;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  createOrder: (data: Record<string, unknown>, actions: CreateOrderActions) => Promise<string>;
-  onApprove: (data: OnApproveData, actions: OnApproveActions) => Promise<void>;
+  createOrder: () => Promise<string>;
+  onApprove: (data: { orderID: string }) => Promise<void>;
+  cartItems: CartItem[];
+  total: number;
 }
 
 export default function CheckoutForm({
@@ -16,9 +25,96 @@ export default function CheckoutForm({
   handleChange,
   createOrder,
   onApprove,
+  cartItems,
+  total,
 }: CheckoutFormProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isContactInfoSubmitted, setIsContactInfoSubmitted] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contactInfo: formData,
+          items: cartItems,
+          total: total,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit contact information");
+      }
+
+      const data = await response.json();
+      setOrderId(data.orderId);
+      setIsContactInfoSubmitted(true);
+      toast({
+        title: "Success",
+        description: "Contact information submitted successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "Failed to submit contact information. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCreateOrder = async () => {
+    const createdOrderId = await createOrder();
+    // Update the payment status to 'processing'
+    await updatePaymentStatus(orderId!, "processing", createdOrderId);
+    return createdOrderId;
+  };
+
+  const handleApprove = async (
+    data: OnApproveData
+  ) => {
+    await onApprove({ orderID: data.orderID });
+    // Update the payment status to 'completed'
+    await updatePaymentStatus(orderId!, "completed", data.orderID);
+  };
+
+  const updatePaymentStatus = async (
+    orderId: string,
+    status: string,
+    paypalOrderId: string
+  ) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/orders/${orderId}/payment-status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ paymentStatus: status, paypalOrderId }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update payment status");
+      }
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+    }
+  };
+
   return (
-    <form className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
           Contact Information
@@ -150,13 +246,22 @@ export default function CheckoutForm({
           <Lock className="h-4 w-4 mr-1" />
           Secure checkout
         </div>
-        <div className="w-full max-w-md">
-          <PayPalButtons
-            createOrder={createOrder}
-            onApprove={onApprove}
-            style={{ layout: "horizontal" }}
-          />
-        </div>
+        {!isContactInfoSubmitted ? (
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            {isSubmitting ? "Submitting..." : "Submit Contact Info"}
+          </button>
+        ) : (
+          <div className="w-full max-w-md">
+            <PayPalButtons
+              createOrder={handleCreateOrder}
+              onApprove={handleApprove}
+              style={{ layout: "horizontal" }}
+            />
+          </div>
+        )}
       </div>
     </form>
   );
