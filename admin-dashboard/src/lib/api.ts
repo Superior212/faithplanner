@@ -1,4 +1,6 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://faithplanner-server.vercel.app/api/";
 
 export async function fetchOrders(): Promise<Order[]> {
   const response = await fetch(`${API_BASE_URL}/orders`);
