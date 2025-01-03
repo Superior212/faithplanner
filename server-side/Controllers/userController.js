@@ -187,6 +187,35 @@ const getUserById = async (req, res) => {
 
 const sendWelcomeEmail = async (email, name) => {
 
+    const welcome = `
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border: 1px solid #dddddd; border-radius: 8px; padding: 20px;">
+        <!-- Header -->
+        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #eeeeee;">
+            <h1 style="margin: 0; font-size: 28px; color: #333333;">Welcome to Your App!</h1>
+            <p style="margin: 10px 0; font-size: 16px; color: #555555;">We're thrilled to have you join us!</p>
+        </div>
+
+        <!-- Body -->
+        <div style="padding: 20px; color: #555555; line-height: 1.6;">
+            <p>Hi <strong>${name}</strong>,</p>
+            <p>Welcome to <strong>FaithPlanner</strong>! We're excited to have you on board and can't wait for you to explore everything we have to offer.</p>
+
+            <p>Welcome aboard!</p>
+            <p style="margin: 0;">Cheers,</p>
+            <p style="margin: 0;"><strong>The FaithPlanner Team</strong></p>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 10px 0; border-top: 1px solid #eeeeee; font-size: 12px; color: #777777;">
+            <p>&copy;2025 FaithPlanner.org. All rights reserved.</p>
+            <p><a href="https://FaithPlanner.org" style="color: #007bff; text-decoration: none;">Visit our website</a></p>
+        </div>
+    </div>
+</body>
+
+`
+
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -199,7 +228,7 @@ const sendWelcomeEmail = async (email, name) => {
         from: `"Faith Planner" <${process.env.USER_EMAIL}>`,
         to: email,
         subject: `Welcome to faith Planner`,
-        text: `Hello ${name}, welcome to Your App! We're glad to have you on board.`
+        html: welcome
     };
 
     await transporter.sendMail(mailOptions);

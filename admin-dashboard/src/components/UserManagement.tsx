@@ -43,13 +43,23 @@ export default function UserManagement() {
   });
 
   const apiUrl = "https://faithplanner-server.vercel.app/api";
+
+  // Get the token from localStorage
+  const getToken = () => localStorage.getItem('token');
+
   // Fetch users from the API
   const fetchUsers = async (): Promise<void> => {
     try {
+      const token = getToken();
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
       const response = await fetch(`${apiUrl}/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
       });
 
@@ -59,7 +69,6 @@ export default function UserManagement() {
       }
 
       const data = await response.json();
-      // Adjust this based on your API response structure
       setUsers(data.users || []);
       setError(null);
     } catch (err) {
@@ -83,10 +92,16 @@ export default function UserManagement() {
     setError(null);
 
     try {
+      const token = getToken();
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
       const response = await fetch(`${apiUrl}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(newUser),
       });
@@ -96,15 +111,9 @@ export default function UserManagement() {
         throw new Error(errorData.message || "Failed to add user");
       }
 
-      // Refresh the users list
       await fetchUsers();
-
-      // Reset form and close modal
       setNewUser({ email: "", name: "", password: "" });
       setIsAddUserModalOpen(false);
-
-      // Optional: Show success message
-      // setSuccessMessage("User added successfully");
     } catch (err) {
       console.error("Add user error:", err);
       setError(err instanceof Error ? err.message : "Failed to add user");
@@ -231,3 +240,4 @@ export default function UserManagement() {
     </Card>
   );
 }
+
