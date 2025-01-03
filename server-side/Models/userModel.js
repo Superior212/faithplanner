@@ -24,14 +24,12 @@ const userSchema = new Schema({
 });
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
-    // Only hash the password if it's new or has been modified
+userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         return next();
     }
 
     try {
-        // Generate salt and hash password
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
         next();
@@ -41,7 +39,7 @@ userSchema.pre('save', async function(next) {
 });
 
 // Method to check password validity
-userSchema.methods.isValidPassword = async function(password) {
+userSchema.methods.isValidPassword = async function (password) {
     try {
         return await bcrypt.compare(password, this.password);
     } catch (error) {
@@ -49,6 +47,13 @@ userSchema.methods.isValidPassword = async function(password) {
     }
 };
 
+// Add changePassword method
+userSchema.methods.changePassword = async function (newPassword) {
+    this.password = newPassword;
+    await this.save();
+};
+
 const userModel = mongoose.model("User", userSchema);
 
 module.exports = userModel;
+
