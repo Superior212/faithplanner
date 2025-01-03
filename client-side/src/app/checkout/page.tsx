@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { useToast } from "@/hooks/use-toast";
 import PayPalProvider from "./PayPalProvider";
-import CheckoutForm from "@/components/CheckoutForm";
 import OrderSummary from "@/components/OrderSummary";
 import { FormData } from "@/lib/type";
 import { CartItem } from "@/lib/checkout";
 import Navbar from "@/components/Navbar";
+import CheckoutForm from "@/components/CheckoutForm";
 
 export default function CheckoutPage() {
   const howToUseRef = React.useRef<HTMLDivElement>(null);
