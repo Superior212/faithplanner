@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchOrders, Order } from "@/lib/api";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -29,6 +31,10 @@ export default function OrderList() {
     loadOrders();
   }, [toast]);
 
+  const toggleOrderDetails = (orderId: string) => {
+    setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -45,44 +51,97 @@ export default function OrderList() {
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
-            <thead>
+            <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Order ID
                 </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Customer
                 </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Total
                 </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Date
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200">
               {orders.map((order) => (
-                <tr key={order._id}>
-                  <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                    {order._id}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                    {order.contactInfo.firstName} {order.contactInfo.lastName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                    ${order.total.toFixed(2)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                    {order.paymentStatus}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
+                <Fragment key={order._id}>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {order._id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {order.contactInfo.firstName} {order.contactInfo.lastName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      ${order.total.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          order.paymentStatus === "completed"
+                            ? "bg-green-100 text-green-800"
+                            : order.paymentStatus === "processing"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-red-100 text-red-800"
+                        }`}>
+                        {order.paymentStatus}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <button
+                        onClick={() => toggleOrderDetails(order._id)}
+                        className="text-blue-600 hover:text-blue-900"
+                        aria-expanded={expandedOrder === order._id}
+                        aria-controls={`order-details-${order._id}`}>
+                        {expandedOrder === order._id ? (
+                          <ChevronUp className="h-5 w-5" />
+                        ) : (
+                          <ChevronDown className="h-5 w-5" />
+                        )}
+                      </button>
+                    </td>
+                  </tr>
+                  {expandedOrder === order._id && (
+                    <tr id={`order-details-${order._id}`}>
+                      <td
+                        colSpan={6}
+                        className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <h3 className="font-semibold">
+                              Contact Information
+                            </h3>
+                            <p>Email: {order.contactInfo.email}</p>
+                            {/* <p>Phone: {order.contactInfo.phone}</p> */}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold">Shipping Address</h3>
+                            <p>{order.contactInfo.address}</p>
+                            <p>
+                              {order.contactInfo.city},{" "}
+                              {order.contactInfo.state}{" "}
+                              {order.contactInfo.zipCode}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               ))}
             </tbody>
           </table>

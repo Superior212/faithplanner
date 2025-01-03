@@ -10,14 +10,40 @@ export async function fetchOrders(): Promise<Order[]> {
   return response.json();
 }
 
+// export interface Order {
+//   _id: string;
+//   contactInfo: {
+//     email: string;
+//     firstName: string;
+//     lastName: string;
+//   };
+//   total: number;
+//   paymentStatus: string;
+//   createdAt: string;
+// }
+
 export interface Order {
   _id: string;
+
   contactInfo: {
     email: string;
+
     firstName: string;
+
     lastName: string;
+
+    address: string;
+
+    city: string;
+
+    state: string;
+
+    zipCode: string;
   };
+
   total: number;
+
   paymentStatus: string;
+
   createdAt: string;
 }
